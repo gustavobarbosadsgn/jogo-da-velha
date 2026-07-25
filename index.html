@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jogo da Velha</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +41,8 @@
     box-shadow: 6px 6px 0 #2b2b2b;
     padding: 22px 26px;
     margin-bottom: 24px;
-    width: 320px;
+    width: 100%;
+    max-width: 320px;
   }
 
   .option-group {
@@ -195,16 +197,18 @@
 
   #board {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 10px;
     margin-bottom: 24px;
+    width: min(320px, calc(100vw - 40px));
+    aspect-ratio: 1 / 1;
   }
   .cell {
     background: #fff;
     border: 3px solid #2b2b2b;
     border-radius: 26px;
-    font-size: 48px;
+    font-size: clamp(28px, 11vw, 48px);
     font-weight: 700;
     font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
     color: #2b2b2b;
@@ -214,6 +218,8 @@
     justify-content: center;
     box-shadow: 5px 5px 0 #2b2b2b;
     transition: transform 0.08s ease;
+    min-width: 0;
+    min-height: 0;
   }
   .cell:hover:not(:disabled) {
     background: #fff8e1;
@@ -248,6 +254,61 @@
   .button-row button.action {
     width: auto;
     padding: 12px 22px;
+  }
+
+  @media (max-width: 600px) {
+    body {
+      padding: 16px 10px;
+    }
+    h1 {
+      font-size: 30px;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-size: 19px;
+    }
+    .panel {
+      padding: 18px 18px;
+    }
+    .radio-pill {
+      font-size: 15px;
+      padding: 12px 14px;
+      min-height: 44px;
+    }
+    .field-label {
+      font-size: 14px;
+    }
+    select, .code-input {
+      font-size: 16px;
+      padding: 12px;
+      min-height: 44px;
+    }
+    button.action {
+      font-size: 16px;
+      padding: 13px 20px;
+      min-height: 48px;
+    }
+    #roomCodeDisplay {
+      font-size: 32px;
+      letter-spacing: 6px;
+    }
+    #message {
+      font-size: 19px;
+    }
+    #board {
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .cell {
+      border-radius: 18px;
+    }
+    .button-row {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .button-row button.action {
+      width: 100%;
+    }
   }
 </style>
 </head>
