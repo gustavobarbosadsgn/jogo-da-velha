@@ -10,7 +10,7 @@
   * { box-sizing: border-box; }
   body {
     font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
-    background: #FFDA5E;
+    background: #FCE97D;
     color: #2b2b2b;
     display: flex;
     flex-direction: column;
@@ -30,6 +30,7 @@
     margin: 0 0 14px;
     font-weight: 700;
     font-size: 22px;
+    text-align: center;
   }
 
   .panel {
@@ -82,24 +83,41 @@
     display: block;
   }
 
-  select {
+  select, .code-input {
     width: 100%;
     font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    padding: 10px 44px 10px 12px;
+    padding: 10px 12px;
     border: 3px solid #2b2b2b;
     border-radius: 14px;
-    background-color: #fff;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232b2b2b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
+    background: #fff;
     color: #2b2b2b;
     box-shadow: 3px 3px 0 #2b2b2b;
     cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+  }
+
+  .code-input {
+    cursor: text;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 8px;
+  }
+
+  .or-divider {
+    text-align: center;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin: 2px 0;
+  }
+
+  #roomError {
+    color: #d64545;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    min-height: 18px;
   }
 
   button.action {
@@ -123,10 +141,51 @@
     transform: translate(2px, 2px);
     box-shadow: 3px 3px 0 #2b2b2b;
   }
+  button.action:disabled {
+    cursor: default;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: 5px 5px 0 #2b2b2b;
+  }
 
   #startBtn { background: #ff6f61; }
+  #createRoomBtn { background: #3d84f7; }
+  #joinRoomBtn { background: #9b5de5; }
   #restart { background: #3d84f7; }
   #changeMode { background: #fff; color: #2b2b2b; }
+  #cancelWaitingBtn { background: #fff; color: #2b2b2b; }
+
+  #roomCodeDisplay {
+    background: #fff8e1;
+    border: 3px solid #2b2b2b;
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 #2b2b2b;
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 10px;
+    padding: 14px 6px;
+    margin: 14px 0;
+  }
+
+  #waitingRoom p {
+    text-align: center;
+    font-size: 15px;
+    margin: 0 0 4px;
+  }
+
+  .spinner {
+    width: 26px;
+    height: 26px;
+    border: 4px solid #2b2b2b;
+    border-top-color: #ff6f61;
+    border-radius: 50%;
+    margin: 14px auto;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 
   #game {
     display: flex;
@@ -216,7 +275,24 @@
       <option value="hard" selected>Difícil</option>
     </select>
   </div>
+  <div class="option-group" id="roomGroup" style="display:none;">
+    <button id="createRoomBtn" class="action" type="button">Criar Sala</button>
+    <div class="or-divider">ou</div>
+    <label class="field-label" for="joinCodeInput">Entrar em uma sala</label>
+    <input type="text" id="joinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
+    <button id="joinRoomBtn" class="action" type="button">Entrar na Sala</button>
+    <div id="roomError"></div>
+  </div>
   <button id="startBtn" class="action">Começar</button>
+</div>
+
+<div id="waitingRoom" class="panel" style="display:none;">
+  <h2>Sala Criada!</h2>
+  <p>Compartilhe este código com a outra pessoa:</p>
+  <div id="roomCodeDisplay">0000</div>
+  <p>Aguardando o Jogador 2 entrar...</p>
+  <div class="spinner"></div>
+  <button id="cancelWaitingBtn" class="action" type="button">Cancelar</button>
 </div>
 
 <div id="game">
@@ -228,13 +304,40 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+  import {
+    getDatabase, ref, set, get, update, remove, onValue
+  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC3yeRQcYqBjHhG69KaL3e4H1Y-9hpRK1g",
+    authDomain: "jogo-da-velha-18c2f.firebaseapp.com",
+    databaseURL: "https://jogo-da-velha-18c2f-default-rtdb.firebaseio.com",
+    projectId: "jogo-da-velha-18c2f",
+    storageBucket: "jogo-da-velha-18c2f.firebasestorage.app",
+    messagingSenderId: "1056878696090",
+    appId: "1:1056878696090:web:6cad23e29e302b45f73123"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
   const setupEl = document.getElementById('setup');
   const gameEl = document.getElementById('game');
+  const waitingRoomEl = document.getElementById('waitingRoom');
   const difficultyGroupEl = document.getElementById('difficultyGroup');
+  const roomGroupEl = document.getElementById('roomGroup');
   const difficultySelect = document.getElementById('difficulty');
   const startBtn = document.getElementById('startBtn');
   const changeModeBtn = document.getElementById('changeMode');
+
+  const createRoomBtn = document.getElementById('createRoomBtn');
+  const joinRoomBtn = document.getElementById('joinRoomBtn');
+  const joinCodeInput = document.getElementById('joinCodeInput');
+  const roomErrorEl = document.getElementById('roomError');
+  const roomCodeDisplayEl = document.getElementById('roomCodeDisplay');
+  const cancelWaitingBtn = document.getElementById('cancelWaitingBtn');
 
   const boardEl = document.getElementById('board');
   const messageEl = document.getElementById('message');
@@ -242,12 +345,18 @@
 
   const HUMAN = 'X';
   const COMPUTER = 'O';
+  const EMPTY_CELL = '_';
 
   let mode = 'computer';       // 'computer' ou 'human'
   let difficulty = 'hard';     // 'easy' | 'medium' | 'hard'
   let currentPlayer = HUMAN;
   let board = Array(9).fill(null);
   let gameOver = false;
+
+  // Estado do modo online
+  let onlineRole = null;       // 'X' (criador da sala) ou 'O' (quem entrou)
+  let roomCode = null;
+  let unsubscribeRoom = null;
 
   const WIN_LINES = [
     [0,1,2], [3,4,5], [6,7,8],
@@ -257,22 +366,243 @@
 
   document.querySelectorAll('input[name="mode"]').forEach(radio => {
     radio.addEventListener('change', () => {
-      difficultyGroupEl.style.display = radio.value === 'human' && radio.checked ? 'none' : '';
+      const isHuman = document.querySelector('input[name="mode"]:checked').value === 'human';
+      difficultyGroupEl.style.display = isHuman ? 'none' : '';
+      roomGroupEl.style.display = isHuman ? '' : 'none';
+      startBtn.style.display = isHuman ? 'none' : '';
+      roomErrorEl.textContent = '';
     });
   });
 
   startBtn.addEventListener('click', () => {
-    mode = document.querySelector('input[name="mode"]:checked').value;
+    mode = 'computer';
     difficulty = difficultySelect.value;
-    setupEl.style.display = 'none';
-    gameEl.style.display = 'flex';
+    showGameScreen();
     restart();
   });
 
+  joinCodeInput.addEventListener('input', () => {
+    joinCodeInput.value = joinCodeInput.value.replace(/\D/g, '').slice(0, 4);
+  });
+  joinCodeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinRoom();
+  });
+
+  createRoomBtn.addEventListener('click', createRoom);
+  joinRoomBtn.addEventListener('click', joinRoom);
+  cancelWaitingBtn.addEventListener('click', cancelWaiting);
+
   changeModeBtn.addEventListener('click', () => {
+    if (mode === 'human') leaveOnlineGame();
     gameEl.style.display = 'none';
+    waitingRoomEl.style.display = 'none';
     setupEl.style.display = 'block';
   });
+
+  restartBtn.addEventListener('click', () => {
+    if (mode === 'human') {
+      restartOnlineGame();
+    } else {
+      restart();
+    }
+  });
+
+  // ---------- Firebase: sala / multiplayer ----------
+
+  function generateRoomCode() {
+    return String(Math.floor(1000 + Math.random() * 9000));
+  }
+
+  function boardToDbString(arr) {
+    return arr.map(v => v || EMPTY_CELL).join('');
+  }
+
+  function dbStringToBoard(str) {
+    return String(str).split('').map(ch => (ch === EMPTY_CELL ? null : ch));
+  }
+
+  async function createRoom() {
+    roomErrorEl.textContent = '';
+    createRoomBtn.disabled = true;
+    try {
+      let code = generateRoomCode();
+      let attempts = 0;
+      let exists = true;
+      while (attempts < 10) {
+        const snap = await get(ref(db, `rooms/${code}`));
+        exists = snap.exists();
+        if (!exists) break;
+        code = generateRoomCode();
+        attempts++;
+      }
+      if (exists) {
+        roomErrorEl.textContent = 'Não foi possível criar a sala. Tente novamente.';
+        return;
+      }
+
+      mode = 'human';
+      roomCode = code;
+      onlineRole = HUMAN;
+
+      await set(ref(db, `rooms/${roomCode}`), {
+        board: boardToDbString(Array(9).fill(null)),
+        currentPlayer: HUMAN,
+        status: 'waiting',
+        createdAt: Date.now()
+      });
+
+      listenToRoom();
+    } catch (err) {
+      roomErrorEl.textContent = 'Não foi possível criar a sala. Verifique sua conexão.';
+    } finally {
+      createRoomBtn.disabled = false;
+    }
+  }
+
+  async function joinRoom() {
+    const code = joinCodeInput.value.trim();
+    roomErrorEl.textContent = '';
+
+    if (!/^\d{4}$/.test(code)) {
+      roomErrorEl.textContent = 'Digite um código de 4 dígitos.';
+      return;
+    }
+
+    joinRoomBtn.disabled = true;
+    try {
+      const roomPath = ref(db, `rooms/${code}`);
+      const snap = await get(roomPath);
+      if (!snap.exists()) {
+        roomErrorEl.textContent = 'Sala não encontrada.';
+        return;
+      }
+      const data = snap.val();
+      if (data.status !== 'waiting') {
+        roomErrorEl.textContent = 'Essa sala já está em uso.';
+        return;
+      }
+
+      mode = 'human';
+      roomCode = code;
+      onlineRole = COMPUTER;
+
+      await update(roomPath, { status: 'playing' });
+
+      listenToRoom();
+    } catch (err) {
+      roomErrorEl.textContent = 'Não foi possível entrar na sala.';
+    } finally {
+      joinRoomBtn.disabled = false;
+    }
+  }
+
+  async function cancelWaiting() {
+    if (roomCode) {
+      try { await remove(ref(db, `rooms/${roomCode}`)); } catch (err) { /* sala já pode ter sido removida */ }
+    }
+    leaveOnlineGame();
+    waitingRoomEl.style.display = 'none';
+    setupEl.style.display = 'block';
+  }
+
+  function leaveOnlineGame() {
+    if (unsubscribeRoom) {
+      unsubscribeRoom();
+      unsubscribeRoom = null;
+    }
+    roomCode = null;
+    onlineRole = null;
+  }
+
+  function listenToRoom() {
+    const roomPath = ref(db, `rooms/${roomCode}`);
+    unsubscribeRoom = onValue(roomPath, (snap) => {
+      const data = snap.val();
+      if (!data) {
+        if (roomCode) {
+          gameOver = true;
+          messageEl.textContent = 'A sala foi encerrada.';
+          createBoard();
+          showGameScreen();
+        }
+        return;
+      }
+      if (data.status === 'waiting') {
+        showWaitingRoom();
+      } else {
+        showGameScreen();
+        renderOnlineState(data);
+      }
+    });
+  }
+
+  function renderOnlineState(data) {
+    board = dbStringToBoard(data.board);
+    currentPlayer = data.currentPlayer;
+    gameOver = data.status === 'finished';
+    createBoard();
+
+    if (gameOver) {
+      if (data.winner === 'draw') {
+        messageEl.textContent = 'Empate!';
+      } else {
+        const youWon = data.winner === onlineRole;
+        messageEl.textContent = youWon ? 'Você venceu!' : 'Você perdeu!';
+      }
+    } else {
+      updateTurnMessage();
+    }
+  }
+
+  async function handleOnlineCellClick(index) {
+    if (gameOver || board[index]) return;
+    if (currentPlayer !== onlineRole) return;
+    if (!roomCode) return;
+
+    const newBoard = board.slice();
+    newBoard[index] = onlineRole;
+
+    const result = checkResult(newBoard);
+    const updates = {
+      board: boardToDbString(newBoard),
+      currentPlayer: onlineRole === HUMAN ? COMPUTER : HUMAN
+    };
+    if (result) {
+      updates.status = 'finished';
+      updates.winner = result;
+    }
+
+    try {
+      await update(ref(db, `rooms/${roomCode}`), updates);
+    } catch (err) {
+      roomErrorEl.textContent = '';
+    }
+  }
+
+  async function restartOnlineGame() {
+    if (!roomCode) return;
+    await update(ref(db, `rooms/${roomCode}`), {
+      board: boardToDbString(Array(9).fill(null)),
+      currentPlayer: HUMAN,
+      status: 'playing',
+      winner: null
+    });
+  }
+
+  function showWaitingRoom() {
+    setupEl.style.display = 'none';
+    gameEl.style.display = 'none';
+    waitingRoomEl.style.display = 'block';
+    roomCodeDisplayEl.textContent = roomCode;
+  }
+
+  function showGameScreen() {
+    setupEl.style.display = 'none';
+    waitingRoomEl.style.display = 'none';
+    gameEl.style.display = 'flex';
+  }
+
+  // ---------- Jogo (comum aos dois modos) ----------
 
   function createBoard() {
     boardEl.innerHTML = '';
@@ -282,15 +612,21 @@
       if (value === HUMAN) btn.classList.add('x');
       if (value === COMPUTER) btn.classList.add('o');
       btn.textContent = value || '';
-      btn.disabled = !!value || gameOver;
+      const notYourTurn = mode === 'human' && !gameOver && currentPlayer !== onlineRole;
+      btn.disabled = !!value || gameOver || notYourTurn;
       btn.addEventListener('click', () => handleCellClick(index));
       boardEl.appendChild(btn);
     });
   }
 
   function handleCellClick(index) {
+    if (mode === 'human') {
+      handleOnlineCellClick(index);
+      return;
+    }
+
     if (gameOver || board[index]) return;
-    if (mode === 'computer' && currentPlayer !== HUMAN) return;
+    if (currentPlayer !== HUMAN) return;
 
     board[index] = currentPlayer;
     createBoard();
@@ -301,14 +637,9 @@
       return;
     }
 
-    if (mode === 'human') {
-      currentPlayer = currentPlayer === HUMAN ? COMPUTER : HUMAN;
-      updateTurnMessage();
-    } else {
-      currentPlayer = COMPUTER;
-      messageEl.textContent = 'Computador jogando...';
-      setTimeout(computerMove, 500);
-    }
+    currentPlayer = COMPUTER;
+    messageEl.textContent = 'Computador jogando...';
+    setTimeout(computerMove, 500);
   }
 
   function computerMove() {
@@ -330,7 +661,12 @@
 
   function updateTurnMessage() {
     if (mode === 'human') {
-      messageEl.textContent = currentPlayer === HUMAN ? 'Vez do Jogador 1 (X)' : 'Vez do Jogador 2 (O)';
+      const isYourTurn = currentPlayer === onlineRole;
+      const roleLabel = onlineRole === HUMAN ? 'X' : 'O';
+      const roleColor = onlineRole === HUMAN ? '#9b5de5' : '#3d84f7';
+      messageEl.innerHTML = isYourTurn
+        ? `<span style="color:${roleColor}">Sua vez!</span> (Você é ${roleLabel})`
+        : `Vez do adversário... (Você é ${roleLabel})`;
     } else {
       messageEl.textContent = 'Sua vez (X)';
     }
@@ -428,10 +764,10 @@
     return null;
   }
 
-  function checkResult() {
-    const winner = getWinner(board);
+  function checkResult(b = board) {
+    const winner = getWinner(b);
     if (winner) return winner;
-    if (board.every(cell => cell)) return 'draw';
+    if (b.every(cell => cell)) return 'draw';
     return null;
   }
 
@@ -440,8 +776,6 @@
     createBoard();
     if (result === 'draw') {
       messageEl.textContent = 'Empate!';
-    } else if (mode === 'human') {
-      messageEl.textContent = result === HUMAN ? 'Jogador 1 (X) venceu!' : 'Jogador 2 (O) venceu!';
     } else {
       messageEl.textContent = result === HUMAN ? 'Você venceu!' : 'O computador venceu!';
     }
@@ -454,8 +788,6 @@
     updateTurnMessage();
     createBoard();
   }
-
-  restartBtn.addEventListener('click', restart);
 
   gameEl.style.display = 'none';
 </script>
