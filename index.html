@@ -99,6 +99,16 @@
     cursor: pointer;
   }
 
+  select {
+    padding-right: 44px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232b2b2b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
   .code-input {
     cursor: text;
     text-align: center;
@@ -114,7 +124,8 @@
     margin: 2px 0;
   }
 
-  #roomError {
+  #roomError,
+  #adedonhaRoomError {
     color: #d64545;
     font-weight: 600;
     font-size: 14px;
@@ -256,9 +267,339 @@
     padding: 12px 22px;
   }
 
+  /* ---------- Menu principal ---------- */
+  #mainMenu.panel {
+    padding: 16px;
+  }
+  .menu-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .game-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 3px solid #2b2b2b;
+    border-radius: 18px;
+    background: #fff8e1;
+    cursor: pointer;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    color: #2b2b2b;
+    box-shadow: 5px 5px 0 #2b2b2b;
+    transition: transform 0.08s ease;
+    text-align: left;
+  }
+  .game-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 #2b2b2b;
+    background: #ffe9b0;
+  }
+  .game-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0 #2b2b2b;
+  }
+  .game-card-icon {
+    font-size: 32px;
+  }
+  .game-card-title {
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  .back-link {
+    display: inline-block;
+    background: none;
+    border: none;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #2b2b2b;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 14px;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  /* ---------- Adedonha ---------- */
+  #adedonhaGame.panel {
+    max-width: 1000px;
+    width: 100%;
+    padding: 0;
+    display: flex;
+    overflow: hidden;
+  }
+  .adedonha-margin {
+    width: 28px;
+    flex-shrink: 0;
+    background-color: #ff6f61;
+    background-image: radial-gradient(ellipse 8px 10px at center, #fffdf6 0 8px, transparent 9px);
+    background-size: 100% 36px;
+    background-repeat: repeat-y;
+    background-position: center 18px;
+  }
+  .adedonha-content {
+    flex: 1;
+    min-width: 0;
+    padding: 22px 26px 26px;
+    background-color: #fffdf6;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px, transparent 30px,
+      #cfe6f7 30px, #cfe6f7 32px
+    );
+  }
+  .adedonha-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .top-row-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .room-code-pill {
+    font-weight: 700;
+    font-size: 14px;
+    background: #ffe0a3;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 6px 10px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  #createAdedonhaRoomBtn { background: #3d84f7; }
+  #joinAdedonhaRoomBtn { background: #9b5de5; }
+
+  #leaveAdedonhaRoomBtn {
+    width: auto;
+    padding: 8px 14px;
+    font-size: 13px;
+    background: #fff;
+    color: #2b2b2b;
+  }
+  .letter-row {
+    margin-bottom: 20px;
+  }
+  .letter-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .letter-input {
+    width: 62px;
+    min-height: 54px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 800;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    padding: 6px 4px;
+    border: 3px solid #2b2b2b;
+    border-radius: 14px;
+    background: #fff;
+    color: #2b2b2b;
+    box-shadow: 3px 3px 0 #2b2b2b;
+  }
+  #randomLetterBtn {
+    width: auto;
+    min-height: 48px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    font-size: 15px;
+    white-space: nowrap;
+    background: #3d84f7;
+  }
+  .score-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .score-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #fff8e1;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .score-pill-total {
+    background: #2b2b2b;
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 9px;
+    font-size: 13px;
+  }
+
+  /* Cores por jogador: aplicadas tanto no pill do resumo quanto no selo dentro dos cartões */
+  .score-pill.player-color-you,
+  .category-player-badge.player-color-you {
+    background: #a8ecb2;
+  }
+  .score-pill.player-color-0,
+  .category-player-badge.player-color-0 {
+    background: #cfe3fb;
+  }
+  .score-pill.player-color-1,
+  .category-player-badge.player-color-1 {
+    background: #fbd0e3;
+  }
+  .score-pill.player-color-2,
+  .category-player-badge.player-color-2 {
+    background: #fde0c2;
+  }
+  .score-pill.player-color-3,
+  .category-player-badge.player-color-3 {
+    background: #e4d3fb;
+  }
+  .score-pill.player-color-4,
+  .category-player-badge.player-color-4 {
+    background: #c9f0ea;
+  }
+
+  .category-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    align-items: start;
+  }
+  .category-section {
+    background: #fff;
+    border: 2px solid #2b2b2b;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .category-title {
+    margin: 0;
+    background: #9b5de5;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .category-title-text {
+    white-space: nowrap;
+  }
+  .category-player-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .category-player-badge {
+    background: #fff8e1;
+    color: #2b2b2b;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border: 1.5px solid #2b2b2b;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .category-players {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .player-answer-row {
+    display: flex;
+    align-items: center;
+  }
+  .cell-input {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff8e1;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 5px 8px;
+    transition: background-color 0.15s ease;
+  }
+  .cell-input.scored {
+    background: #d7f5d4;
+  }
+  .cell-input.contested,
+  .cell-input.wrong {
+    background: #fbdcdc;
+  }
+  .word-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2b2b2b;
+    padding: 6px 2px;
+    outline: none;
+  }
+  .word-input:disabled {
+    color: #6b6b6b;
+    -webkit-text-fill-color: #6b6b6b;
+    opacity: 1;
+  }
+  .contest-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border: 2px solid #2b2b2b;
+    border-radius: 50%;
+    background: #fff;
+    color: #d64545;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+  }
+  .contest-btn.active {
+    background: #d64545;
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .category-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 600px) {
     body {
       padding: 16px 10px;
+    }
+    .category-list {
+      grid-template-columns: 1fr;
     }
     h1 {
       font-size: 30px;
@@ -282,6 +623,9 @@
       font-size: 16px;
       padding: 12px;
       min-height: 44px;
+    }
+    select {
+      padding-right: 44px;
     }
     button.action {
       font-size: 16px;
@@ -309,14 +653,50 @@
     .button-row button.action {
       width: 100%;
     }
+    .game-card {
+      padding: 16px;
+    }
+    .adedonha-content {
+      padding: 18px 14px 20px;
+    }
+    .letter-input {
+      width: 52px;
+      min-height: 48px;
+      font-size: 20px;
+    }
+    #randomLetterBtn {
+      min-height: 44px;
+    }
+    .category-title {
+      font-size: 13px;
+      padding: 8px 10px;
+    }
+    .category-player-badge {
+      font-size: 9px;
+      padding: 2px 6px;
+    }
   }
 </style>
 </head>
 <body>
 
-<h1>Jogo da Velha</h1>
+<h1 id="pageTitle">Central de Jogos</h1>
+<button id="backToMenuBtn" class="back-link" type="button" style="display:none;">⬅ Menu Principal</button>
 
-<div id="setup" class="panel">
+<div id="mainMenu" class="panel">
+  <div class="menu-cards">
+    <button id="cardJogoDaVelha" class="game-card" type="button">
+      <span class="game-card-icon">⭕</span>
+      <span class="game-card-title">Jogo da Velha</span>
+    </button>
+    <button id="cardAdedonha" class="game-card" type="button">
+      <span class="game-card-icon">✏️</span>
+      <span class="game-card-title">Adedonha</span>
+    </button>
+  </div>
+</div>
+
+<div id="setup" class="panel" style="display:none;">
   <h2>Configurar Partida</h2>
   <div class="option-group" id="modeGroup">
     <label class="radio-pill">
@@ -362,6 +742,41 @@
   <div class="button-row">
     <button id="restart" class="action">Reiniciar</button>
     <button id="changeMode" class="action">Trocar modo</button>
+  </div>
+</div>
+
+<div id="adedonhaSetup" class="panel" style="display:none;">
+  <h2>Adedonha</h2>
+  <div class="option-group">
+    <button id="createAdedonhaRoomBtn" class="action" type="button">Criar Sala</button>
+    <div class="or-divider">ou</div>
+    <label class="field-label" for="adedonhaJoinCodeInput">Entrar em uma sala</label>
+    <input type="text" id="adedonhaJoinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
+    <button id="joinAdedonhaRoomBtn" class="action" type="button">Entrar na Sala</button>
+    <div id="adedonhaRoomError"></div>
+  </div>
+</div>
+
+<div id="adedonhaGame" class="panel" style="display:none;">
+  <div class="adedonha-margin"></div>
+  <div class="adedonha-content">
+    <div class="adedonha-top-row">
+      <div class="top-row-left">
+        <div class="room-code-pill">Sala: <span id="adedonhaRoomCodeLabel">----</span></div>
+        <div class="score-summary" id="scoreSummary"></div>
+      </div>
+      <button id="leaveAdedonhaRoomBtn" class="action" type="button">Sair da Sala</button>
+    </div>
+
+    <div class="letter-row">
+      <label class="field-label" for="roundLetter">Letra da rodada</label>
+      <div class="letter-controls">
+        <input type="text" id="roundLetter" class="letter-input" maxlength="1" placeholder="A">
+        <button id="randomLetterBtn" class="action" type="button">🎲 Sortear</button>
+      </div>
+    </div>
+
+    <div class="category-list" id="categoryList"></div>
   </div>
 </div>
 
@@ -458,6 +873,7 @@
     gameEl.style.display = 'none';
     waitingRoomEl.style.display = 'none';
     setupEl.style.display = 'block';
+    setHeader('Jogo da Velha');
   });
 
   restartBtn.addEventListener('click', () => {
@@ -564,6 +980,7 @@
     leaveOnlineGame();
     waitingRoomEl.style.display = 'none';
     setupEl.style.display = 'block';
+    setHeader('Jogo da Velha');
   }
 
   function leaveOnlineGame() {
@@ -655,12 +1072,14 @@
     gameEl.style.display = 'none';
     waitingRoomEl.style.display = 'block';
     roomCodeDisplayEl.textContent = roomCode;
+    setHeader('Jogo da Velha');
   }
 
   function showGameScreen() {
     setupEl.style.display = 'none';
     waitingRoomEl.style.display = 'none';
     gameEl.style.display = 'flex';
+    setHeader('Jogo da Velha');
   }
 
   // ---------- Jogo (comum aos dois modos) ----------
@@ -851,6 +1270,411 @@
   }
 
   gameEl.style.display = 'none';
+
+  // ---------- Navegação / menu principal ---------- //
+
+  const pageTitleEl = document.getElementById('pageTitle');
+  const backToMenuBtn = document.getElementById('backToMenuBtn');
+  const mainMenuEl = document.getElementById('mainMenu');
+  const adedonhaSetupEl = document.getElementById('adedonhaSetup');
+  const adedonhaGameEl = document.getElementById('adedonhaGame');
+  const cardJogoDaVelha = document.getElementById('cardJogoDaVelha');
+  const cardAdedonha = document.getElementById('cardAdedonha');
+
+  function setHeader(title) {
+    pageTitleEl.textContent = title;
+    backToMenuBtn.style.display = 'inline-block';
+  }
+
+  function showMainMenu() {
+    if (mode === 'human') leaveOnlineGame();
+    if (adedonhaRoomCode) leaveAdedonhaRoom(false);
+    mainMenuEl.style.display = 'block';
+    setupEl.style.display = 'none';
+    waitingRoomEl.style.display = 'none';
+    gameEl.style.display = 'none';
+    adedonhaSetupEl.style.display = 'none';
+    adedonhaGameEl.style.display = 'none';
+    pageTitleEl.textContent = 'Central de Jogos';
+    backToMenuBtn.style.display = 'none';
+  }
+
+  cardJogoDaVelha.addEventListener('click', () => {
+    mainMenuEl.style.display = 'none';
+    setupEl.style.display = 'block';
+    setHeader('Jogo da Velha');
+  });
+
+  cardAdedonha.addEventListener('click', () => {
+    mainMenuEl.style.display = 'none';
+    adedonhaSetupEl.style.display = 'block';
+    setHeader('Adedonha');
+  });
+
+  backToMenuBtn.addEventListener('click', showMainMenu);
+
+  // ---------- Adedonha ---------- //
+
+  const ADEDONHA_CATEGORIES = [
+    { label: 'Nome', key: 'nome' },
+    { label: 'Lugar', key: 'lugar' },
+    { label: 'Animal', key: 'animal' },
+    { label: 'Cor', key: 'cor' },
+    { label: 'Comida', key: 'comida' },
+    { label: 'Fruta', key: 'fruta' },
+    { label: 'Objeto', key: 'objeto' },
+    { label: 'Filme', key: 'filme' },
+    { label: 'Parte do Corpo', key: 'parteDoCorpo' }
+  ];
+  const POINTS_PER_WORD = 10;
+  const PLAYER_COLOR_COUNT = 5;
+
+  const createAdedonhaRoomBtn = document.getElementById('createAdedonhaRoomBtn');
+  const joinAdedonhaRoomBtn = document.getElementById('joinAdedonhaRoomBtn');
+  const adedonhaJoinCodeInput = document.getElementById('adedonhaJoinCodeInput');
+  const adedonhaRoomErrorEl = document.getElementById('adedonhaRoomError');
+  const adedonhaRoomCodeLabelEl = document.getElementById('adedonhaRoomCodeLabel');
+  const leaveAdedonhaRoomBtn = document.getElementById('leaveAdedonhaRoomBtn');
+
+  const roundLetterInput = document.getElementById('roundLetter');
+  const randomLetterBtn = document.getElementById('randomLetterBtn');
+  const scoreSummaryEl = document.getElementById('scoreSummary');
+  const categoryListEl = document.getElementById('categoryList');
+
+  let adedonhaRoomCode = null;
+  let adedonhaPlayerId = null;
+  let unsubscribeAdedonhaRoom = null;
+  const adedonhaPlayerEntries = new Map(); // playerId -> { pill, nameEl, totalEl, cells: Map(key -> {wrapper,input,contestBtn,rowEl,badgeEl}) }
+
+  function buildAdedonhaCategorySections() {
+    const sections = new Map(); // key -> { body, badgesEl }
+
+    ADEDONHA_CATEGORIES.forEach(({ label, key }) => {
+      const section = document.createElement('div');
+      section.className = 'category-section';
+
+      const title = document.createElement('h3');
+      title.className = 'category-title';
+
+      const titleText = document.createElement('span');
+      titleText.className = 'category-title-text';
+      titleText.textContent = label;
+      title.appendChild(titleText);
+
+      const badgesEl = document.createElement('div');
+      badgesEl.className = 'category-player-badges';
+      title.appendChild(badgesEl);
+
+      section.appendChild(title);
+
+      const body = document.createElement('div');
+      body.className = 'category-players';
+      section.appendChild(body);
+
+      categoryListEl.appendChild(section);
+      sections.set(key, { body, badgesEl });
+    });
+
+    return sections;
+  }
+
+  const adedonhaCategorySections = buildAdedonhaCategorySections();
+
+  function generatePlayerId() {
+    return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  }
+
+  async function createAdedonhaRoom() {
+    adedonhaRoomErrorEl.textContent = '';
+    createAdedonhaRoomBtn.disabled = true;
+    try {
+      let code = generateRoomCode();
+      let attempts = 0;
+      let exists = true;
+      while (attempts < 10) {
+        const snap = await get(ref(db, `adedonhaRooms/${code}`));
+        exists = snap.exists();
+        if (!exists) break;
+        code = generateRoomCode();
+        attempts++;
+      }
+      if (exists) {
+        adedonhaRoomErrorEl.textContent = 'Não foi possível criar a sala. Tente novamente.';
+        return;
+      }
+
+      adedonhaRoomCode = code;
+      adedonhaPlayerId = generatePlayerId();
+
+      await set(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), {
+        letter: '',
+        createdAt: Date.now(),
+        players: {
+          [adedonhaPlayerId]: { order: 0, words: {}, contested: {} }
+        }
+      });
+
+      listenToAdedonhaRoom();
+    } catch (err) {
+      console.error('Erro ao criar sala de Adedonha:', err);
+      adedonhaRoomErrorEl.textContent = 'Não foi possível criar a sala: ' + (err && err.message ? err.message : 'erro desconhecido.');
+    } finally {
+      createAdedonhaRoomBtn.disabled = false;
+    }
+  }
+
+  async function joinAdedonhaRoom() {
+    const code = adedonhaJoinCodeInput.value.trim();
+    adedonhaRoomErrorEl.textContent = '';
+
+    if (!/^\d{4}$/.test(code)) {
+      adedonhaRoomErrorEl.textContent = 'Digite um código de 4 dígitos.';
+      return;
+    }
+
+    joinAdedonhaRoomBtn.disabled = true;
+    try {
+      const roomPath = ref(db, `adedonhaRooms/${code}`);
+      const snap = await get(roomPath);
+      if (!snap.exists()) {
+        adedonhaRoomErrorEl.textContent = 'Sala não encontrada.';
+        return;
+      }
+      const data = snap.val();
+      const existingPlayers = Object.values(data.players || {});
+      const nextOrder = existingPlayers.reduce((max, p) => Math.max(max, p.order || 0), -1) + 1;
+
+      adedonhaRoomCode = code;
+      adedonhaPlayerId = generatePlayerId();
+
+      await set(ref(db, `adedonhaRooms/${code}/players/${adedonhaPlayerId}`), {
+        order: nextOrder,
+        words: {},
+        contested: {}
+      });
+
+      listenToAdedonhaRoom();
+    } catch (err) {
+      console.error('Erro ao entrar na sala de Adedonha:', err);
+      adedonhaRoomErrorEl.textContent = 'Não foi possível entrar na sala: ' + (err && err.message ? err.message : 'erro desconhecido.');
+    } finally {
+      joinAdedonhaRoomBtn.disabled = false;
+    }
+  }
+
+  function listenToAdedonhaRoom() {
+    adedonhaRoomCodeLabelEl.textContent = adedonhaRoomCode;
+    adedonhaSetupEl.style.display = 'none';
+    adedonhaGameEl.style.display = 'flex';
+    setHeader('Adedonha');
+
+    const roomPath = ref(db, `adedonhaRooms/${adedonhaRoomCode}`);
+    unsubscribeAdedonhaRoom = onValue(roomPath, (snap) => {
+      const data = snap.val();
+      if (!data) {
+        if (unsubscribeAdedonhaRoom) {
+          unsubscribeAdedonhaRoom();
+          unsubscribeAdedonhaRoom = null;
+        }
+        adedonhaPlayerEntries.forEach(entry => {
+          entry.pill.remove();
+          entry.cells.forEach(cell => { cell.rowEl.remove(); cell.badgeEl.remove(); });
+        });
+        adedonhaPlayerEntries.clear();
+        adedonhaRoomCode = null;
+        adedonhaPlayerId = null;
+        adedonhaGameEl.style.display = 'none';
+        adedonhaSetupEl.style.display = 'block';
+        adedonhaRoomErrorEl.textContent = 'A sala foi encerrada.';
+        return;
+      }
+      renderAdedonhaRoom(data);
+    });
+  }
+
+  function createAdedonhaPlayerEntry(playerId) {
+    const isMine = playerId === adedonhaPlayerId;
+
+    const pill = document.createElement('div');
+    pill.className = 'score-pill';
+    const nameEl = document.createElement('span');
+    const totalEl = document.createElement('span');
+    totalEl.className = 'score-pill-total';
+    totalEl.textContent = '0';
+    pill.appendChild(nameEl);
+    pill.appendChild(totalEl);
+    scoreSummaryEl.appendChild(pill);
+
+    const cells = new Map();
+
+    ADEDONHA_CATEGORIES.forEach(({ key }) => {
+      const section = adedonhaCategorySections.get(key);
+
+      const badgeEl = document.createElement('span');
+      badgeEl.className = 'category-player-badge';
+      section.badgesEl.appendChild(badgeEl);
+
+      const rowEl = document.createElement('div');
+      rowEl.className = 'player-answer-row';
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'cell-input';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'word-input';
+      input.disabled = !isMine;
+
+      if (isMine) {
+        input.addEventListener('input', () => {
+          set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${playerId}/words/${key}`), input.value);
+          set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${playerId}/contested/${key}`), false);
+        });
+      }
+
+      const contestBtn = document.createElement('button');
+      contestBtn.type = 'button';
+      contestBtn.className = 'contest-btn';
+      contestBtn.title = 'Contestar (zera os pontos desta palavra)';
+      contestBtn.textContent = '✗';
+      contestBtn.addEventListener('click', () => {
+        const currentlyContested = contestBtn.classList.contains('active');
+        set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${playerId}/contested/${key}`), !currentlyContested);
+      });
+
+      wrapper.appendChild(input);
+      wrapper.appendChild(contestBtn);
+      rowEl.appendChild(wrapper);
+      section.body.appendChild(rowEl);
+
+      cells.set(key, { wrapper, input, contestBtn, rowEl, badgeEl });
+    });
+
+    return { pill, nameEl, totalEl, cells };
+  }
+
+  function updateAdedonhaPlayerEntry(entry, playerData, letter, label, colorClass) {
+    entry.nameEl.textContent = label;
+    entry.pill.className = `score-pill ${colorClass}`;
+
+    const roundLetter = (letter || '').trim().toUpperCase();
+    const words = playerData.words || {};
+    const contested = playerData.contested || {};
+    let total = 0;
+
+    ADEDONHA_CATEGORIES.forEach(({ key }) => {
+      const { wrapper, input, contestBtn, badgeEl } = entry.cells.get(key);
+      badgeEl.textContent = label;
+      badgeEl.className = `category-player-badge ${colorClass}`;
+      const word = (words[key] || '').trim();
+      const isContested = !!contested[key];
+
+      if (document.activeElement !== input) {
+        input.value = words[key] || '';
+      }
+
+      const startsWithLetter = !!roundLetter && !!word && word[0].toUpperCase() === roundLetter;
+      const scored = startsWithLetter && !isContested;
+      const isWrong = !!roundLetter && !!word && !startsWithLetter && !isContested;
+      if (scored) total += POINTS_PER_WORD;
+
+      wrapper.classList.toggle('scored', scored);
+      wrapper.classList.toggle('wrong', isWrong);
+      wrapper.classList.toggle('contested', isContested && word !== '');
+      contestBtn.classList.toggle('active', isContested);
+      contestBtn.style.display = word ? 'flex' : 'none';
+    });
+
+    entry.totalEl.textContent = total;
+  }
+
+  function renderAdedonhaRoom(data) {
+    if (document.activeElement !== roundLetterInput) {
+      roundLetterInput.value = (data.letter || '').toUpperCase();
+    }
+
+    const players = Object.entries(data.players || {})
+      .sort((a, b) => (a[1].order || 0) - (b[1].order || 0));
+
+    const seenIds = new Set();
+
+    players.forEach(([playerId, playerData], index) => {
+      seenIds.add(playerId);
+      let entry = adedonhaPlayerEntries.get(playerId);
+      if (!entry) {
+        entry = createAdedonhaPlayerEntry(playerId);
+        adedonhaPlayerEntries.set(playerId, entry);
+      }
+      const isMine = playerId === adedonhaPlayerId;
+      const label = `Jogador ${index + 1}${isMine ? ' (você)' : ''}`;
+      const colorClass = isMine ? 'player-color-you' : `player-color-${index % PLAYER_COLOR_COUNT}`;
+      updateAdedonhaPlayerEntry(entry, playerData, data.letter, label, colorClass);
+    });
+
+    adedonhaPlayerEntries.forEach((entry, playerId) => {
+      if (!seenIds.has(playerId)) {
+        entry.pill.remove();
+        entry.cells.forEach(cell => { cell.rowEl.remove(); cell.badgeEl.remove(); });
+        adedonhaPlayerEntries.delete(playerId);
+      }
+    });
+  }
+
+  async function leaveAdedonhaRoom(showSetupAfter) {
+    if (unsubscribeAdedonhaRoom) {
+      unsubscribeAdedonhaRoom();
+      unsubscribeAdedonhaRoom = null;
+    }
+    if (adedonhaRoomCode && adedonhaPlayerId) {
+      const code = adedonhaRoomCode;
+      const playerId = adedonhaPlayerId;
+      try {
+        await remove(ref(db, `adedonhaRooms/${code}/players/${playerId}`));
+        const snap = await get(ref(db, `adedonhaRooms/${code}/players`));
+        if (!snap.exists()) {
+          await remove(ref(db, `adedonhaRooms/${code}`));
+        }
+      } catch (err) { /* sala já pode ter sido removida */ }
+    }
+    adedonhaPlayerEntries.forEach(entry => {
+      entry.pill.remove();
+      entry.cells.forEach(cell => cell.rowEl.remove());
+    });
+    adedonhaPlayerEntries.clear();
+    adedonhaRoomCode = null;
+    adedonhaPlayerId = null;
+    if (showSetupAfter) {
+      adedonhaGameEl.style.display = 'none';
+      adedonhaSetupEl.style.display = 'block';
+    }
+  }
+
+  createAdedonhaRoomBtn.addEventListener('click', createAdedonhaRoom);
+  joinAdedonhaRoomBtn.addEventListener('click', joinAdedonhaRoom);
+  leaveAdedonhaRoomBtn.addEventListener('click', () => leaveAdedonhaRoom(true));
+
+  adedonhaJoinCodeInput.addEventListener('input', () => {
+    adedonhaJoinCodeInput.value = adedonhaJoinCodeInput.value.replace(/\D/g, '').slice(0, 4);
+  });
+  adedonhaJoinCodeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinAdedonhaRoom();
+  });
+
+  roundLetterInput.addEventListener('input', () => {
+    roundLetterInput.value = roundLetterInput.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 1);
+    if (adedonhaRoomCode) {
+      set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/letter`), roundLetterInput.value);
+    }
+  });
+
+  randomLetterBtn.addEventListener('click', () => {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const letter = alphabet[Math.floor(Math.random() * alphabet.length)];
+    roundLetterInput.value = letter;
+    if (adedonhaRoomCode) {
+      set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/letter`), letter);
+    }
+  });
 </script>
 
 </body>
