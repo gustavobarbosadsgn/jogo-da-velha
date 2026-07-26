@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Jogo da Velha</title>
+<title>Velha Infância</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body {
@@ -22,9 +22,10 @@
     padding: 24px 12px;
   }
   h1 {
+    font-family: 'Fredoka', 'Baloo 2', 'Comic Sans MS', sans-serif;
     margin-bottom: 18px;
-    font-weight: 800;
-    font-size: 42px;
+    font-weight: 700;
+    font-size: 46px;
     letter-spacing: 0.5px;
   }
   h2 {
@@ -426,6 +427,42 @@
     white-space: nowrap;
     background: #3d84f7;
   }
+  .letter-display {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .filling-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  #finishFillingBtn {
+    width: auto;
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 15px;
+    background: #34c26b;
+  }
+  #finishFillingBtn.done {
+    background: #fff;
+    color: #2b2b2b;
+  }
+  .filling-status {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b6b6b;
+  }
+  .results-controls {
+    margin-bottom: 20px;
+  }
+  #newRoundBtn {
+    width: auto;
+    padding: 12px 22px;
+    background: #ff6f61;
+  }
   .score-summary {
     display: flex;
     flex-wrap: wrap;
@@ -546,7 +583,8 @@
     background: #d7f5d4;
   }
   .cell-input.contested,
-  .cell-input.wrong {
+  .cell-input.wrong,
+  .cell-input.duplicate {
     background: #fbdcdc;
   }
   .word-input {
@@ -680,7 +718,7 @@
 </head>
 <body>
 
-<h1 id="pageTitle">Central de Jogos</h1>
+<h1 id="pageTitle">Velha Infância</h1>
 <button id="backToMenuBtn" class="back-link" type="button" style="display:none;">⬅ Menu Principal</button>
 
 <div id="mainMenu" class="panel">
@@ -746,7 +784,6 @@
 </div>
 
 <div id="adedonhaSetup" class="panel" style="display:none;">
-  <h2>Adedonha</h2>
   <div class="option-group">
     <button id="createAdedonhaRoomBtn" class="action" type="button">Criar Sala</button>
     <div class="or-divider">ou</div>
@@ -768,12 +805,25 @@
       <button id="leaveAdedonhaRoomBtn" class="action" type="button">Sair da Sala</button>
     </div>
 
-    <div class="letter-row">
+    <div class="letter-row" id="letterRow">
       <label class="field-label" for="roundLetter">Letra da rodada</label>
       <div class="letter-controls">
         <input type="text" id="roundLetter" class="letter-input" maxlength="1" placeholder="A">
         <button id="randomLetterBtn" class="action" type="button">🎲 Sortear</button>
       </div>
+    </div>
+
+    <div class="letter-display" id="letterDisplayRow" style="display:none;">
+      Letra da rodada: <span id="letterDisplayValue">A</span>
+    </div>
+
+    <div class="filling-controls" id="fillingControls">
+      <button id="finishFillingBtn" class="action" type="button">✅ Terminei</button>
+      <div class="filling-status" id="fillingStatusEl"></div>
+    </div>
+
+    <div class="results-controls" id="resultsControls" style="display:none;">
+      <button id="newRoundBtn" class="action" type="button">🔄 Nova Rodada</button>
     </div>
 
     <div class="category-list" id="categoryList"></div>
@@ -1295,7 +1345,7 @@
     gameEl.style.display = 'none';
     adedonhaSetupEl.style.display = 'none';
     adedonhaGameEl.style.display = 'none';
-    pageTitleEl.textContent = 'Central de Jogos';
+    pageTitleEl.textContent = 'Velha Infância';
     backToMenuBtn.style.display = 'none';
   }
 
@@ -1340,10 +1390,19 @@
   const randomLetterBtn = document.getElementById('randomLetterBtn');
   const scoreSummaryEl = document.getElementById('scoreSummary');
   const categoryListEl = document.getElementById('categoryList');
+  const letterRowEl = document.getElementById('letterRow');
+  const letterDisplayRowEl = document.getElementById('letterDisplayRow');
+  const letterDisplayValueEl = document.getElementById('letterDisplayValue');
+  const fillingControlsEl = document.getElementById('fillingControls');
+  const finishFillingBtn = document.getElementById('finishFillingBtn');
+  const fillingStatusEl = document.getElementById('fillingStatusEl');
+  const resultsControlsEl = document.getElementById('resultsControls');
+  const newRoundBtn = document.getElementById('newRoundBtn');
 
   let adedonhaRoomCode = null;
   let adedonhaPlayerId = null;
   let unsubscribeAdedonhaRoom = null;
+  let adedonhaAmIDone = false;
   const adedonhaPlayerEntries = new Map(); // playerId -> { pill, nameEl, totalEl, cells: Map(key -> {wrapper,input,contestBtn,rowEl,badgeEl}) }
 
   function buildAdedonhaCategorySections() {
@@ -1408,9 +1467,10 @@
 
       await set(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), {
         letter: '',
+        phase: 'filling',
         createdAt: Date.now(),
         players: {
-          [adedonhaPlayerId]: { order: 0, words: {}, contested: {} }
+          [adedonhaPlayerId]: { order: 0, words: {}, contested: {}, done: false }
         }
       });
 
@@ -1450,7 +1510,8 @@
       await set(ref(db, `adedonhaRooms/${code}/players/${adedonhaPlayerId}`), {
         order: nextOrder,
         words: {},
-        contested: {}
+        contested: {},
+        done: false
       });
 
       listenToAdedonhaRoom();
@@ -1523,7 +1584,7 @@
       const input = document.createElement('input');
       input.type = 'text';
       input.className = 'word-input';
-      input.disabled = !isMine;
+      input.disabled = true;
 
       if (isMine) {
         input.addEventListener('input', () => {
@@ -1553,52 +1614,80 @@
     return { pill, nameEl, totalEl, cells };
   }
 
-  function updateAdedonhaPlayerEntry(entry, playerData, letter, label, colorClass) {
-    entry.nameEl.textContent = label;
-    entry.pill.className = `score-pill ${colorClass}`;
+  function normalizeWord(word) {
+    return word.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
 
-    const roundLetter = (letter || '').trim().toUpperCase();
-    const words = playerData.words || {};
-    const contested = playerData.contested || {};
-    let total = 0;
-
-    ADEDONHA_CATEGORIES.forEach(({ key }) => {
-      const { wrapper, input, contestBtn, badgeEl } = entry.cells.get(key);
-      badgeEl.textContent = label;
-      badgeEl.className = `category-player-badge ${colorClass}`;
-      const word = (words[key] || '').trim();
-      const isContested = !!contested[key];
-
-      if (document.activeElement !== input) {
-        input.value = words[key] || '';
-      }
-
-      const startsWithLetter = !!roundLetter && !!word && word[0].toUpperCase() === roundLetter;
-      const scored = startsWithLetter && !isContested;
-      const isWrong = !!roundLetter && !!word && !startsWithLetter && !isContested;
-      if (scored) total += POINTS_PER_WORD;
-
-      wrapper.classList.toggle('scored', scored);
-      wrapper.classList.toggle('wrong', isWrong);
-      wrapper.classList.toggle('contested', isContested && word !== '');
-      contestBtn.classList.toggle('active', isContested);
-      contestBtn.style.display = word ? 'flex' : 'none';
+  function computeCategoryScores(playersList, key, roundLetter) {
+    const parsed = playersList.map(p => {
+      const raw = (p.words[key] || '').trim();
+      return {
+        playerId: p.playerId,
+        norm: normalizeWord(raw),
+        startsWithLetter: !!roundLetter && !!raw && raw[0].toUpperCase() === roundLetter,
+        contested: !!p.contested[key]
+      };
     });
 
-    entry.totalEl.textContent = total;
+    const counts = {};
+    parsed.forEach(p => {
+      if (p.startsWithLetter && p.norm && !p.contested) {
+        counts[p.norm] = (counts[p.norm] || 0) + 1;
+      }
+    });
+
+    const scores = {};
+    parsed.forEach(p => {
+      let points = 0;
+      let isDuplicate = false;
+      if (!p.contested && p.startsWithLetter && p.norm) {
+        isDuplicate = counts[p.norm] > 1;
+        points = isDuplicate ? 5 : POINTS_PER_WORD;
+      }
+      scores[p.playerId] = { points, isDuplicate };
+    });
+    return scores;
+  }
+
+  function updatePhaseUI(phase, playersList) {
+    const isFilling = phase === 'filling';
+    letterRowEl.style.display = isFilling ? '' : 'none';
+    letterDisplayRowEl.style.display = isFilling ? 'none' : '';
+    letterDisplayValueEl.textContent = roundLetterInput.value || '-';
+
+    fillingControlsEl.style.display = isFilling ? 'flex' : 'none';
+    resultsControlsEl.style.display = isFilling ? 'none' : 'block';
+
+    const mine = playersList.find(p => p.isMine);
+    adedonhaAmIDone = mine ? mine.done : false;
+    finishFillingBtn.textContent = adedonhaAmIDone ? '↩️ Voltar a editar' : '✅ Terminei';
+    finishFillingBtn.classList.toggle('done', adedonhaAmIDone);
+
+    if (!isFilling) {
+      fillingStatusEl.textContent = '';
+    } else {
+      const waiting = playersList.filter(p => !p.done).map(p => p.label);
+      fillingStatusEl.textContent = waiting.length === 0
+        ? 'Revelando...'
+        : `Aguardando: ${waiting.join(', ')}`;
+    }
   }
 
   function renderAdedonhaRoom(data) {
+    const phase = data.phase || 'filling';
+    const roundLetter = (data.letter || '').trim().toUpperCase();
+
     if (document.activeElement !== roundLetterInput) {
-      roundLetterInput.value = (data.letter || '').toUpperCase();
+      roundLetterInput.value = roundLetter;
     }
 
-    const players = Object.entries(data.players || {})
+    const playersEntries = Object.entries(data.players || {})
       .sort((a, b) => (a[1].order || 0) - (b[1].order || 0));
 
     const seenIds = new Set();
+    const playersList = [];
 
-    players.forEach(([playerId, playerData], index) => {
+    playersEntries.forEach(([playerId, playerData], index) => {
       seenIds.add(playerId);
       let entry = adedonhaPlayerEntries.get(playerId);
       if (!entry) {
@@ -1608,7 +1697,16 @@
       const isMine = playerId === adedonhaPlayerId;
       const label = `Jogador ${index + 1}${isMine ? ' (você)' : ''}`;
       const colorClass = isMine ? 'player-color-you' : `player-color-${index % PLAYER_COLOR_COUNT}`;
-      updateAdedonhaPlayerEntry(entry, playerData, data.letter, label, colorClass);
+      playersList.push({
+        playerId,
+        entry,
+        isMine,
+        label,
+        colorClass,
+        words: playerData.words || {},
+        contested: playerData.contested || {},
+        done: !!playerData.done
+      });
     });
 
     adedonhaPlayerEntries.forEach((entry, playerId) => {
@@ -1618,6 +1716,73 @@
         adedonhaPlayerEntries.delete(playerId);
       }
     });
+
+    const totals = {};
+    playersList.forEach(p => { totals[p.playerId] = 0; });
+
+    ADEDONHA_CATEGORIES.forEach(({ key }) => {
+      const categoryScores = phase === 'results' ? computeCategoryScores(playersList, key, roundLetter) : {};
+
+      playersList.forEach(p => {
+        const cell = p.entry.cells.get(key);
+        const rawWord = (p.words[key] || '').trim();
+        const isContested = !!p.contested[key];
+
+        let displayValue = '';
+        let showContest = false;
+        let scoreClass = null;
+
+        if (phase === 'results') {
+          displayValue = rawWord;
+          showContest = rawWord !== '';
+          const scoreInfo = categoryScores[p.playerId] || { points: 0, isDuplicate: false };
+          totals[p.playerId] += scoreInfo.points;
+          if (!isContested) {
+            if (scoreInfo.isDuplicate) scoreClass = 'duplicate';
+            else if (scoreInfo.points > 0) scoreClass = 'scored';
+          }
+        } else if (p.isMine) {
+          displayValue = rawWord;
+          const startsWithLetter = !!roundLetter && !!rawWord && rawWord[0].toUpperCase() === roundLetter;
+          scoreClass = rawWord ? (startsWithLetter ? 'scored' : 'wrong') : null;
+        } else {
+          displayValue = rawWord ? 'xxxxx' : '';
+        }
+
+        if (document.activeElement !== cell.input) {
+          cell.input.value = displayValue;
+        }
+        cell.input.disabled = !(p.isMine && phase === 'filling' && !p.done);
+
+        cell.wrapper.classList.toggle('scored', scoreClass === 'scored');
+        cell.wrapper.classList.toggle('wrong', scoreClass === 'wrong');
+        cell.wrapper.classList.toggle('duplicate', scoreClass === 'duplicate');
+        cell.wrapper.classList.toggle('contested', phase === 'results' && isContested && rawWord !== '');
+        cell.contestBtn.classList.toggle('active', isContested);
+        cell.contestBtn.style.display = showContest ? 'flex' : 'none';
+
+        cell.badgeEl.textContent = p.label;
+        cell.badgeEl.className = `category-player-badge ${p.colorClass}`;
+      });
+    });
+
+    playersList.forEach(p => {
+      p.entry.nameEl.textContent = p.label;
+      p.entry.pill.className = `score-pill ${p.colorClass}`;
+      if (phase === 'results') {
+        p.entry.totalEl.style.display = '';
+        p.entry.totalEl.textContent = totals[p.playerId];
+      } else {
+        p.entry.totalEl.style.display = p.done ? '' : 'none';
+        p.entry.totalEl.textContent = p.done ? '✓' : '';
+      }
+    });
+
+    updatePhaseUI(phase, playersList);
+
+    if (phase === 'filling' && playersList.length > 0 && playersList.every(p => p.done)) {
+      update(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), { phase: 'results' });
+    }
   }
 
   async function leaveAdedonhaRoom(showSetupAfter) {
@@ -1638,7 +1803,7 @@
     }
     adedonhaPlayerEntries.forEach(entry => {
       entry.pill.remove();
-      entry.cells.forEach(cell => cell.rowEl.remove());
+      entry.cells.forEach(cell => { cell.rowEl.remove(); cell.badgeEl.remove(); });
     });
     adedonhaPlayerEntries.clear();
     adedonhaRoomCode = null;
@@ -1673,6 +1838,32 @@
     roundLetterInput.value = letter;
     if (adedonhaRoomCode) {
       set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/letter`), letter);
+    }
+  });
+
+  finishFillingBtn.addEventListener('click', () => {
+    if (!adedonhaRoomCode || !adedonhaPlayerId) return;
+    set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${adedonhaPlayerId}/done`), !adedonhaAmIDone);
+  });
+
+  newRoundBtn.addEventListener('click', async () => {
+    if (!adedonhaRoomCode) return;
+    try {
+      const snap = await get(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players`));
+      const players = snap.val() || {};
+      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const updates = {
+        letter: alphabet[Math.floor(Math.random() * alphabet.length)],
+        phase: 'filling'
+      };
+      Object.keys(players).forEach(pid => {
+        updates[`players/${pid}/words`] = null;
+        updates[`players/${pid}/contested`] = null;
+        updates[`players/${pid}/done`] = false;
+      });
+      await update(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), updates);
+    } catch (err) {
+      console.error('Erro ao iniciar nova rodada:', err);
     }
   });
 </script>
