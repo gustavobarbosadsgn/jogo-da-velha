@@ -833,7 +833,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
   import {
-    getDatabase, ref, set, get, update, remove, onValue
+    getDatabase, ref, set, get, update, remove, onValue, onDisconnect
   } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
   const firebaseConfig = {
@@ -1403,6 +1403,8 @@
   let adedonhaPlayerId = null;
   let unsubscribeAdedonhaRoom = null;
   let adedonhaAmIDone = false;
+  let adedonhaCurrentPhase = 'filling';
+  let adedonhaDisconnectHandle = null;
   const adedonhaPlayerEntries = new Map(); // playerId -> { pill, nameEl, totalEl, cells: Map(key -> {wrapper,input,contestBtn,rowEl,badgeEl}) }
 
   function buildAdedonhaCategorySections() {
@@ -1470,7 +1472,7 @@
         phase: 'filling',
         createdAt: Date.now(),
         players: {
-          [adedonhaPlayerId]: { order: 0, words: {}, contested: {}, done: false }
+          [adedonhaPlayerId]: { order: 0, words: {}, contested: {}, done: false, activeTab: true }
         }
       });
 
@@ -1511,7 +1513,8 @@
         order: nextOrder,
         words: {},
         contested: {},
-        done: false
+        done: false,
+        activeTab: true
       });
 
       listenToAdedonhaRoom();
@@ -1528,6 +1531,10 @@
     adedonhaSetupEl.style.display = 'none';
     adedonhaGameEl.style.display = 'flex';
     setHeader('Adedonha');
+
+    const activeTabRef = ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${adedonhaPlayerId}/activeTab`);
+    adedonhaDisconnectHandle = onDisconnect(activeTabRef);
+    adedonhaDisconnectHandle.set(false);
 
     const roomPath = ref(db, `adedonhaRooms/${adedonhaRoomCode}`);
     unsubscribeAdedonhaRoom = onValue(roomPath, (snap) => {
@@ -1559,10 +1566,14 @@
     const pill = document.createElement('div');
     pill.className = 'score-pill';
     const nameEl = document.createElement('span');
+    const awayEl = document.createElement('span');
+    awayEl.textContent = '👀 saiu da sala';
+    awayEl.style.display = 'none';
     const totalEl = document.createElement('span');
     totalEl.className = 'score-pill-total';
     totalEl.textContent = '0';
     pill.appendChild(nameEl);
+    pill.appendChild(awayEl);
     pill.appendChild(totalEl);
     scoreSummaryEl.appendChild(pill);
 
@@ -1611,7 +1622,7 @@
       cells.set(key, { wrapper, input, contestBtn, rowEl, badgeEl });
     });
 
-    return { pill, nameEl, totalEl, cells };
+    return { pill, nameEl, awayEl, totalEl, cells };
   }
 
   function normalizeWord(word) {
@@ -1675,6 +1686,7 @@
 
   function renderAdedonhaRoom(data) {
     const phase = data.phase || 'filling';
+    adedonhaCurrentPhase = phase;
     const roundLetter = (data.letter || '').trim().toUpperCase();
 
     if (document.activeElement !== roundLetterInput) {
@@ -1705,7 +1717,8 @@
         colorClass,
         words: playerData.words || {},
         contested: playerData.contested || {},
-        done: !!playerData.done
+        done: !!playerData.done,
+        activeTab: playerData.activeTab !== false
       });
     });
 
@@ -1769,6 +1782,7 @@
     playersList.forEach(p => {
       p.entry.nameEl.textContent = p.label;
       p.entry.pill.className = `score-pill ${p.colorClass}`;
+      p.entry.awayEl.style.display = (phase === 'filling' && !p.activeTab) ? 'inline' : 'none';
       if (phase === 'results') {
         p.entry.totalEl.style.display = '';
         p.entry.totalEl.textContent = totals[p.playerId];
@@ -1789,6 +1803,10 @@
     if (unsubscribeAdedonhaRoom) {
       unsubscribeAdedonhaRoom();
       unsubscribeAdedonhaRoom = null;
+    }
+    if (adedonhaDisconnectHandle) {
+      try { await adedonhaDisconnectHandle.cancel(); } catch (err) { /* conexão já pode ter caído */ }
+      adedonhaDisconnectHandle = null;
     }
     if (adedonhaRoomCode && adedonhaPlayerId) {
       const code = adedonhaRoomCode;
@@ -1860,12 +1878,25 @@
         updates[`players/${pid}/words`] = null;
         updates[`players/${pid}/contested`] = null;
         updates[`players/${pid}/done`] = false;
+        updates[`players/${pid}/activeTab`] = true;
       });
       await update(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), updates);
     } catch (err) {
       console.error('Erro ao iniciar nova rodada:', err);
     }
   });
+
+  function setAdedonhaActiveTab(isActive) {
+    if (!adedonhaRoomCode || !adedonhaPlayerId) return;
+    if (adedonhaCurrentPhase !== 'filling') return;
+    set(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${adedonhaPlayerId}/activeTab`), isActive);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    setAdedonhaActiveTab(document.visibilityState === 'visible');
+  });
+  window.addEventListener('blur', () => setAdedonhaActiveTab(false));
+  window.addEventListener('focus', () => setAdedonhaActiveTab(true));
 </script>
 
 </body>
