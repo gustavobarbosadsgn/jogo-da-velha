@@ -126,7 +126,8 @@
   }
 
   #roomError,
-  #adedonhaRoomError {
+  #adedonhaRoomError,
+  #quizRoomError {
     color: #d64545;
     font-weight: 600;
     font-size: 14px;
@@ -379,8 +380,11 @@
   }
   #createAdedonhaRoomBtn { background: #3d84f7; }
   #joinAdedonhaRoomBtn { background: #9b5de5; }
+  #createQuizRoomBtn { background: #3d84f7; }
+  #joinQuizRoomBtn { background: #9b5de5; }
 
-  #leaveAdedonhaRoomBtn {
+  #leaveAdedonhaRoomBtn,
+  #leaveQuizRoomBtn {
     width: auto;
     padding: 8px 14px;
     font-size: 13px;
@@ -488,29 +492,35 @@
     font-size: 13px;
   }
 
-  /* Cores por jogador: aplicadas tanto no pill do resumo quanto no selo dentro dos cartões */
+  /* Cores por jogador: aplicadas no pill do resumo, no selo dos cartões e na lista de resultado do quiz */
   .score-pill.player-color-you,
-  .category-player-badge.player-color-you {
+  .category-player-badge.player-color-you,
+  .quiz-result-row.player-color-you {
     background: #a8ecb2;
   }
   .score-pill.player-color-0,
-  .category-player-badge.player-color-0 {
+  .category-player-badge.player-color-0,
+  .quiz-result-row.player-color-0 {
     background: #cfe3fb;
   }
   .score-pill.player-color-1,
-  .category-player-badge.player-color-1 {
+  .category-player-badge.player-color-1,
+  .quiz-result-row.player-color-1 {
     background: #fbd0e3;
   }
   .score-pill.player-color-2,
-  .category-player-badge.player-color-2 {
+  .category-player-badge.player-color-2,
+  .quiz-result-row.player-color-2 {
     background: #fde0c2;
   }
   .score-pill.player-color-3,
-  .category-player-badge.player-color-3 {
+  .category-player-badge.player-color-3,
+  .quiz-result-row.player-color-3 {
     background: #e4d3fb;
   }
   .score-pill.player-color-4,
-  .category-player-badge.player-color-4 {
+  .category-player-badge.player-color-4,
+  .quiz-result-row.player-color-4 {
     background: #c9f0ea;
   }
 
@@ -853,6 +863,121 @@
       font-size: 12px;
     }
   }
+
+  /* ---------- "O que é o que é" (quiz) ---------- */
+  #quizGame.panel {
+    max-width: 560px;
+    width: 100%;
+  }
+  .quiz-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  #quizLevelBadge {
+    background: #ff6f61;
+    color: #fff;
+  }
+  #quizProgressLabel {
+    background: #9b5de5;
+    color: #fff;
+  }
+  .quiz-penalty-warning {
+    background: #fbdcdc;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin-bottom: 12px;
+  }
+  .quiz-question-text {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    line-height: 1.4;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    border: 3px solid #2b2b2b;
+    border-radius: 16px;
+    background: #fff8e1;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    color: #2b2b2b;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.08s ease;
+  }
+  .quiz-option:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+  }
+  .quiz-option:disabled {
+    cursor: default;
+  }
+  .quiz-option.correct-answer {
+    background: #d7f5d4;
+  }
+  .quiz-option.wrong-answer {
+    background: #fbdcdc;
+  }
+  .quiz-feedback {
+    font-weight: 700;
+    font-size: 16px;
+    min-height: 22px;
+    margin: 0 0 10px;
+  }
+  .quiz-feedback.correct {
+    color: #1f7a34;
+  }
+  .quiz-feedback.wrong {
+    color: #d64545;
+  }
+  .quiz-explanation {
+    background: #fff8e1;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 14px;
+  }
+  #quizNextBtn {
+    background: #3d84f7;
+  }
+  .quiz-waiting p {
+    text-align: center;
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+  .quiz-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .quiz-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    font-weight: 700;
+  }
 </style>
 </head>
 <body>
@@ -869,6 +994,10 @@
     <button id="cardAdedonha" class="game-card" type="button">
       <span class="game-card-icon">✏️</span>
       <span class="game-card-title">Adedonha</span>
+    </button>
+    <button id="cardQuiz" class="game-card" type="button">
+      <span class="game-card-icon">🧠</span>
+      <span class="game-card-title">O que é o que é</span>
     </button>
   </div>
 </div>
@@ -981,6 +1110,50 @@
   </div>
 </div>
 
+<div id="quizSetup" class="panel" style="display:none;">
+  <div class="option-group">
+    <button id="createQuizRoomBtn" class="action" type="button">Criar Sala</button>
+    <div class="or-divider">ou</div>
+    <label class="field-label" for="quizJoinCodeInput">Entrar em uma sala</label>
+    <input type="text" id="quizJoinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
+    <button id="joinQuizRoomBtn" class="action" type="button">Entrar na Sala</button>
+    <div id="quizRoomError"></div>
+  </div>
+</div>
+
+<div id="quizGame" class="panel" style="display:none;">
+  <div class="adedonha-top-row">
+    <div class="top-row-left">
+      <div class="room-code-pill">Sala: <span id="quizRoomCodeLabel">----</span></div>
+      <div class="score-summary" id="quizScoreSummary"></div>
+    </div>
+    <button id="leaveQuizRoomBtn" class="action" type="button">Sair da Sala</button>
+  </div>
+
+  <div id="quizQuestionView">
+    <div class="quiz-meta">
+      <span id="quizLevelBadge" class="room-code-pill">Nível: Fácil</span>
+      <span id="quizProgressLabel" class="room-code-pill">Pergunta 1 de 40</span>
+    </div>
+    <div id="quizPenaltyWarning" class="quiz-penalty-warning" style="display:none;"></div>
+    <p id="quizQuestionText" class="quiz-question-text"></p>
+    <div id="quizOptions" class="quiz-options"></div>
+    <p id="quizFeedback" class="quiz-feedback"></p>
+    <div id="quizExplanation" class="quiz-explanation" style="display:none;"></div>
+    <button id="quizNextBtn" class="action" type="button" style="display:none;">Próxima ➡️</button>
+  </div>
+
+  <div id="quizWaitingView" class="quiz-waiting" style="display:none;">
+    <p>Você terminou! Sua pontuação: <strong id="quizMyFinalScore">0</strong></p>
+    <p id="quizWaitingStatus" class="filling-status"></p>
+  </div>
+
+  <div id="quizResultsView" class="quiz-results" style="display:none;">
+    <h2>Resultado Final</h2>
+    <div id="quizResultsList" class="quiz-results-list"></div>
+  </div>
+</div>
+
 <div id="confirmModal" class="modal-overlay">
   <div class="modal-box">
     <p id="confirmModalMessage" class="modal-message">Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?</p>
@@ -1022,13 +1195,21 @@
   const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
   const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn');
 
-  function showConfirmModal(message) {
+  function showConfirmModal(message, options) {
+    const opts = options || {};
+    const confirmText = opts.confirmText || 'Sim, sair';
+    const showCancel = opts.showCancel !== false;
+
     return new Promise((resolve) => {
       confirmModalMessageEl.textContent = message;
+      confirmModalConfirmBtn.textContent = confirmText;
+      confirmModalCancelBtn.style.display = showCancel ? '' : 'none';
       confirmModalEl.style.display = 'flex';
 
       function cleanup(result) {
         confirmModalEl.style.display = 'none';
+        confirmModalConfirmBtn.textContent = 'Sim, sair';
+        confirmModalCancelBtn.style.display = '';
         confirmModalCancelBtn.removeEventListener('click', onCancel);
         confirmModalConfirmBtn.removeEventListener('click', onConfirm);
         resolve(result);
@@ -1201,24 +1382,30 @@
   joinRoomBtn.addEventListener('click', joinRoom);
   cancelWaitingBtn.addEventListener('click', cancelWaiting);
 
-  changeModeBtn.addEventListener('click', async () => {
-    if (mode === 'human' && roomCode) {
-      const otherRole = onlineRole === HUMAN ? COMPUTER : HUMAN;
-      let otherPresent = false;
-      try {
-        const snap = await get(ref(db, `rooms/${roomCode}/presence/${otherRole}`));
-        otherPresent = snap.val() === true;
-      } catch (err) { /* assume que está sozinho se a leitura falhar */ }
+  async function leaveTicTacToeRoomWithConfirm() {
+    if (!(mode === 'human' && roomCode)) return true;
 
-      if (!otherPresent) {
-        const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
-        if (!confirmed) return;
-        try { await remove(ref(db, `rooms/${roomCode}`)); } catch (err) { /* sala já pode ter sido removida */ }
-      } else {
-        try { await set(ref(db, `rooms/${roomCode}/presence/${onlineRole}`), false); } catch (err) { /* ignora falha de rede */ }
-      }
-      await leaveOnlineGame();
+    const otherRole = onlineRole === HUMAN ? COMPUTER : HUMAN;
+    let otherPresent = false;
+    try {
+      const snap = await get(ref(db, `rooms/${roomCode}/presence/${otherRole}`));
+      otherPresent = snap.val() === true;
+    } catch (err) { /* assume que está sozinho se a leitura falhar */ }
+
+    if (!otherPresent) {
+      const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
+      if (!confirmed) return false;
+      try { await remove(ref(db, `rooms/${roomCode}`)); } catch (err) { /* sala já pode ter sido removida */ }
+    } else {
+      try { await set(ref(db, `rooms/${roomCode}/presence/${onlineRole}`), false); } catch (err) { /* ignora falha de rede */ }
     }
+    await leaveOnlineGame();
+    return true;
+  }
+
+  changeModeBtn.addEventListener('click', async () => {
+    const proceeded = await leaveTicTacToeRoomWithConfirm();
+    if (!proceeded) return;
     gameEl.style.display = 'none';
     waitingRoomEl.style.display = 'none';
     setupEl.style.display = 'block';
@@ -1651,8 +1838,11 @@
   const homeFooterEl = document.getElementById('homeFooter');
   const adedonhaSetupEl = document.getElementById('adedonhaSetup');
   const adedonhaGameEl = document.getElementById('adedonhaGame');
+  const quizSetupEl = document.getElementById('quizSetup');
+  const quizGameEl = document.getElementById('quizGame');
   const cardJogoDaVelha = document.getElementById('cardJogoDaVelha');
   const cardAdedonha = document.getElementById('cardAdedonha');
+  const cardQuiz = document.getElementById('cardQuiz');
 
   function setHeader(title) {
     pageTitleEl.textContent = title;
@@ -1660,15 +1850,27 @@
     backToMenuBtn.style.display = 'inline-block';
   }
 
-  function showMainMenu() {
-    if (mode === 'human') leaveOnlineGame();
-    if (adedonhaRoomCode) leaveAdedonhaRoom(false);
+  async function showMainMenu() {
+    if (mode === 'human' && roomCode) {
+      const proceeded = await leaveTicTacToeRoomWithConfirm();
+      if (!proceeded) return;
+    }
+    if (adedonhaRoomCode) {
+      const proceeded = await leaveAdedonhaRoomWithConfirm(false);
+      if (!proceeded) return;
+    }
+    if (quizRoomCode) {
+      const proceeded = await leaveQuizRoomWithConfirm(false);
+      if (!proceeded) return;
+    }
     mainMenuEl.style.display = 'block';
     setupEl.style.display = 'none';
     waitingRoomEl.style.display = 'none';
     gameEl.style.display = 'none';
     adedonhaSetupEl.style.display = 'none';
     adedonhaGameEl.style.display = 'none';
+    quizSetupEl.style.display = 'none';
+    quizGameEl.style.display = 'none';
     pageTitleEl.textContent = 'Velha Infância';
     pageTitleEl.classList.add('home-title');
     homeFooterEl.style.display = 'flex';
@@ -1687,6 +1889,18 @@
     homeFooterEl.style.display = 'none';
     adedonhaSetupEl.style.display = 'block';
     setHeader('Adedonha');
+  });
+
+  cardQuiz.addEventListener('click', async () => {
+    const confirmed = await showConfirmModal(
+      'Regra do jogo: não saia da tela, pois o jogo será reiniciado. Isso evita chances de trapacear as respostas. Põe a cuca pra funcionar!',
+      { confirmText: 'Iniciar', showCancel: false }
+    );
+    if (!confirmed) return;
+    mainMenuEl.style.display = 'none';
+    homeFooterEl.style.display = 'none';
+    quizSetupEl.style.display = 'block';
+    setHeader('O que é o que é');
   });
 
   backToMenuBtn.addEventListener('click', showMainMenu);
@@ -2178,8 +2392,8 @@
 
   createAdedonhaRoomBtn.addEventListener('click', createAdedonhaRoom);
   joinAdedonhaRoomBtn.addEventListener('click', joinAdedonhaRoom);
-  leaveAdedonhaRoomBtn.addEventListener('click', async () => {
-    if (!adedonhaRoomCode) return;
+  async function leaveAdedonhaRoomWithConfirm(showSetupAfter) {
+    if (!adedonhaRoomCode) return true;
     let otherPlayersExist = false;
     try {
       const snap = await get(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players`));
@@ -2189,11 +2403,14 @@
 
     if (!otherPlayersExist) {
       const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
-      if (!confirmed) return;
+      if (!confirmed) return false;
     }
 
-    await leaveAdedonhaRoom(true);
-  });
+    await leaveAdedonhaRoom(showSetupAfter);
+    return true;
+  }
+
+  leaveAdedonhaRoomBtn.addEventListener('click', () => leaveAdedonhaRoomWithConfirm(true));
 
   adedonhaJoinCodeInput.addEventListener('input', () => {
     adedonhaJoinCodeInput.value = adedonhaJoinCodeInput.value.replace(/\D/g, '').slice(0, 4);
@@ -2256,6 +2473,563 @@
   });
   window.addEventListener('blur', () => setAdedonhaActiveTab(false));
   window.addEventListener('focus', () => setAdedonhaActiveTab(true));
+
+  // ---------- "O que é o que é" (quiz) ---------- //
+
+  const QUIZ_LEVEL_LABELS = ['Fácil', 'Médio', 'Difícil', 'Muito Difícil'];
+  const QUIZ_QUESTIONS = {
+    facil: [
+      { text: 'Tem cabeça, tem dente, mas não é gente nem bicho?', options: ['Martelo', 'Alho', 'Garfo'], correct: 1, explanation: 'Um dente de alho é literalmente chamado assim, e o bulbo inteiro é a cabeça de alho.' },
+      { text: 'Tem chapéu, mas não tem cabeça; tem boca, mas não fala; tem asa, mas não voa?', options: ['Chaleira', 'Bule', 'Xícara'], correct: 1, explanation: 'O bule tem uma tampa chamada de chapéu, um bico chamado de boca, e uma alça chamada de asa.' },
+      { text: 'É magro como um palito, tem dentes enormes, dá de comer aos famintos mas jamais come?', options: ['Garfo', 'Faca de serra', 'Homem'], correct: 0, explanation: 'Os dentes do garfo levam comida à boca de quem está com fome, mas ele nunca come nada.' },
+      { text: 'Não é roupa, mas cobre o corpo; quanto mais se usa, mais fino fica?', options: ['Toalha', 'Sabonete', 'Cobertor'], correct: 1, explanation: 'O sabonete cobre o corpo com espuma no banho e vai ficando mais fino a cada uso.' },
+      { text: 'Tem dentes, mas não morde, e ajuda a organizar os cabelos?', options: ['Presilha', 'Pente', 'Ataca'], correct: 1, explanation: 'As pontas do pente são chamadas de dentes, mas só desembaraçam o cabelo, não mordem.' },
+      { text: 'Fica pendurado na parede, tem números, e todo mundo olha pra ele quando está com pressa?', options: ['Termômetro', 'Relógio', 'Despertador'], correct: 1, explanation: 'O relógio de parede mostra as horas, e é o primeiro lugar que se olha quando o tempo está apertado.' },
+      { text: 'Cai de pé e corre deitado?', options: ['Orvalho', 'Chuva', 'Granizo'], correct: 1, explanation: 'A chuva cai na vertical, mas ao encontrar o chão, a água escorre na horizontal.' },
+      { text: 'De dia fica apenas no céu, de noite fica na água e no céu?', options: ['A Lua', 'O Sol', 'Uma estrela'], correct: 0, explanation: 'A Lua brilha no céu à noite, e seu reflexo aparece na superfície de rios, lagos e no mar.' },
+      { text: 'Anda com os pés na cabeça?', options: ['Boné', 'Piolho', 'Chapéu'], correct: 1, explanation: 'O piolho vive e caminha literalmente sobre o couro cabeludo.' },
+      { text: 'Tem listras pretas e brancas, mas nunca se bronzeia?', options: ['Vaca', 'Zebra', 'Tigre'], correct: 1, explanation: 'A pelagem da zebra já nasce listrada, preto e branco intercalados.' },
+      { text: 'Entra duro e sai mole?', options: ['Gelo', 'Chiclete', 'Macarrão'], correct: 2, explanation: 'O macarrão cru é duro, mas depois de cozido na água quente fica macio.' },
+      { text: 'Serve para cobrir a cama, esquenta quando faz frio, mas não é lençol?', options: ['Casaco', 'Cobertor', 'Lençol'], correct: 1, explanation: 'O cobertor é feito de um tecido mais grosso que retém calor e cobre a cama.' },
+      { text: 'Tem dentes, mas fica fora da boca quando a pessoa dorme?', options: ['Alho', 'Dentadura', 'Garfo'], correct: 1, explanation: 'Muita gente que usa dentadura removível a retira à noite e a deixa mergulhada num copo com água enquanto dorme.' },
+      { text: 'Passa na frente do Sol, mas nunca faz sombra?', options: ['Uma nuvem', 'Uma mosca', 'O vento'], correct: 2, explanation: 'O vento é invisível e não tem massa visível capaz de bloquear a luz do Sol.' },
+      { text: 'Tem mais altura quando é comprado, mas vai diminuindo conforme é usado?', options: ['Cenoura', 'Vela', 'Sabonete'], correct: 1, explanation: 'A vela derrete conforme queima, perdendo altura a cada minuto de uso.' },
+      { text: 'O que vem primeiro, a galinha ou o ovo?', options: ['A galinha', 'A gema', 'O ovo'], correct: 2, explanation: 'O ovo veio primeiro. Do ponto de vista da evolução e da biologia, animais com reprodução ovípara, como dinossauros e répteis, já botavam ovos centenas de milhões de anos antes do surgimento da galinha moderna.' },
+      { text: 'Tem 4 patas mas não é um pato?', options: ['O patinho', 'Um cavalo', 'Duas patas fêmeas'], correct: 1, explanation: 'O cavalo tem 4 patas, que são as que o mantêm de pé.' }
+    ],
+    medio: [
+      { text: 'Quanto mais se tira, mais aumenta?', options: ['Poço', 'Buraco', 'Dívida'], correct: 1, explanation: 'Ao cavar e retirar terra de um buraco, o espaço vazio dele só cresce.' },
+      { text: 'Dá muitas voltas, mas nunca sai do lugar?', options: ['Catavento', 'Relógio', 'Ventilador'], correct: 1, explanation: 'Os ponteiros do relógio giram sem parar, mas o relógio continua fixo na parede.' },
+      { text: 'Mantém sempre o mesmo tamanho, não importa o peso que carregue?', options: ['Balde', 'Balança', 'Elástico'], correct: 1, explanation: 'O corpo da balança não estica nem encolhe, só o número indicado muda.' },
+      { text: 'Na televisão cobre um país inteiro; no futebol, guarda o gol; em casa é usada para descansar?', options: ['A rede', 'O tecido', 'A antena'], correct: 0, explanation: 'Rede de televisão cobre o país com sinal, rede do gol impede a bola, e rede de dormir serve para relaxar.' },
+      { text: 'Dá um pulo e se veste de branco, fica "de noiva"?', options: ['Algodão-doce', 'Pipoca', 'Neve'], correct: 1, explanation: 'O milho estoura no calor e se abre revelando a parte branca por dentro.' },
+      { text: 'Abre a porta só depois que já entrou nela?', options: ['Fechadura', 'Chave', 'Campainha'], correct: 1, explanation: 'A chave precisa entrar na fechadura antes de conseguir girar e destravar a porta.' },
+      { text: 'É redonda como o Sol, tem mais raios do que uma tempestade e sempre anda em par?', options: ['A roda do carrinho de mão', 'A roda da bicicleta', 'O pneu do carro'], correct: 1, explanation: 'Os raios da roda de bicicleta ligam o centro à borda, e a bicicleta sempre anda com duas rodas.' },
+      { text: 'Quanto mais seca, mais molhada fica?', options: ['Deserto', 'Toalha', 'Esponja'], correct: 1, explanation: 'Ao secar outra coisa, é a própria toalha que absorve a água e fica encharcada.' },
+      { text: 'Voa sem ter asas e chora sem ter olhos?', options: ['Fumaça', 'Nuvem', 'Pipa'], correct: 1, explanation: 'A nuvem se move pelo céu sem nenhuma estrutura de asas, e sua chuva é o seu choro.' },
+      { text: 'Anda sempre arrastado, igual a um bêbado?', options: ['Lagarto', 'Cobra', 'Caracol'], correct: 1, explanation: 'Sem patas, a cobra se contorce rente ao chão, num movimento que lembra alguém cambaleando.' },
+      { text: 'Entra na água, mas nunca fica molhada?', options: ['Reflexo', 'Sombra', 'Folha seca'], correct: 1, explanation: 'A sombra aparece refletida na água, mas por não ser um objeto físico, não absorve umidade.' },
+      { text: 'Enche uma casa inteira, mas não enche nem uma mão; fica amarrado pelas costas, e entra e sai sem precisar de portão?', options: ['O cheiro', 'O botão', 'O ar'], correct: 1, explanation: 'O botão fica preso na parte de trás do tecido e entra e sai da casinha toda vez que se veste a roupa.' },
+      { text: 'É pequeno como um rato, mas cuida da casa como se fosse um leão?', options: ['Alarme', 'Cadeado', 'Trinco'], correct: 1, explanation: 'Mesmo pequeno, o cadeado tem a função de proteger e guardar a casa.' },
+      { text: 'É verde como o mato, mas mato não é; fala como gente, mas gente não é?', options: ['Grilo', 'Papagaio', 'Sapo'], correct: 1, explanation: 'A plumagem verde do papagaio lembra a cor da vegetação, e ele é conhecido por imitar a fala humana.' },
+      { text: 'Tem pé, mas não anda; tem asa, mas não voa; tem o que comer, mas não come; tem água, mas não bebe?', options: ['Guarda-chuva', 'Coqueiro', 'Cadeira'], correct: 1, explanation: 'O tronco do coqueiro é chamado de pé, as folhas grandes lembram asas, e o coco tem água e polpa por dentro.' },
+      { text: 'Vai deixando uma trilha atrás de si por onde quer que passe, sempre puxando uma linha?', options: ['Caracol', 'Agulha (de costura)', 'Rastro de tinta'], correct: 1, explanation: 'Ao costurar, a agulha arrasta a linha por onde passa, deixando um rastro de pontos no tecido.' },
+      { text: 'Não se come sozinho, mas é o que deixa qualquer prato bom de se comer?', options: ['Prato', 'Tempero', 'Guardanapo'], correct: 1, explanation: 'Ninguém come uma colher de tempero puro, mas é ele que dá sabor à comida.' }
+    ],
+    dificil: [
+      { text: 'Enche um ambiente inteiro, sem ocupar nenhum espaço físico?', options: ['O ar', 'A luz', 'O som'], correct: 1, explanation: 'A luz ilumina um ambiente inteiro sem ocupar espaço físico como um objeto sólido.' },
+      { text: 'Quanto mais presente está, menos a gente consegue enxergar?', options: ['A neblina', 'A escuridão', 'A fumaça'], correct: 1, explanation: 'Escuridão é a ausência de luz, por isso quanto mais presente, menos se enxerga.' },
+      { text: 'Pode ser quebrada sem nunca ser tocada com as mãos?', options: ['Uma taça', 'Uma promessa', 'Uma regra'], correct: 1, explanation: 'Quebrar uma promessa é uma expressão figurada, sem nenhum objeto físico envolvido.' },
+      { text: 'Repete tudo o que ouve, mas nunca tem uma opinião própria?', options: ['O papagaio', 'O eco', 'O espelho'], correct: 1, explanation: 'O eco é apenas o som refletido de volta, sem nenhuma opinião própria.' },
+      { text: 'Pode ser escrito, falado, e também quebrado — mas ninguém consegue tocar nele?', options: ['O segredo', 'O silêncio', 'O combinado'], correct: 1, explanation: 'Existem expressões como guardar silêncio e quebrar o silêncio, mas ele não é um objeto físico.' },
+      { text: 'Todo mundo passa por mim, mas eu nunca passo por ninguém; todo mundo pergunta por mim, mas eu nunca pergunto por ninguém?', options: ['A porta', 'A rua', 'A ponte'], correct: 1, explanation: 'As pessoas passam pela rua e perguntam pela rua, mas a rua em si não se desloca nem pergunta nada.' },
+      { text: 'Enferruja o ferro com sua simples passagem, mas também é o único remédio capaz de curar certas feridas?', options: ['A água', 'O tempo', 'O esquecimento'], correct: 1, explanation: 'O tempo desgasta objetos físicos e também é citado como o que cura dores emocionais.' },
+      { text: 'Está sempre à nossa frente, mas ninguém jamais conseguiu chegar até ele de verdade?', options: ['O futuro', 'O horizonte', 'O amanhã'], correct: 0, explanation: 'O futuro está sempre um passo à frente, e assim que chega, vira presente.' },
+      { text: 'Quanto mais se compartilha, mais ele cresce — mas nunca se pode segurar com as mãos?', options: ['O dinheiro', 'O conhecimento', 'O tempo'], correct: 1, explanation: 'Ao ensinar algo para alguém, você não perde o que sabe, e agora duas pessoas sabem.' },
+      { text: 'É a única coisa que, quando perdida de vez, nunca mais volta a existir — mesmo comprando outra igual?', options: ['O dinheiro', 'A confiança', 'O tempo perdido'], correct: 1, explanation: 'Diferente de um objeto substituível, a confiança quebrada precisa ser reconstruída.' },
+      { text: 'Tem boca, mas nunca fala; tem leito, mas nunca dorme; está sempre correndo, mas nunca sai andando?', options: ['O vento', 'O rio', 'O trem'], correct: 1, explanation: 'Boca e leito são termos geográficos reais do rio, cuja água está sempre correndo.' },
+      { text: 'De manhã anda com quatro pernas, ao meio-dia com duas, e à noite com três — a famosa charada da Esfinge, contada há milhares de anos na mitologia grega?', options: ['O cachorro', 'O ser humano, ao longo da vida (bebê, adulto e idoso com bengala)', 'O cavalo'], correct: 1, explanation: 'Manhã, meio-dia e noite representam as fases da vida: bebê engatinhando, adulto andando, e idoso com bengala.' },
+      { text: 'É maior do que qualquer coisa grandiosa que exista; ao mesmo tempo, os pobres o têm e os ricos precisam dele; e se alguém tentar comê-lo, morre?', options: ['O tempo', 'O nada', 'O silêncio'], correct: 1, explanation: 'Nada é maior que tudo, os pobres têm nada, os ricos sempre precisam de mais, e comer nada levaria à morte.' },
+      { text: 'Não pode ser comprado nem vendido, mas quando é oferecido de verdade, vale mais do que qualquer tesouro do mundo?', options: ['A amizade', 'O amor', 'O respeito'], correct: 1, explanation: 'O amor genuíno não tem preço nem se negocia.' },
+      { text: 'Machuca sem tocar em ninguém, e quanto mais a pessoa tenta esquecer, mais forte ela aperta o peito?', options: ['A tristeza', 'A saudade', 'A raiva'], correct: 1, explanation: 'A saudade nasce da ausência de algo ou alguém e aperta o peito quanto mais se tenta esquecer.' },
+      { text: 'Ninguém nunca a viu de verdade chegando, mas todo mundo sabe que ela chegou quando alguém parte para sempre?', options: ['A despedida', 'A morte', 'A tristeza'], correct: 1, explanation: 'A morte não tem forma visível, só é percebida pela ausência definitiva de quem partiu.' },
+      { text: 'Aparece só quando os olhos se fecham, mas às vezes parece mais real do que a própria vida enquanto dura?', options: ['A imaginação', 'O sonho', 'A memória'], correct: 1, explanation: 'Sonhos acontecem de olhos fechados e podem parecer extremamente reais enquanto duram.' },
+      { text: 'Guarda tudo o que já vivemos, mas às vezes falha justamente na hora em que mais precisamos dela?', options: ['A fotografia', 'A memória', 'A agenda'], correct: 1, explanation: 'A memória guarda experiências passadas, mas costuma falhar nos momentos mais importantes.' },
+      { text: 'Não tem tamanho nem peso, mas é o que faz o coração bater mais forte na hora de enfrentar aquilo que se teme?', options: ['O medo', 'A coragem', 'A adrenalina'], correct: 1, explanation: 'Coragem não é ausência de medo, é a força de agir mesmo sentindo medo.' }
+    ],
+    muitoDificil: [
+      { text: 'Está no final do fim, no início do meio e no meio do começo. Que letra é essa?', options: ['A letra "F"', 'A letra "M"', 'A letra "E"'], correct: 1, explanation: 'Fim termina com M, meio começa com M, e começo tem o M no centro.' },
+      { text: 'Qual é a maior palavra do dicionário, segundo o trocadilho popular?', options: ['Paralelepípedo', 'Arroz (porque vai de "A" a "Z")', 'Otorrinolaringologista'], correct: 1, explanation: 'Arroz começa com A e termina com Z, como se contivesse todo o alfabeto.' },
+      { text: 'O que a areia da praia falou para o mar, num trocadilho?', options: ['"Você está molhado"', '"Deixa de onda"', '"Vamos nessa"'], correct: 1, explanation: 'Onda tem duplo sentido: a onda do mar e a expressão parar de onda.' },
+      { text: 'Qual animal é apontado como "o rei das charadas", por sempre acertar na mosca?', options: ['Leão', 'Sapo', 'Coelho'], correct: 1, explanation: 'É um trocadilho com acertar na mosca, já que o sapo caça moscas com a língua.' },
+      { text: 'Ocorre uma vez a cada minuto, duas vezes a cada momento, mas nunca em quinhentos anos?', options: ['A letra "A"', 'A letra "M"', 'A letra "S"'], correct: 1, explanation: 'M aparece uma vez em minuto, duas em momento, e nenhuma em quinhentos anos.' },
+      { text: 'Só serve para alguma coisa depois de ser quebrado?', options: ['Um vaso', 'Um ovo', 'Um espelho'], correct: 1, explanation: 'Um ovo só se torna útil na cozinha depois de quebrado.' },
+      { text: 'É feito especialmente para andar, mas nunca anda sozinho, por conta própria?', options: ['O relógio', 'O sapato', 'O carrinho de bebê'], correct: 1, explanation: 'O sapato ajuda a caminhar, mas só se move quando um pé o calça.' },
+      { text: 'Coloca-se na mesa, é cortado e repartido entre os jogadores, mas ninguém nunca o come?', options: ['O bolo de aniversário', 'O baralho de cartas', 'O pão'], correct: 1, explanation: 'Cortar e repartir são termos do próprio jogo de cartas, nada ali é comestível.' },
+      { text: 'Guarda um momento do passado para sempre, mas nunca envelhece com o tempo?', options: ['Uma carta', 'Uma fotografia', 'Uma lembrança'], correct: 1, explanation: 'A cena registrada numa foto fica congelada como era no momento do clique.' },
+      { text: 'A mãe de Beatriz tem cinco filhas, cada uma com um nome seguindo as vogais em ordem: Bá, Bé, Bi, Bo e...?', options: ['Baba', 'Bu', 'Bibi'], correct: 1, explanation: 'Os nomes seguem as cinco vogais em ordem, faltava só o U.' },
+      { text: 'Você está numa sala escura com um único fósforo na mão. À sua frente há uma vela, uma lamparina e uma pilha de lenha. O que você deve acender primeiro?', options: ['A vela', 'O próprio fósforo', 'A lamparina'], correct: 1, explanation: 'Antes de acender qualquer coisa, é preciso acender o próprio fósforo primeiro.' },
+      { text: 'O que nunca fica mais novo, por mais que a gente queira?', options: ['O tempo', 'A idade', 'A juventude'], correct: 1, explanation: 'A idade só aumenta com o tempo, nunca diminui.' },
+      { text: 'Se você ultrapassar o segundo colocado numa corrida, em que posição você fica?', options: ['Em primeiro lugar', 'Em segundo lugar', 'Em terceiro lugar'], correct: 1, explanation: 'Ao ultrapassar quem está em segundo, você assume o lugar dele, não o primeiro.' },
+      { text: 'O que pesa mais: um quilo de penas ou um quilo de chumbo?', options: ['O quilo de chumbo', 'O quilo de penas', 'Pesam exatamente igual'], correct: 2, explanation: 'Um quilo é sempre um quilo, o que muda é o volume ocupado.' },
+      { text: 'É mais veloz que um carro de Fórmula 1, mais lento que uma tartaruga, não faz distinção entre ricos e pobres, não há dinheiro que o compre, não pode ser pesado — mas mesmo sendo infinito, pode ser medido?', options: ['O universo', 'O tempo', 'O pensamento'], correct: 1, explanation: 'O tempo parece voar quando estamos entretidos e se arrastar quando estamos entediados.' },
+      { text: 'Um relógio quebrado (parado) mostra a hora certa quantas vezes por dia?', options: ['Nenhuma vez', 'Duas vezes', 'Uma vez'], correct: 1, explanation: 'Um relógio parado coincide com a hora certa duas vezes em 24 horas.' },
+      { text: 'Quantos meses do ano têm 28 dias?', options: ['Apenas fevereiro', 'Todos os 12 meses', 'Nenhum mês'], correct: 1, explanation: 'Todo mês tem pelo menos 28 dias, mesmo os que têm 30 ou 31.' },
+      { text: 'Se um avião caísse bem em cima da fronteira exata entre dois países, onde deveriam ser enterrados os sobreviventes do acidente?', options: ['No primeiro país', 'No segundo país', 'Sobreviventes não se enterram'], correct: 2, explanation: 'Sobreviventes estão vivos, então não faz sentido enterrar ninguém.' },
+      { text: 'Qual é o único animal que sempre "anda deitado", em qualquer direção que se mova?', options: ['A cobra', 'O peixe', 'O lagarto'], correct: 1, explanation: 'O corpo do peixe fica sempre na horizontal enquanto nada.' },
+      { text: 'Que mulheres vivem, em geral, mais tempo do que os próprios maridos?', options: ['As esposas mais jovens', 'As viúvas', 'As divorciadas'], correct: 1, explanation: 'Uma viúva é a mulher cujo marido já faleceu, então ela viveu mais tempo que ele.' },
+      { text: 'Entre dois homens completamente carecas, qual dos dois tem mais cabelo na cabeça?', options: ['O que ficou careca primeiro', 'Nenhum dos dois — ambos têm exatamente a mesma quantidade (zero)', 'O mais velho'], correct: 1, explanation: 'Ser completamente careca significa ter zero fios de cabelo, e zero é sempre igual a zero.' },
+      { text: 'Existe uma pergunta para a qual é impossível responder sinceramente "não", não importa quem seja perguntado. Qual é ela?', options: ['"Você está com fome?"', '"Você está dormindo?"', '"Você está com sono?"'], correct: 1, explanation: 'Quem dorme não pode responder, e quem está acordado só pode dizer não.' }
+    ]
+  };
+
+  const createQuizRoomBtn = document.getElementById('createQuizRoomBtn');
+  const joinQuizRoomBtn = document.getElementById('joinQuizRoomBtn');
+  const quizJoinCodeInput = document.getElementById('quizJoinCodeInput');
+  const quizRoomErrorEl = document.getElementById('quizRoomError');
+  const quizRoomCodeLabelEl = document.getElementById('quizRoomCodeLabel');
+  const quizScoreSummaryEl = document.getElementById('quizScoreSummary');
+  const leaveQuizRoomBtn = document.getElementById('leaveQuizRoomBtn');
+  const quizQuestionViewEl = document.getElementById('quizQuestionView');
+  const quizLevelBadgeEl = document.getElementById('quizLevelBadge');
+  const quizProgressLabelEl = document.getElementById('quizProgressLabel');
+  const quizPenaltyWarningEl = document.getElementById('quizPenaltyWarning');
+  const quizQuestionTextEl = document.getElementById('quizQuestionText');
+  const quizOptionsEl = document.getElementById('quizOptions');
+  const quizFeedbackEl = document.getElementById('quizFeedback');
+  const quizExplanationEl = document.getElementById('quizExplanation');
+  const quizNextBtn = document.getElementById('quizNextBtn');
+  const quizWaitingViewEl = document.getElementById('quizWaitingView');
+  const quizMyFinalScoreEl = document.getElementById('quizMyFinalScore');
+  const quizWaitingStatusEl = document.getElementById('quizWaitingStatus');
+  const quizResultsViewEl = document.getElementById('quizResultsView');
+  const quizResultsListEl = document.getElementById('quizResultsList');
+
+  let quizRoomCode = null;
+  let quizPlayerId = null;
+  let unsubscribeQuizRoom = null;
+  let quizDisconnectHandle = null;
+  const quizPlayerEntries = new Map(); // playerId -> { pill, nameEl, totalEl }
+
+  let quizQuestions = [];
+  let quizCurrentIndex = 0;
+  let quizScore = 0;
+  let quizAttemptsLeft = 2;
+  let quizInQuestionPhase = false;
+  let quizFinishedLocally = false;
+  let quizCelebrationShown = false;
+
+  function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = a[i];
+      a[i] = a[j];
+      a[j] = tmp;
+    }
+    return a;
+  }
+
+  function buildFullQuizSequence() {
+    return []
+      .concat(shuffleArray(QUIZ_QUESTIONS.facil).slice(0, 10))
+      .concat(shuffleArray(QUIZ_QUESTIONS.medio).slice(0, 10))
+      .concat(shuffleArray(QUIZ_QUESTIONS.dificil).slice(0, 10))
+      .concat(shuffleArray(QUIZ_QUESTIONS.muitoDificil).slice(0, 10));
+  }
+
+  function getQuizLevelLabelForIndex(index) {
+    const block = Math.min(Math.floor(index / 10), QUIZ_LEVEL_LABELS.length - 1);
+    return QUIZ_LEVEL_LABELS[block];
+  }
+
+  function prepareQuestion(raw) {
+    const order = shuffleArray([0, 1, 2]);
+    const options = order.map(i => raw.options[i]);
+    const correctIndex = order.indexOf(raw.correct);
+    return { text: raw.text, options, correctIndex, explanation: raw.explanation };
+  }
+
+  createQuizRoomBtn.addEventListener('click', createQuizRoom);
+  joinQuizRoomBtn.addEventListener('click', joinQuizRoom);
+
+  quizJoinCodeInput.addEventListener('input', () => {
+    quizJoinCodeInput.value = quizJoinCodeInput.value.replace(/\D/g, '').slice(0, 4);
+  });
+  quizJoinCodeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinQuizRoom();
+  });
+
+  async function createQuizRoom() {
+    quizRoomErrorEl.textContent = '';
+    createQuizRoomBtn.disabled = true;
+    try {
+      let code = generateRoomCode();
+      let attempts = 0;
+      let exists = true;
+      while (attempts < 10) {
+        const snap = await get(ref(db, `quizRooms/${code}`));
+        exists = snap.exists();
+        if (!exists) break;
+        code = generateRoomCode();
+        attempts++;
+      }
+      if (exists) {
+        quizRoomErrorEl.textContent = 'Não foi possível criar a sala. Tente novamente.';
+        return;
+      }
+
+      quizRoomCode = code;
+      quizPlayerId = generatePlayerId();
+
+      await set(ref(db, `quizRooms/${quizRoomCode}`), {
+        phase: 'playing',
+        createdAt: Date.now(),
+        players: {
+          [quizPlayerId]: { order: 0, score: 0, done: false }
+        }
+      });
+
+      quizDisconnectHandle = onDisconnect(ref(db, `quizRooms/${quizRoomCode}/players/${quizPlayerId}`));
+      quizDisconnectHandle.remove();
+
+      enterQuizRoom();
+    } catch (err) {
+      console.error('Erro ao criar sala do quiz:', err);
+      quizRoomErrorEl.textContent = 'Não foi possível criar a sala: ' + (err && err.message ? err.message : 'erro desconhecido.');
+    } finally {
+      createQuizRoomBtn.disabled = false;
+    }
+  }
+
+  async function joinQuizRoom() {
+    const code = quizJoinCodeInput.value.trim();
+    quizRoomErrorEl.textContent = '';
+
+    if (!/^\d{4}$/.test(code)) {
+      quizRoomErrorEl.textContent = 'Digite um código de 4 dígitos.';
+      return;
+    }
+
+    joinQuizRoomBtn.disabled = true;
+    try {
+      const roomPath = ref(db, `quizRooms/${code}`);
+      const snap = await get(roomPath);
+      if (!snap.exists()) {
+        quizRoomErrorEl.textContent = 'Sala não encontrada.';
+        return;
+      }
+      const data = snap.val();
+      const existingPlayers = Object.values(data.players || {});
+      const nextOrder = existingPlayers.reduce((max, p) => Math.max(max, p.order || 0), -1) + 1;
+
+      quizRoomCode = code;
+      quizPlayerId = generatePlayerId();
+
+      await set(ref(db, `quizRooms/${code}/players/${quizPlayerId}`), {
+        order: nextOrder,
+        score: 0,
+        done: false
+      });
+
+      quizDisconnectHandle = onDisconnect(ref(db, `quizRooms/${quizRoomCode}/players/${quizPlayerId}`));
+      quizDisconnectHandle.remove();
+
+      enterQuizRoom();
+    } catch (err) {
+      console.error('Erro ao entrar na sala do quiz:', err);
+      quizRoomErrorEl.textContent = 'Não foi possível entrar na sala: ' + (err && err.message ? err.message : 'erro desconhecido.');
+    } finally {
+      joinQuizRoomBtn.disabled = false;
+    }
+  }
+
+  function enterQuizRoom() {
+    quizRoomCodeLabelEl.textContent = quizRoomCode;
+    quizSetupEl.style.display = 'none';
+    quizGameEl.style.display = 'block';
+    setHeader('O que é o que é');
+
+    quizFinishedLocally = false;
+    quizCelebrationShown = false;
+    startQuizLocally();
+
+    const roomPath = ref(db, `quizRooms/${quizRoomCode}`);
+    unsubscribeQuizRoom = onValue(roomPath, (snap) => {
+      const data = snap.val();
+      if (!data) {
+        if (unsubscribeQuizRoom) {
+          unsubscribeQuizRoom();
+          unsubscribeQuizRoom = null;
+        }
+        quizPlayerEntries.forEach(entry => entry.pill.remove());
+        quizPlayerEntries.clear();
+        quizRoomCode = null;
+        quizPlayerId = null;
+        quizInQuestionPhase = false;
+        quizGameEl.style.display = 'none';
+        quizSetupEl.style.display = 'block';
+        quizRoomErrorEl.textContent = 'A sala foi encerrada.';
+        return;
+      }
+      renderQuizRoomState(data);
+    });
+  }
+
+  function createQuizPlayerEntry() {
+    const pill = document.createElement('div');
+    pill.className = 'score-pill';
+    const nameEl = document.createElement('span');
+    const totalEl = document.createElement('span');
+    totalEl.className = 'score-pill-total';
+    totalEl.textContent = '';
+    pill.appendChild(nameEl);
+    pill.appendChild(totalEl);
+    quizScoreSummaryEl.appendChild(pill);
+    return { pill, nameEl, totalEl };
+  }
+
+  function renderQuizRoomState(data) {
+    const playersEntries = Object.entries(data.players || {})
+      .sort((a, b) => (a[1].order || 0) - (b[1].order || 0));
+
+    const seenIds = new Set();
+    const playersList = [];
+
+    playersEntries.forEach(([playerId, playerData], index) => {
+      seenIds.add(playerId);
+      let entry = quizPlayerEntries.get(playerId);
+      if (!entry) {
+        entry = createQuizPlayerEntry();
+        quizPlayerEntries.set(playerId, entry);
+      }
+      const isMine = playerId === quizPlayerId;
+      const label = `Jogador ${index + 1}${isMine ? ' (você)' : ''}`;
+      const colorClass = isMine ? 'player-color-you' : `player-color-${index % PLAYER_COLOR_COUNT}`;
+      playersList.push({
+        playerId, entry, isMine, label, colorClass,
+        score: playerData.score || 0,
+        done: !!playerData.done
+      });
+    });
+
+    quizPlayerEntries.forEach((entry, playerId) => {
+      if (!seenIds.has(playerId)) {
+        entry.pill.remove();
+        quizPlayerEntries.delete(playerId);
+      }
+    });
+
+    playersList.forEach(p => {
+      p.entry.nameEl.textContent = p.label;
+      p.entry.pill.className = `score-pill ${p.colorClass}`;
+      p.entry.totalEl.style.display = p.done ? '' : 'none';
+      p.entry.totalEl.textContent = p.done ? p.score : '';
+    });
+
+    const phase = data.phase || 'playing';
+
+    if (phase === 'results') {
+      quizQuestionViewEl.style.display = 'none';
+      quizWaitingViewEl.style.display = 'none';
+      quizResultsViewEl.style.display = 'block';
+      renderQuizResults(playersList);
+    } else {
+      quizResultsViewEl.style.display = 'none';
+      if (quizFinishedLocally) {
+        quizQuestionViewEl.style.display = 'none';
+        quizWaitingViewEl.style.display = 'block';
+        const waiting = playersList.filter(p => !p.done).map(p => p.label);
+        quizWaitingStatusEl.textContent = waiting.length ? `Aguardando: ${waiting.join(', ')}` : 'Revelando...';
+      } else {
+        quizWaitingViewEl.style.display = 'none';
+        quizQuestionViewEl.style.display = 'block';
+      }
+    }
+
+    if (phase === 'playing' && playersList.length > 0 && playersList.every(p => p.done)) {
+      update(ref(db, `quizRooms/${quizRoomCode}`), { phase: 'results' });
+    }
+  }
+
+  function renderQuizResults(playersList) {
+    quizResultsListEl.innerHTML = '';
+    const sorted = playersList.slice().sort((a, b) => b.score - a.score);
+    sorted.forEach(p => {
+      const row = document.createElement('div');
+      row.className = `quiz-result-row ${p.colorClass}`;
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = p.label;
+      const scoreSpan = document.createElement('span');
+      scoreSpan.textContent = `${p.score} pts`;
+      row.appendChild(nameSpan);
+      row.appendChild(scoreSpan);
+      quizResultsListEl.appendChild(row);
+    });
+
+    if (!quizCelebrationShown && playersList.length > 0) {
+      quizCelebrationShown = true;
+      const maxScore = Math.max(...playersList.map(p => p.score));
+      const winners = playersList.filter(p => p.score === maxScore);
+      if (winners.length > 1) {
+        showCelebration('Empate! 🤝');
+      } else {
+        showCelebration(`🎉 Fim de Jogo: ${winners[0].label} venceu!`);
+      }
+    }
+  }
+
+  function startQuizLocally() {
+    quizQuestions = buildFullQuizSequence().map(prepareQuestion);
+    quizCurrentIndex = 0;
+    quizScore = 0;
+    quizInQuestionPhase = true;
+    quizPenaltyWarningEl.style.display = 'none';
+    renderQuizQuestion();
+  }
+
+  function renderQuizQuestion() {
+    const q = quizQuestions[quizCurrentIndex];
+    quizProgressLabelEl.textContent = `Pergunta ${quizCurrentIndex + 1} de ${quizQuestions.length}`;
+    quizLevelBadgeEl.textContent = `Nível: ${getQuizLevelLabelForIndex(quizCurrentIndex)}`;
+    quizQuestionTextEl.textContent = q.text;
+    quizFeedbackEl.textContent = '';
+    quizFeedbackEl.className = 'quiz-feedback';
+    quizExplanationEl.style.display = 'none';
+    quizExplanationEl.textContent = '';
+    quizNextBtn.style.display = 'none';
+    quizAttemptsLeft = 2;
+    renderQuizOptions(q);
+  }
+
+  function renderQuizOptions(q) {
+    quizOptionsEl.innerHTML = '';
+    q.options.forEach((optionText, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'quiz-option';
+      btn.textContent = optionText;
+      btn.addEventListener('click', () => handleQuizAnswer(idx, btn));
+      quizOptionsEl.appendChild(btn);
+    });
+  }
+
+  function handleQuizAnswer(selectedIndex, btnEl) {
+    const q = quizQuestions[quizCurrentIndex];
+    const isCorrect = selectedIndex === q.correctIndex;
+
+    if (isCorrect) {
+      quizScore += 10;
+      quizFeedbackEl.textContent = '✅ Certa!';
+      quizFeedbackEl.className = 'quiz-feedback correct';
+      revealQuizExplanation(q);
+      disableQuizOptions();
+      quizNextBtn.style.display = 'block';
+      return;
+    }
+
+    quizAttemptsLeft -= 1;
+    btnEl.classList.add('wrong-answer');
+
+    if (quizAttemptsLeft > 0) {
+      quizFeedbackEl.textContent = '❌ Não é essa... tente de novo!';
+      quizFeedbackEl.className = 'quiz-feedback wrong';
+    } else {
+      quizFeedbackEl.textContent = '❌ Essa também não!';
+      quizFeedbackEl.className = 'quiz-feedback wrong';
+      revealQuizExplanation(q);
+      disableQuizOptions();
+      quizNextBtn.style.display = 'block';
+    }
+  }
+
+  function revealQuizExplanation(q) {
+    const buttons = quizOptionsEl.querySelectorAll('.quiz-option');
+    buttons.forEach((btn, idx) => {
+      if (idx === q.correctIndex) btn.classList.add('correct-answer');
+    });
+    quizExplanationEl.textContent = `💡 ${q.explanation}`;
+    quizExplanationEl.style.display = 'block';
+  }
+
+  function disableQuizOptions() {
+    quizOptionsEl.querySelectorAll('.quiz-option').forEach(btn => { btn.disabled = true; });
+  }
+
+  function advanceQuizQuestion() {
+    quizCurrentIndex += 1;
+    if (quizCurrentIndex >= quizQuestions.length) {
+      finishQuizForMe();
+    } else {
+      renderQuizQuestion();
+    }
+  }
+
+  quizNextBtn.addEventListener('click', advanceQuizQuestion);
+
+  async function finishQuizForMe() {
+    quizInQuestionPhase = false;
+    quizFinishedLocally = true;
+    quizMyFinalScoreEl.textContent = quizScore;
+    quizQuestionViewEl.style.display = 'none';
+    quizWaitingViewEl.style.display = 'block';
+    if (quizRoomCode && quizPlayerId) {
+      try {
+        await update(ref(db, `quizRooms/${quizRoomCode}/players/${quizPlayerId}`), { score: quizScore, done: true });
+      } catch (err) {
+        console.error('Erro ao salvar pontuação final do quiz:', err);
+      }
+    }
+  }
+
+  function quizHandleTabLeave() {
+    if (!quizInQuestionPhase) return;
+    quizQuestions = buildFullQuizSequence().map(prepareQuestion);
+    quizCurrentIndex = 0;
+    quizScore = 0;
+    quizPenaltyWarningEl.textContent = '⚠️ Você saiu da aba! A partida foi reiniciada.';
+    quizPenaltyWarningEl.style.display = 'block';
+    renderQuizQuestion();
+    setTimeout(() => {
+      quizPenaltyWarningEl.style.display = 'none';
+    }, 4000);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') quizHandleTabLeave();
+  });
+  window.addEventListener('blur', () => quizHandleTabLeave());
+
+  async function leaveQuizRoom(showSetupAfter) {
+    if (unsubscribeQuizRoom) {
+      unsubscribeQuizRoom();
+      unsubscribeQuizRoom = null;
+    }
+    if (quizDisconnectHandle) {
+      try { await quizDisconnectHandle.cancel(); } catch (err) { /* conexão já pode ter caído */ }
+      quizDisconnectHandle = null;
+    }
+    if (quizRoomCode && quizPlayerId) {
+      const code = quizRoomCode;
+      const playerId = quizPlayerId;
+      try {
+        await remove(ref(db, `quizRooms/${code}/players/${playerId}`));
+        const snap = await get(ref(db, `quizRooms/${code}/players`));
+        if (!snap.exists()) {
+          await remove(ref(db, `quizRooms/${code}`));
+        }
+      } catch (err) { /* sala já pode ter sido removida */ }
+    }
+    quizPlayerEntries.forEach(entry => entry.pill.remove());
+    quizPlayerEntries.clear();
+    quizRoomCode = null;
+    quizPlayerId = null;
+    quizInQuestionPhase = false;
+    if (showSetupAfter) {
+      quizGameEl.style.display = 'none';
+      quizSetupEl.style.display = 'block';
+    }
+  }
+
+  async function leaveQuizRoomWithConfirm(showSetupAfter) {
+    if (!quizRoomCode) return true;
+    let otherPlayersExist = false;
+    try {
+      const snap = await get(ref(db, `quizRooms/${quizRoomCode}/players`));
+      const players = snap.val() || {};
+      otherPlayersExist = Object.keys(players).some(id => id !== quizPlayerId);
+    } catch (err) { /* assume que está sozinho se a leitura falhar */ }
+
+    if (!otherPlayersExist) {
+      const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
+      if (!confirmed) return false;
+    }
+
+    await leaveQuizRoom(showSetupAfter);
+    return true;
+  }
+
+  leaveQuizRoomBtn.addEventListener('click', () => leaveQuizRoomWithConfirm(true));
 </script>
 
 </body>
