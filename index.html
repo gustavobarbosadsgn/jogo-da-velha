@@ -6,7 +6,7 @@
 <title>Velha Infância</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@600;700&family=Bagel+Fat+One&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body {
@@ -713,12 +713,151 @@
       font-size: 9px;
       padding: 2px 6px;
     }
+    .celebration-banner {
+      font-size: 22px;
+      padding: 18px 24px;
+    }
+  }
+
+  /* ---------- Modal de confirmação (compartilhado) ---------- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(43, 43, 43, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-box {
+    background: #fff;
+    border: 3px solid #2b2b2b;
+    border-radius: 24px;
+    box-shadow: 6px 6px 0 #2b2b2b;
+    padding: 26px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+  }
+  .modal-message {
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0 0 20px;
+    line-height: 1.4;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+  }
+  .modal-actions button.action {
+    width: auto;
+    flex: 1;
+    padding: 12px 16px;
+  }
+  #confirmModalCancelBtn {
+    background: #fff;
+    color: #2b2b2b;
+  }
+  #confirmModalConfirmBtn {
+    background: #ff6f61;
+  }
+
+  /* ---------- Celebração de vitória (compartilhado) ---------- */
+  .celebration-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    padding: 20px;
+  }
+  .confetti-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .celebration-banner {
+    position: relative;
+    background: #fff8e1;
+    border: 3px solid #2b2b2b;
+    border-radius: 24px;
+    box-shadow: 6px 6px 0 #2b2b2b;
+    padding: 22px 34px;
+    font-family: 'Fredoka', 'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    text-align: center;
+    color: #2b2b2b;
+    max-width: 90vw;
+    animation: celebration-pop 0.4s ease;
+  }
+  @keyframes celebration-pop {
+    0% { transform: scale(0.6); }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  /* ---------- Logo/título da tela inicial ---------- */
+  #pageTitle.home-title {
+    font-family: 'Bagel Fat One', 'Baloo 2', 'Comic Sans MS', cursive;
+    color: #35D7FF;
+    font-size: 68px;
+    -webkit-text-stroke: 0.3px #2b2b2b;
+    text-stroke: 0.3px #2b2b2b;
+  }
+
+  /* ---------- Rodapé da tela inicial ---------- */
+  .home-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a4a4a;
+  }
+  .home-footer-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .home-footer-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a4a4a;
+    transition: opacity 0.15s ease;
+  }
+  .home-footer-link:hover {
+    opacity: 0.65;
+  }
+  .home-footer-link svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  @media (max-width: 600px) {
+    #pageTitle.home-title {
+      font-size: 42px;
+      -webkit-text-stroke-width: 0.2px;
+      text-stroke-width: 0.2px;
+    }
+    .home-footer {
+      font-size: 12px;
+    }
   }
 </style>
 </head>
 <body>
 
-<h1 id="pageTitle">Velha Infância</h1>
+<h1 id="pageTitle" class="home-title">Velha Infância</h1>
 <button id="backToMenuBtn" class="back-link" type="button" style="display:none;">⬅ Menu Principal</button>
 
 <div id="mainMenu" class="panel">
@@ -733,6 +872,18 @@
     </button>
   </div>
 </div>
+
+<footer id="homeFooter" class="home-footer">
+  <span>Criado por Barbosa©</span>
+  <div class="home-footer-links">
+    <a href="https://www.linkedin.com/in/gustavo-barbosa-24961a25b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="home-footer-link">
+      <svg viewBox="0 0 448 512" aria-hidden="true"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3C448 46.5 433.6 32 416 32zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/barbosa_ux/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="home-footer-link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0-2.2C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.31-1.46.72-2.13 1.39C1.35 2.68.94 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.46 1.39 2.13.67.67 1.34 1.08 2.13 1.39.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.39.67-.67 1.08-1.34 1.39-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.39-2.13C21.32 1.35 20.65.94 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zm0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8.16zM18.4 4.6a1.44 1.44 0 1 1 0 2.88 1.44 1.44 0 0 1 0-2.88z"/></svg>
+    </a>
+  </div>
+</footer>
 
 <div id="setup" class="panel" style="display:none;">
   <h2>Configurar Partida</h2>
@@ -830,6 +981,21 @@
   </div>
 </div>
 
+<div id="confirmModal" class="modal-overlay">
+  <div class="modal-box">
+    <p id="confirmModalMessage" class="modal-message">Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?</p>
+    <div class="modal-actions">
+      <button id="confirmModalCancelBtn" class="action" type="button">Cancelar</button>
+      <button id="confirmModalConfirmBtn" class="action" type="button">Sim, sair</button>
+    </div>
+  </div>
+</div>
+
+<div id="celebrationOverlay" class="celebration-overlay">
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+  <div class="celebration-banner" id="celebrationBanner">🎉 Vencedor!</div>
+</div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
   import {
@@ -848,6 +1014,121 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+
+  // ---------- Modal de confirmação (compartilhado) ---------- //
+
+  const confirmModalEl = document.getElementById('confirmModal');
+  const confirmModalMessageEl = document.getElementById('confirmModalMessage');
+  const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
+  const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn');
+
+  function showConfirmModal(message) {
+    return new Promise((resolve) => {
+      confirmModalMessageEl.textContent = message;
+      confirmModalEl.style.display = 'flex';
+
+      function cleanup(result) {
+        confirmModalEl.style.display = 'none';
+        confirmModalCancelBtn.removeEventListener('click', onCancel);
+        confirmModalConfirmBtn.removeEventListener('click', onConfirm);
+        resolve(result);
+      }
+      function onCancel() { cleanup(false); }
+      function onConfirm() { cleanup(true); }
+
+      confirmModalCancelBtn.addEventListener('click', onCancel);
+      confirmModalConfirmBtn.addEventListener('click', onConfirm);
+    });
+  }
+
+  // ---------- Celebração de vitória (compartilhado) ---------- //
+
+  const celebrationOverlayEl = document.getElementById('celebrationOverlay');
+  const celebrationBannerEl = document.getElementById('celebrationBanner');
+  const confettiCanvasEl = document.getElementById('confettiCanvas');
+  const CELEBRATION_DURATION_MS = 4500;
+  const CONFETTI_COLORS = ['#ff6f61', '#3d84f7', '#9b5de5', '#34c26b', '#ffe0a3', '#fbd0e3'];
+
+  function launchConfetti(durationMs) {
+    const ctx = confettiCanvasEl.getContext('2d');
+    confettiCanvasEl.width = window.innerWidth;
+    confettiCanvasEl.height = window.innerHeight;
+
+    const pieces = Array.from({ length: 120 }, () => ({
+      x: Math.random() * confettiCanvasEl.width,
+      y: -20 - Math.random() * confettiCanvasEl.height * 0.5,
+      size: 6 + Math.random() * 6,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      speedY: 2 + Math.random() * 3,
+      speedX: (Math.random() - 0.5) * 2,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 10
+    }));
+
+    const startTime = Date.now();
+    let animationId;
+
+    function frame() {
+      ctx.clearRect(0, 0, confettiCanvasEl.width, confettiCanvasEl.height);
+      pieces.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+        if (p.y > confettiCanvasEl.height + 20) {
+          p.y = -20;
+          p.x = Math.random() * confettiCanvasEl.width;
+        }
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+        ctx.restore();
+      });
+      if (Date.now() - startTime < durationMs) {
+        animationId = requestAnimationFrame(frame);
+      }
+    }
+    frame();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      ctx.clearRect(0, 0, confettiCanvasEl.width, confettiCanvasEl.height);
+    };
+  }
+
+  function playCelebrationSound() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioCtx();
+      const notes = [523.25, 659.25, 783.99, 1046.5];
+      notes.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        const startTime = audioCtx.currentTime + i * 0.12;
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.25, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.4);
+      });
+    } catch (err) { /* Web Audio API pode não estar disponível */ }
+  }
+
+  function showCelebration(message) {
+    celebrationBannerEl.textContent = message;
+    celebrationOverlayEl.style.display = 'flex';
+    const stopConfetti = launchConfetti(CELEBRATION_DURATION_MS);
+    playCelebrationSound();
+    setTimeout(() => {
+      stopConfetti();
+      celebrationOverlayEl.style.display = 'none';
+    }, CELEBRATION_DURATION_MS);
+  }
 
   const setupEl = document.getElementById('setup');
   const gameEl = document.getElementById('game');
@@ -883,6 +1164,8 @@
   let onlineRole = null;       // 'X' (criador da sala) ou 'O' (quem entrou)
   let roomCode = null;
   let unsubscribeRoom = null;
+  let ticTacToeDisconnectHandle = null;
+  let ticTacToeCelebrationShown = false;
 
   const WIN_LINES = [
     [0,1,2], [3,4,5], [6,7,8],
@@ -918,8 +1201,24 @@
   joinRoomBtn.addEventListener('click', joinRoom);
   cancelWaitingBtn.addEventListener('click', cancelWaiting);
 
-  changeModeBtn.addEventListener('click', () => {
-    if (mode === 'human') leaveOnlineGame();
+  changeModeBtn.addEventListener('click', async () => {
+    if (mode === 'human' && roomCode) {
+      const otherRole = onlineRole === HUMAN ? COMPUTER : HUMAN;
+      let otherPresent = false;
+      try {
+        const snap = await get(ref(db, `rooms/${roomCode}/presence/${otherRole}`));
+        otherPresent = snap.val() === true;
+      } catch (err) { /* assume que está sozinho se a leitura falhar */ }
+
+      if (!otherPresent) {
+        const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
+        if (!confirmed) return;
+        try { await remove(ref(db, `rooms/${roomCode}`)); } catch (err) { /* sala já pode ter sido removida */ }
+      } else {
+        try { await set(ref(db, `rooms/${roomCode}/presence/${onlineRole}`), false); } catch (err) { /* ignora falha de rede */ }
+      }
+      await leaveOnlineGame();
+    }
     gameEl.style.display = 'none';
     waitingRoomEl.style.display = 'none';
     setupEl.style.display = 'block';
@@ -975,8 +1274,12 @@
         board: boardToDbString(Array(9).fill(null)),
         currentPlayer: HUMAN,
         status: 'waiting',
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        presence: { X: true }
       });
+
+      ticTacToeDisconnectHandle = onDisconnect(ref(db, `rooms/${roomCode}/presence/${onlineRole}`));
+      ticTacToeDisconnectHandle.remove();
 
       listenToRoom();
     } catch (err) {
@@ -1013,7 +1316,10 @@
       roomCode = code;
       onlineRole = COMPUTER;
 
-      await update(roomPath, { status: 'playing' });
+      await update(roomPath, { status: 'playing', 'presence/O': true });
+
+      ticTacToeDisconnectHandle = onDisconnect(ref(db, `rooms/${roomCode}/presence/${onlineRole}`));
+      ticTacToeDisconnectHandle.remove();
 
       listenToRoom();
     } catch (err) {
@@ -1027,16 +1333,20 @@
     if (roomCode) {
       try { await remove(ref(db, `rooms/${roomCode}`)); } catch (err) { /* sala já pode ter sido removida */ }
     }
-    leaveOnlineGame();
+    await leaveOnlineGame();
     waitingRoomEl.style.display = 'none';
     setupEl.style.display = 'block';
     setHeader('Jogo da Velha');
   }
 
-  function leaveOnlineGame() {
+  async function leaveOnlineGame() {
     if (unsubscribeRoom) {
       unsubscribeRoom();
       unsubscribeRoom = null;
+    }
+    if (ticTacToeDisconnectHandle) {
+      try { await ticTacToeDisconnectHandle.cancel(); } catch (err) { /* conexão já pode ter caído */ }
+      ticTacToeDisconnectHandle = null;
     }
     roomCode = null;
     onlineRole = null;
@@ -1077,7 +1387,17 @@
         const youWon = data.winner === onlineRole;
         messageEl.textContent = youWon ? 'Você venceu!' : 'Você perdeu!';
       }
+      if (!ticTacToeCelebrationShown) {
+        ticTacToeCelebrationShown = true;
+        if (data.winner === 'draw') {
+          showCelebration('Empate! 🤝');
+        } else {
+          const youWon = data.winner === onlineRole;
+          showCelebration(youWon ? '🎉 Você venceu!' : '🎉 Seu adversário venceu!');
+        }
+      }
     } else {
+      ticTacToeCelebrationShown = false;
       updateTurnMessage();
     }
   }
@@ -1306,8 +1626,10 @@
     createBoard();
     if (result === 'draw') {
       messageEl.textContent = 'Empate!';
+      showCelebration('Empate! 🤝');
     } else {
       messageEl.textContent = result === HUMAN ? 'Você venceu!' : 'O computador venceu!';
+      showCelebration(result === HUMAN ? '🎉 Você venceu!' : '🎉 O computador venceu!');
     }
   }
 
@@ -1326,6 +1648,7 @@
   const pageTitleEl = document.getElementById('pageTitle');
   const backToMenuBtn = document.getElementById('backToMenuBtn');
   const mainMenuEl = document.getElementById('mainMenu');
+  const homeFooterEl = document.getElementById('homeFooter');
   const adedonhaSetupEl = document.getElementById('adedonhaSetup');
   const adedonhaGameEl = document.getElementById('adedonhaGame');
   const cardJogoDaVelha = document.getElementById('cardJogoDaVelha');
@@ -1333,6 +1656,7 @@
 
   function setHeader(title) {
     pageTitleEl.textContent = title;
+    pageTitleEl.classList.remove('home-title');
     backToMenuBtn.style.display = 'inline-block';
   }
 
@@ -1346,17 +1670,21 @@
     adedonhaSetupEl.style.display = 'none';
     adedonhaGameEl.style.display = 'none';
     pageTitleEl.textContent = 'Velha Infância';
+    pageTitleEl.classList.add('home-title');
+    homeFooterEl.style.display = 'flex';
     backToMenuBtn.style.display = 'none';
   }
 
   cardJogoDaVelha.addEventListener('click', () => {
     mainMenuEl.style.display = 'none';
+    homeFooterEl.style.display = 'none';
     setupEl.style.display = 'block';
     setHeader('Jogo da Velha');
   });
 
   cardAdedonha.addEventListener('click', () => {
     mainMenuEl.style.display = 'none';
+    homeFooterEl.style.display = 'none';
     adedonhaSetupEl.style.display = 'block';
     setHeader('Adedonha');
   });
@@ -1405,6 +1733,7 @@
   let adedonhaAmIDone = false;
   let adedonhaCurrentPhase = 'filling';
   let adedonhaDisconnectHandle = null;
+  let adedonhaCelebrationShown = false;
   const adedonhaPlayerEntries = new Map(); // playerId -> { pill, nameEl, totalEl, cells: Map(key -> {wrapper,input,contestBtn,rowEl,badgeEl}) }
 
   function buildAdedonhaCategorySections() {
@@ -1532,9 +1861,9 @@
     adedonhaGameEl.style.display = 'flex';
     setHeader('Adedonha');
 
-    const activeTabRef = ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${adedonhaPlayerId}/activeTab`);
-    adedonhaDisconnectHandle = onDisconnect(activeTabRef);
-    adedonhaDisconnectHandle.set(false);
+    const playerRef = ref(db, `adedonhaRooms/${adedonhaRoomCode}/players/${adedonhaPlayerId}`);
+    adedonhaDisconnectHandle = onDisconnect(playerRef);
+    adedonhaDisconnectHandle.remove();
 
     const roomPath = ref(db, `adedonhaRooms/${adedonhaRoomCode}`);
     unsubscribeAdedonhaRoom = onValue(roomPath, (snap) => {
@@ -1792,6 +2121,21 @@
       }
     });
 
+    if (phase === 'results') {
+      if (!adedonhaCelebrationShown && playersList.length > 0) {
+        adedonhaCelebrationShown = true;
+        const maxScore = Math.max(...playersList.map(p => totals[p.playerId]));
+        const winners = playersList.filter(p => totals[p.playerId] === maxScore);
+        if (winners.length > 1) {
+          showCelebration('Empate! 🤝');
+        } else {
+          showCelebration(`🎉 ${winners[0].label} venceu!`);
+        }
+      }
+    } else {
+      adedonhaCelebrationShown = false;
+    }
+
     updatePhaseUI(phase, playersList);
 
     if (phase === 'filling' && playersList.length > 0 && playersList.every(p => p.done)) {
@@ -1834,7 +2178,22 @@
 
   createAdedonhaRoomBtn.addEventListener('click', createAdedonhaRoom);
   joinAdedonhaRoomBtn.addEventListener('click', joinAdedonhaRoom);
-  leaveAdedonhaRoomBtn.addEventListener('click', () => leaveAdedonhaRoom(true));
+  leaveAdedonhaRoomBtn.addEventListener('click', async () => {
+    if (!adedonhaRoomCode) return;
+    let otherPlayersExist = false;
+    try {
+      const snap = await get(ref(db, `adedonhaRooms/${adedonhaRoomCode}/players`));
+      const players = snap.val() || {};
+      otherPlayersExist = Object.keys(players).some(id => id !== adedonhaPlayerId);
+    } catch (err) { /* assume que está sozinho se a leitura falhar */ }
+
+    if (!otherPlayersExist) {
+      const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
+      if (!confirmed) return;
+    }
+
+    await leaveAdedonhaRoom(true);
+  });
 
   adedonhaJoinCodeInput.addEventListener('input', () => {
     adedonhaJoinCodeInput.value = adedonhaJoinCodeInput.value.replace(/\D/g, '').slice(0, 4);
