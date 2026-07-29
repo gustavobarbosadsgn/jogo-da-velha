@@ -347,6 +347,12 @@
     margin: 6px 0 0;
   }
 
+  #forcaRulesLink {
+    display: block;
+    width: fit-content;
+    margin: 6px auto 0;
+  }
+
   /* ---------- Adedonha ---------- */
   #adedonhaGame.panel {
     max-width: 1000px;
@@ -1028,12 +1034,29 @@
   }
   #createForcaRoomBtn { background: #3d84f7; }
   #joinForcaRoomBtn { background: #9b5de5; }
-  #leaveForcaRoomBtn {
+  #forcaSoloStartBtn { background: #ff6f61; }
+  #leaveForcaRoomBtn,
+  #forcaSoloExitBtn {
     width: auto;
     padding: 8px 14px;
     font-size: 13px;
     background: #fff;
     color: #2b2b2b;
+  }
+  #forcaSoloGame.panel {
+    max-width: 560px;
+    width: 100%;
+  }
+  #forcaSoloRoundBadge {
+    background: #ff6f61;
+    color: #fff;
+  }
+  #forcaSoloCategoryBadge {
+    background: #9b5de5;
+    color: #fff;
+  }
+  #forcaSoloNextBtn {
+    background: #3d84f7;
   }
 
   .forca-choose-heading {
@@ -1224,7 +1247,7 @@
   <div class="option-group" id="modeGroup">
     <label class="radio-pill">
       <input type="radio" name="mode" value="computer" checked>
-      <span>🤖 Jogar com o Computador</span>
+      <span>🤖 Jogar sozinho</span>
     </label>
     <label class="radio-pill">
       <input type="radio" name="mode" value="human">
@@ -1371,15 +1394,26 @@
 </div>
 
 <div id="forcaSetup" class="panel" style="display:none;">
-  <div class="option-group">
+  <div class="option-group" id="forcaModeGroup">
+    <label class="radio-pill">
+      <input type="radio" name="forcaMode" value="solo" checked>
+      <span>🤖 Jogar sozinho</span>
+    </label>
+    <label class="radio-pill">
+      <input type="radio" name="forcaMode" value="human">
+      <span>🧑‍🤝‍🧑 Jogar com outra pessoa</span>
+    </label>
+  </div>
+  <button id="forcaSoloStartBtn" class="action" type="button">Começar</button>
+  <div class="option-group" id="forcaRoomGroup" style="display:none;">
     <button id="createForcaRoomBtn" class="action" type="button">Criar Sala</button>
     <div class="or-divider">ou</div>
     <label class="field-label" for="forcaJoinCodeInput">Entrar em uma sala</label>
     <input type="text" id="forcaJoinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
     <button id="joinForcaRoomBtn" class="action" type="button">Entrar na Sala</button>
     <div id="forcaRoomError"></div>
-    <button id="forcaRulesLink" class="back-link setup-rules-link" type="button">Regras</button>
   </div>
+  <button id="forcaRulesLink" class="back-link setup-rules-link" type="button">Regras</button>
 </div>
 
 <div id="forcaWaitingRoom" class="panel" style="display:none;">
@@ -1451,6 +1485,54 @@
   <div id="forcaFinalView" style="display:none;">
     <h2>Resultado Final</h2>
     <div id="forcaFinalList" class="quiz-results-list"></div>
+  </div>
+</div>
+
+<div id="forcaSoloGame" class="panel" style="display:none;">
+  <div class="adedonha-top-row">
+    <div class="top-row-left">
+      <div class="room-code-pill" id="forcaSoloRoundBadge">Rodada 1 de 10</div>
+      <div class="room-code-pill" id="forcaSoloScoreBadge">Pontos: 0</div>
+    </div>
+    <button id="forcaSoloExitBtn" class="action" type="button">Sair</button>
+  </div>
+
+  <div class="forca-hangman-box" id="forcaSoloHangmanBox">
+    <svg viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#2b2b2b" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8,152 L34,150 L72,152" />
+        <path d="M26,151 L24,60 L27,16" />
+        <path d="M25,16 L70,14 L96,16" />
+        <path d="M28,34 L46,17" />
+        <path d="M96,16 L95,34" />
+        <circle id="forcaSoloPart1" cx="95" cy="48" r="13" style="display:none;" />
+        <path id="forcaSoloPart2" d="M95,61 L94,100" style="display:none;" />
+        <path id="forcaSoloPart3" d="M94,72 L74,88" style="display:none;" />
+        <path id="forcaSoloPart4" d="M95,72 L116,88" style="display:none;" />
+        <path id="forcaSoloPart5" d="M94,100 L77,131" style="display:none;" />
+        <path id="forcaSoloPart6" d="M95,100 L113,131" style="display:none;" />
+      </g>
+    </svg>
+  </div>
+
+  <div id="forcaSoloRoundView">
+    <div class="quiz-meta">
+      <span id="forcaSoloCategoryBadge" class="room-code-pill">Categoria: </span>
+    </div>
+    <p class="forca-blanks" id="forcaSoloBlanks"></p>
+    <div class="forca-keyboard" id="forcaSoloKeyboard"></div>
+  </div>
+
+  <div id="forcaSoloRoundResultView" style="display:none;">
+    <p class="forca-round-result-word" id="forcaSoloRoundResultWord"></p>
+    <p class="forca-round-result-message" id="forcaSoloRoundResultMessage"></p>
+    <p class="forca-round-result-points" id="forcaSoloRoundResultPoints"></p>
+    <button id="forcaSoloNextBtn" class="action" type="button">Próxima Palavra ➡️</button>
+  </div>
+
+  <div id="forcaSoloFinalView" style="display:none;">
+    <h2>Resultado Final</h2>
+    <div id="forcaSoloFinalList" class="quiz-results-list"></div>
   </div>
 </div>
 
@@ -2182,7 +2264,8 @@
     '• Depois de cada rodada, os papéis se invertem — quem adivinhava vira Mestre\n' +
     '• A partida tem 10 rodadas no total (cada jogador é Mestre 5 vezes)\n' +
     '• Só quem adivinha ganha pontos: quanto menos erros usar, mais pontos ganha\n' +
-    '• No final das 10 rodadas, o jogador com mais pontos vence';
+    '• No final das 10 rodadas, o jogador com mais pontos vence\n' +
+    '• Jogando sozinho, o sistema escolhe a palavra automaticamente e você tenta adivinhar, com a mesma pontuação e progressão de dificuldade';
 
   function setHeader(title) {
     pageTitleEl.textContent = title;
@@ -2218,6 +2301,7 @@
     forcaSetupEl.style.display = 'none';
     forcaWaitingRoomEl.style.display = 'none';
     forcaGameEl.style.display = 'none';
+    forcaSoloGameEl.style.display = 'none';
     pageTitleEl.textContent = 'Velha Infância';
     pageTitleEl.classList.add('home-title');
     homeFooterEl.style.display = 'flex';
@@ -3570,6 +3654,26 @@
   const forcaFinalViewEl = document.getElementById('forcaFinalView');
   const forcaFinalListEl = document.getElementById('forcaFinalList');
 
+  const forcaModeGroupEl = document.getElementById('forcaModeGroup');
+  const forcaSoloStartBtn = document.getElementById('forcaSoloStartBtn');
+  const forcaRoomGroupEl = document.getElementById('forcaRoomGroup');
+  const forcaSoloGameEl = document.getElementById('forcaSoloGame');
+  const forcaSoloExitBtn = document.getElementById('forcaSoloExitBtn');
+  const forcaSoloRoundBadgeEl = document.getElementById('forcaSoloRoundBadge');
+  const forcaSoloScoreBadgeEl = document.getElementById('forcaSoloScoreBadge');
+  const forcaSoloHangmanBoxEl = document.getElementById('forcaSoloHangmanBox');
+  const forcaSoloRoundViewEl = document.getElementById('forcaSoloRoundView');
+  const forcaSoloCategoryBadgeEl = document.getElementById('forcaSoloCategoryBadge');
+  const forcaSoloBlanksEl = document.getElementById('forcaSoloBlanks');
+  const forcaSoloKeyboardEl = document.getElementById('forcaSoloKeyboard');
+  const forcaSoloRoundResultViewEl = document.getElementById('forcaSoloRoundResultView');
+  const forcaSoloRoundResultWordEl = document.getElementById('forcaSoloRoundResultWord');
+  const forcaSoloRoundResultMessageEl = document.getElementById('forcaSoloRoundResultMessage');
+  const forcaSoloRoundResultPointsEl = document.getElementById('forcaSoloRoundResultPoints');
+  const forcaSoloNextBtn = document.getElementById('forcaSoloNextBtn');
+  const forcaSoloFinalViewEl = document.getElementById('forcaSoloFinalView');
+  const forcaSoloFinalListEl = document.getElementById('forcaSoloFinalList');
+
   let forcaRoomCode = null;
   let forcaPlayerId = null;
   let unsubscribeForcaRoom = null;
@@ -3606,15 +3710,19 @@
     return chars.map((ch, i) => (guessedLetters.includes(normChars[i]) ? ch : '_')).join(' ');
   }
 
-  function renderForcaHangman(wrongCount) {
+  function renderForcaHangmanParts(prefix, wrongCount) {
     for (let i = 1; i <= 6; i++) {
-      const el = document.getElementById('forcaPart' + i);
+      const el = document.getElementById(prefix + i);
       if (el) el.style.display = i <= wrongCount ? '' : 'none';
     }
   }
 
-  function renderForcaKeyboard(guessedLetters, normalizedWordSet, interactive) {
-    forcaKeyboardEl.innerHTML = '';
+  function renderForcaHangman(wrongCount) {
+    renderForcaHangmanParts('forcaPart', wrongCount);
+  }
+
+  function renderForcaKeyboardInto(targetEl, guessedLetters, normalizedWordSet, interactive, onGuess) {
+    targetEl.innerHTML = '';
     FORCA_ALPHABET.forEach(letter => {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -3627,10 +3735,14 @@
       } else if (!interactive) {
         btn.disabled = true;
       } else {
-        btn.addEventListener('click', () => handleForcaGuess(letter));
+        btn.addEventListener('click', () => onGuess(letter));
       }
-      forcaKeyboardEl.appendChild(btn);
+      targetEl.appendChild(btn);
     });
+  }
+
+  function renderForcaKeyboard(guessedLetters, normalizedWordSet, interactive) {
+    renderForcaKeyboardInto(forcaKeyboardEl, guessedLetters, normalizedWordSet, interactive, handleForcaGuess);
   }
 
   function createForcaPlayerEntry() {
@@ -3645,6 +3757,17 @@
     forcaScoreSummaryEl.appendChild(pill);
     return { pill, nameEl, totalEl };
   }
+
+  document.querySelectorAll('input[name="forcaMode"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const isHuman = document.querySelector('input[name="forcaMode"]:checked').value === 'human';
+      forcaRoomGroupEl.style.display = isHuman ? '' : 'none';
+      forcaSoloStartBtn.style.display = isHuman ? 'none' : '';
+      forcaRoomErrorEl.textContent = '';
+    });
+  });
+
+  forcaSoloStartBtn.addEventListener('click', startForcaSolo);
 
   createForcaRoomBtn.addEventListener('click', createForcaRoom);
   joinForcaRoomBtn.addEventListener('click', joinForcaRoom);
@@ -3842,12 +3965,14 @@
       forcaRoundBadgeEl.textContent = `Rodada ${data.round} de ${FORCA_TOTAL_ROUNDS}`;
     }
 
+    const isLastRound = (data.round || 1) >= FORCA_TOTAL_ROUNDS;
+
     forcaChooseViewEl.style.display = 'none';
     forcaWaitChooseViewEl.style.display = 'none';
     forcaRoundViewEl.style.display = 'none';
     forcaRoundResultViewEl.style.display = 'none';
     forcaFinalViewEl.style.display = 'none';
-    forcaHangmanBoxEl.style.display = (phase === 'guessing' || phase === 'roundResult') ? 'block' : 'none';
+    forcaHangmanBoxEl.style.display = (phase === 'guessing' || (phase === 'roundResult' && !isLastRound)) ? 'block' : 'none';
 
     if (phase === 'choosing') {
       if (iAmMaster) {
@@ -3863,14 +3988,22 @@
       forcaRoundViewEl.style.display = 'block';
       renderForcaRoundView(data, iAmMaster);
     } else if (phase === 'roundResult') {
-      forcaRoundResultViewEl.style.display = 'block';
-      renderForcaRoundResult(data);
-      if (!forcaAdvanceScheduled) {
-        forcaAdvanceScheduled = true;
-        setTimeout(() => {
-          forcaAdvanceScheduled = false;
-          advanceForcaRound(forcaLastData);
-        }, 3500);
+      if (isLastRound) {
+        if (!forcaAdvanceScheduled) {
+          forcaAdvanceScheduled = true;
+          update(ref(db, `forcaRooms/${forcaRoomCode}`), { phase: 'finished' })
+            .finally(() => { forcaAdvanceScheduled = false; });
+        }
+      } else {
+        forcaRoundResultViewEl.style.display = 'block';
+        renderForcaRoundResult(data);
+        if (!forcaAdvanceScheduled) {
+          forcaAdvanceScheduled = true;
+          setTimeout(() => {
+            forcaAdvanceScheduled = false;
+            advanceForcaRound(forcaLastData);
+          }, 3500);
+        }
       }
     } else if (phase === 'finished') {
       forcaFinalViewEl.style.display = 'block';
@@ -4132,6 +4265,128 @@
 
   leaveForcaRoomBtn.addEventListener('click', () => leaveForcaRoomWithConfirm(true));
   cancelForcaWaitingBtn.addEventListener('click', () => leaveForcaRoomWithConfirm(true));
+
+  // ---------- Forca: modo solo (sem Firebase) ---------- //
+
+  let forcaSoloRound = 1;
+  let forcaSoloScore = 0;
+  let forcaSoloUsedWords = [];
+  let forcaSoloCategory = '';
+  let forcaSoloWord = '';
+  let forcaSoloGuessedLetters = [];
+  let forcaSoloWrongCount = 0;
+
+  function startForcaSolo() {
+    forcaSoloRound = 1;
+    forcaSoloScore = 0;
+    forcaSoloUsedWords = [];
+
+    forcaSetupEl.style.display = 'none';
+    forcaSoloGameEl.style.display = 'block';
+    forcaSoloFinalViewEl.style.display = 'none';
+    forcaSoloRoundBadgeEl.style.display = '';
+    setHeader('Forca');
+
+    startForcaSoloRound();
+  }
+
+  function startForcaSoloRound() {
+    const level = getForcaLevelForRound(forcaSoloRound);
+    let pool = FORCA_WORDS[level].filter(w => !forcaSoloUsedWords.includes(w.word));
+    if (pool.length < 1) pool = FORCA_WORDS[level];
+    const chosen = shuffleArray(pool)[0];
+    forcaSoloUsedWords.push(chosen.word);
+    forcaSoloCategory = chosen.category;
+    forcaSoloWord = chosen.word;
+    forcaSoloGuessedLetters = [];
+    forcaSoloWrongCount = 0;
+
+    forcaSoloRoundBadgeEl.textContent = `Rodada ${forcaSoloRound} de ${FORCA_TOTAL_ROUNDS}`;
+    forcaSoloScoreBadgeEl.textContent = `Pontos: ${forcaSoloScore}`;
+    forcaSoloRoundResultViewEl.style.display = 'none';
+    forcaSoloRoundViewEl.style.display = 'block';
+    forcaSoloHangmanBoxEl.style.display = 'block';
+
+    renderForcaSoloRoundView();
+  }
+
+  function renderForcaSoloRoundView() {
+    forcaSoloCategoryBadgeEl.textContent = `Categoria: ${forcaSoloCategory}`;
+    const normSet = new Set(normalizeForcaWord(forcaSoloWord));
+    forcaSoloBlanksEl.textContent = renderForcaBlanks(forcaSoloWord, forcaSoloGuessedLetters);
+    renderForcaHangmanParts('forcaSoloPart', forcaSoloWrongCount);
+    renderForcaKeyboardInto(forcaSoloKeyboardEl, forcaSoloGuessedLetters, normSet, true, handleForcaSoloGuess);
+  }
+
+  function handleForcaSoloGuess(letter) {
+    if (forcaSoloGuessedLetters.includes(letter)) return;
+
+    const normWord = normalizeForcaWord(forcaSoloWord);
+    const isHit = normWord.includes(letter);
+    forcaSoloGuessedLetters = forcaSoloGuessedLetters.concat(letter);
+    if (!isHit) forcaSoloWrongCount += 1;
+
+    const wordComplete = normWord.every(ch => forcaSoloGuessedLetters.includes(ch));
+    if (wordComplete) {
+      const points = FORCA_SCORE_TABLE[Math.min(forcaSoloWrongCount, FORCA_SCORE_TABLE.length - 1)];
+      forcaSoloScore += points;
+      finishForcaSoloRound(true, points);
+    } else if (forcaSoloWrongCount >= FORCA_MAX_ERRORS) {
+      finishForcaSoloRound(false, 0);
+    } else {
+      renderForcaSoloRoundView();
+    }
+  }
+
+  function finishForcaSoloRound(won, points) {
+    forcaSoloScoreBadgeEl.textContent = `Pontos: ${forcaSoloScore}`;
+    renderForcaHangmanParts('forcaSoloPart', forcaSoloWrongCount);
+
+    if (forcaSoloRound >= FORCA_TOTAL_ROUNDS) {
+      finishForcaSoloGame();
+      return;
+    }
+
+    forcaSoloRoundViewEl.style.display = 'none';
+    forcaSoloRoundResultViewEl.style.display = 'block';
+    forcaSoloRoundResultWordEl.textContent = forcaSoloWord;
+    forcaSoloRoundResultMessageEl.textContent = won ? '✅ Palavra descoberta!' : '❌ Não foi dessa vez!';
+    forcaSoloRoundResultMessageEl.className = `forca-round-result-message ${won ? 'won' : 'lost'}`;
+    forcaSoloRoundResultPointsEl.textContent = won
+      ? `Você ganhou ${points} pontos!`
+      : 'Você não ganhou pontos nessa rodada.';
+  }
+
+  forcaSoloNextBtn.addEventListener('click', () => {
+    forcaSoloRound += 1;
+    startForcaSoloRound();
+  });
+
+  function finishForcaSoloGame() {
+    forcaSoloHangmanBoxEl.style.display = 'none';
+    forcaSoloRoundViewEl.style.display = 'none';
+    forcaSoloRoundResultViewEl.style.display = 'none';
+    forcaSoloRoundBadgeEl.style.display = 'none';
+    forcaSoloFinalViewEl.style.display = 'block';
+
+    forcaSoloFinalListEl.innerHTML = '';
+    const row = document.createElement('div');
+    row.className = 'quiz-result-row player-color-you';
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = 'Você';
+    const scoreSpan = document.createElement('span');
+    scoreSpan.textContent = `${forcaSoloScore} pts`;
+    row.appendChild(nameSpan);
+    row.appendChild(scoreSpan);
+    forcaSoloFinalListEl.appendChild(row);
+
+    showCelebration(`🎉 Fim de jogo! Você fez ${forcaSoloScore} pontos!`);
+  }
+
+  forcaSoloExitBtn.addEventListener('click', () => {
+    forcaSoloGameEl.style.display = 'none';
+    forcaSetupEl.style.display = 'block';
+  });
 </script>
 
 </body>
