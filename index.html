@@ -6,7 +6,7 @@
 <title>Velha Infância</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@600;700&family=Bagel+Fat+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Fredoka:wght@600;700&family=Titan+One&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   body {
@@ -118,6 +118,20 @@
     letter-spacing: 8px;
   }
 
+  .timer-duration-input {
+    width: 100%;
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px 12px;
+    border: 3px solid #2b2b2b;
+    border-radius: 14px;
+    background: #fff;
+    color: #2b2b2b;
+    box-shadow: 3px 3px 0 #2b2b2b;
+    text-align: center;
+  }
+
   .or-divider {
     text-align: center;
     font-weight: 700;
@@ -168,9 +182,11 @@
   #joinRoomBtn { background: #9b5de5; }
   #restart { background: #3d84f7; }
   #changeMode { background: #fff; color: #2b2b2b; }
-  #cancelWaitingBtn { background: #fff; color: #2b2b2b; }
+  #cancelWaitingBtn,
+  #cancelForcaWaitingBtn { background: #fff; color: #2b2b2b; }
 
-  #roomCodeDisplay {
+  #roomCodeDisplay,
+  #forcaRoomCodeDisplay {
     background: #fff8e1;
     border: 3px solid #2b2b2b;
     border-radius: 16px;
@@ -326,6 +342,11 @@
     text-decoration: underline;
   }
 
+  .setup-rules-link {
+    align-self: center;
+    margin: 6px 0 0;
+  }
+
   /* ---------- Adedonha ---------- */
   #adedonhaGame.panel {
     max-width: 1000px;
@@ -377,6 +398,10 @@
     padding: 6px 10px;
     letter-spacing: 1px;
     white-space: nowrap;
+  }
+  #adedonhaTimerPill {
+    background: #3d84f7;
+    color: #fff;
   }
   #createAdedonhaRoomBtn { background: #3d84f7; }
   #joinAdedonhaRoomBtn { background: #9b5de5; }
@@ -756,6 +781,15 @@
     margin: 0 0 20px;
     line-height: 1.4;
   }
+  .modal-box-wide {
+    max-width: 460px;
+  }
+  .modal-message.rules-text {
+    text-align: left;
+    white-space: pre-line;
+    font-weight: 600;
+    font-size: 15px;
+  }
   .modal-actions {
     display: flex;
     gap: 12px;
@@ -813,7 +847,7 @@
 
   /* ---------- Logo/título da tela inicial ---------- */
   #pageTitle.home-title {
-    font-family: 'Bagel Fat One', 'Baloo 2', 'Comic Sans MS', cursive;
+    font-family: 'Titan One', 'Baloo 2', 'Comic Sans MS', cursive;
     color: #35D7FF;
     font-size: 68px;
     -webkit-text-stroke: 0.3px #2b2b2b;
@@ -978,6 +1012,173 @@
     border-radius: 10px;
     font-weight: 700;
   }
+
+  /* ---------- Forca ---------- */
+  #forcaGame.panel {
+    max-width: 560px;
+    width: 100%;
+  }
+  #forcaRoundBadge {
+    background: #ff6f61;
+    color: #fff;
+  }
+  #forcaCategoryBadge {
+    background: #9b5de5;
+    color: #fff;
+  }
+  #createForcaRoomBtn { background: #3d84f7; }
+  #joinForcaRoomBtn { background: #9b5de5; }
+  #leaveForcaRoomBtn {
+    width: auto;
+    padding: 8px 14px;
+    font-size: 13px;
+    background: #fff;
+    color: #2b2b2b;
+  }
+
+  .forca-choose-heading {
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 0 12px;
+    text-align: center;
+  }
+  .forca-word-option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+  .forca-option-word {
+    font-size: 18px;
+    font-weight: 800;
+  }
+  .forca-option-category {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b6b6b;
+  }
+
+  .forca-turn-banner {
+    background: #ff6f61;
+    color: #fff;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 12px;
+  }
+
+  .forca-master-hint {
+    background: #fff8e1;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  .forca-blanks {
+    background: #fffdf6;
+    border: 2px solid #2b2b2b;
+    border-radius: 14px;
+    padding: 18px 12px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    margin: 0 0 16px;
+    word-break: break-word;
+  }
+
+  .forca-hangman-box {
+    background: #fff;
+    border: 2px solid #2b2b2b;
+    border-radius: 14px;
+    padding: 10px;
+    margin: 0 auto 16px;
+    width: 150px;
+  }
+  .forca-hangman-box svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .forca-keyboard {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin: 0 0 14px;
+  }
+  .forca-keyboard-readonly {
+    opacity: 0.45;
+  }
+  .forca-key {
+    font-family: 'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 0;
+    border: 2px solid #2b2b2b;
+    border-radius: 10px;
+    background: #fff8e1;
+    color: #2b2b2b;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 #2b2b2b;
+    transition: transform 0.08s ease;
+  }
+  .forca-key:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+  }
+  .forca-key:disabled {
+    cursor: default;
+  }
+  .forca-key.correct {
+    background: #d7f5d4;
+  }
+  .forca-key.wrong {
+    background: #fbdcdc;
+    opacity: 0.7;
+  }
+
+  .forca-spectate-note {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b6b6b;
+    margin: 0;
+  }
+
+  .forca-round-result-word {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin: 0 0 8px;
+  }
+  .forca-round-result-message {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .forca-round-result-message.won { color: #1f7a34; }
+  .forca-round-result-message.lost { color: #d64545; }
+  .forca-round-result-points {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b6b6b;
+    margin: 0 0 4px;
+  }
+  .forca-round-result-next {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b6b6b;
+    margin: 0;
+  }
 </style>
 </head>
 <body>
@@ -998,6 +1199,10 @@
     <button id="cardQuiz" class="game-card" type="button">
       <span class="game-card-icon">🧠</span>
       <span class="game-card-title">O que é o que é</span>
+    </button>
+    <button id="cardForca" class="game-card" type="button">
+      <span class="game-card-icon">🔤</span>
+      <span class="game-card-title">Forca</span>
     </button>
   </div>
 </div>
@@ -1065,12 +1270,21 @@
 
 <div id="adedonhaSetup" class="panel" style="display:none;">
   <div class="option-group">
+    <label class="radio-pill" for="adedonhaTimerToggle">
+      <input type="checkbox" id="adedonhaTimerToggle">
+      ⏱️ Usar cronômetro?
+    </label>
+    <div id="adedonhaTimerDurationRow" style="display:none;">
+      <label class="field-label" for="adedonhaTimerDuration">Duração da rodada (minutos)</label>
+      <input type="number" id="adedonhaTimerDuration" class="timer-duration-input" min="1" max="60" value="5">
+    </div>
     <button id="createAdedonhaRoomBtn" class="action" type="button">Criar Sala</button>
     <div class="or-divider">ou</div>
     <label class="field-label" for="adedonhaJoinCodeInput">Entrar em uma sala</label>
     <input type="text" id="adedonhaJoinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
     <button id="joinAdedonhaRoomBtn" class="action" type="button">Entrar na Sala</button>
     <div id="adedonhaRoomError"></div>
+    <button id="adedonhaRulesLink" class="back-link setup-rules-link" type="button">Regras</button>
   </div>
 </div>
 
@@ -1080,6 +1294,7 @@
     <div class="adedonha-top-row">
       <div class="top-row-left">
         <div class="room-code-pill">Sala: <span id="adedonhaRoomCodeLabel">----</span></div>
+        <div class="room-code-pill" id="adedonhaTimerPill" style="display:none;">⏱️ <span id="adedonhaTimerValue">00:00</span></div>
         <div class="score-summary" id="scoreSummary"></div>
       </div>
       <button id="leaveAdedonhaRoomBtn" class="action" type="button">Sair da Sala</button>
@@ -1118,6 +1333,7 @@
     <input type="text" id="quizJoinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
     <button id="joinQuizRoomBtn" class="action" type="button">Entrar na Sala</button>
     <div id="quizRoomError"></div>
+    <button id="quizRulesLink" class="back-link setup-rules-link" type="button">Regras</button>
   </div>
 </div>
 
@@ -1151,6 +1367,90 @@
   <div id="quizResultsView" class="quiz-results" style="display:none;">
     <h2>Resultado Final</h2>
     <div id="quizResultsList" class="quiz-results-list"></div>
+  </div>
+</div>
+
+<div id="forcaSetup" class="panel" style="display:none;">
+  <div class="option-group">
+    <button id="createForcaRoomBtn" class="action" type="button">Criar Sala</button>
+    <div class="or-divider">ou</div>
+    <label class="field-label" for="forcaJoinCodeInput">Entrar em uma sala</label>
+    <input type="text" id="forcaJoinCodeInput" class="code-input" inputmode="numeric" maxlength="4" placeholder="0000">
+    <button id="joinForcaRoomBtn" class="action" type="button">Entrar na Sala</button>
+    <div id="forcaRoomError"></div>
+    <button id="forcaRulesLink" class="back-link setup-rules-link" type="button">Regras</button>
+  </div>
+</div>
+
+<div id="forcaWaitingRoom" class="panel" style="display:none;">
+  <h2>Sala Criada!</h2>
+  <p>Compartilhe este código com a outra pessoa:</p>
+  <div id="forcaRoomCodeDisplay">0000</div>
+  <p>Aguardando o Jogador 2 entrar...</p>
+  <div class="spinner"></div>
+  <button id="cancelForcaWaitingBtn" class="action" type="button">Cancelar</button>
+</div>
+
+<div id="forcaGame" class="panel" style="display:none;">
+  <div class="adedonha-top-row">
+    <div class="top-row-left">
+      <div class="room-code-pill">Sala: <span id="forcaRoomCodeLabel">----</span></div>
+      <div class="room-code-pill" id="forcaRoundBadge">Rodada 1 de 10</div>
+      <div class="score-summary" id="forcaScoreSummary"></div>
+    </div>
+    <button id="leaveForcaRoomBtn" class="action" type="button">Sair da Sala</button>
+  </div>
+
+  <div id="forcaPenaltyWarning" class="quiz-penalty-warning" style="display:none;"></div>
+
+  <div class="forca-hangman-box" id="forcaHangmanBox" style="display:none;">
+    <svg viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#2b2b2b" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8,152 L34,150 L72,152" />
+        <path d="M26,151 L24,60 L27,16" />
+        <path d="M25,16 L70,14 L96,16" />
+        <path d="M28,34 L46,17" />
+        <path d="M96,16 L95,34" />
+        <circle id="forcaPart1" cx="95" cy="48" r="13" style="display:none;" />
+        <path id="forcaPart2" d="M95,61 L94,100" style="display:none;" />
+        <path id="forcaPart3" d="M94,72 L74,88" style="display:none;" />
+        <path id="forcaPart4" d="M95,72 L116,88" style="display:none;" />
+        <path id="forcaPart5" d="M94,100 L77,131" style="display:none;" />
+        <path id="forcaPart6" d="M95,100 L113,131" style="display:none;" />
+      </g>
+    </svg>
+  </div>
+
+  <div id="forcaChooseView" style="display:none;">
+    <p class="forca-choose-heading">Você é o Mestre! Escolha uma palavra:</p>
+    <div class="quiz-options" id="forcaWordOptions"></div>
+  </div>
+
+  <div id="forcaWaitChooseView" class="quiz-waiting" style="display:none;">
+    <p>Aguardando o Mestre escolher uma palavra...</p>
+  </div>
+
+  <div id="forcaRoundView" style="display:none;">
+    <div class="quiz-meta">
+      <span id="forcaCategoryBadge" class="room-code-pill">Categoria: </span>
+    </div>
+    <p class="forca-turn-banner" id="forcaTurnBanner"></p>
+    <p class="forca-master-hint" id="forcaMasterHint" style="display:none;"></p>
+    <p class="forca-blanks" id="forcaBlanks"></p>
+    <div class="forca-keyboard" id="forcaKeyboard"></div>
+    <p class="forca-spectate-note" id="forcaSpectateNote" style="display:none;">Você é o Mestre — aguarde o adivinhador tentar as letras.</p>
+  </div>
+
+  <div id="forcaRoundResultView" style="display:none;">
+    <p class="forca-round-result-word" id="forcaRoundResultWord"></p>
+    <p class="forca-round-result-message" id="forcaRoundResultMessage"></p>
+    <p class="forca-round-result-points" id="forcaRoundResultPoints"></p>
+    <p class="forca-round-result-next">A próxima rodada começa automaticamente...</p>
+  </div>
+
+  <div id="forcaFinalView" style="display:none;">
+    <h2>Resultado Final</h2>
+    <div id="forcaFinalList" class="quiz-results-list"></div>
   </div>
 </div>
 
@@ -1191,6 +1491,7 @@
   // ---------- Modal de confirmação (compartilhado) ---------- //
 
   const confirmModalEl = document.getElementById('confirmModal');
+  const confirmModalBoxEl = confirmModalEl.querySelector('.modal-box');
   const confirmModalMessageEl = document.getElementById('confirmModalMessage');
   const confirmModalCancelBtn = document.getElementById('confirmModalCancelBtn');
   const confirmModalConfirmBtn = document.getElementById('confirmModalConfirmBtn');
@@ -1199,15 +1500,20 @@
     const opts = options || {};
     const confirmText = opts.confirmText || 'Sim, sair';
     const showCancel = opts.showCancel !== false;
+    const messageClass = opts.messageClass || '';
 
     return new Promise((resolve) => {
       confirmModalMessageEl.textContent = message;
+      confirmModalMessageEl.className = messageClass ? `modal-message ${messageClass}` : 'modal-message';
+      confirmModalBoxEl.classList.toggle('modal-box-wide', !!messageClass);
       confirmModalConfirmBtn.textContent = confirmText;
       confirmModalCancelBtn.style.display = showCancel ? '' : 'none';
       confirmModalEl.style.display = 'flex';
 
       function cleanup(result) {
         confirmModalEl.style.display = 'none';
+        confirmModalMessageEl.className = 'modal-message';
+        confirmModalBoxEl.classList.remove('modal-box-wide');
         confirmModalConfirmBtn.textContent = 'Sim, sair';
         confirmModalCancelBtn.style.display = '';
         confirmModalCancelBtn.removeEventListener('click', onCancel);
@@ -1840,9 +2146,43 @@
   const adedonhaGameEl = document.getElementById('adedonhaGame');
   const quizSetupEl = document.getElementById('quizSetup');
   const quizGameEl = document.getElementById('quizGame');
+  const forcaSetupEl = document.getElementById('forcaSetup');
+  const forcaWaitingRoomEl = document.getElementById('forcaWaitingRoom');
+  const forcaGameEl = document.getElementById('forcaGame');
   const cardJogoDaVelha = document.getElementById('cardJogoDaVelha');
   const cardAdedonha = document.getElementById('cardAdedonha');
   const cardQuiz = document.getElementById('cardQuiz');
+  const cardForca = document.getElementById('cardForca');
+  const adedonhaRulesLinkBtn = document.getElementById('adedonhaRulesLink');
+  const quizRulesLinkBtn = document.getElementById('quizRulesLink');
+  const forcaRulesLinkBtn = document.getElementById('forcaRulesLink');
+
+  const ADEDONHA_RULES_TEXT = 'Regras do Adedonha\n\n' +
+    '• Escolham ou sorteiem uma letra\n' +
+    '• Preencham as categorias com palavras que comecem com essa letra\n' +
+    '• As respostas dos outros ficam ocultas até todo mundo terminar\n' +
+    '• Palavra certa e única: +10 pontos\n' +
+    '• Palavra repetida com outro jogador: -5 pontos para ambos\n' +
+    '• Campo vazio ou errado: 0 pontos\n' +
+    '• Dá para contestar uma palavra que pareça inválida\n' +
+    '• O criador da sala pode ligar um cronômetro e escolher o tempo da rodada (opcional)';
+
+  const QUIZ_RULES_TEXT = 'Regras do "O que é o que é"\n\n' +
+    '• 15 perguntas de múltipla escolha, ficando mais difícil aos poucos\n' +
+    '• Cada pergunta tem apenas UMA tentativa — sem segunda chance\n' +
+    '• Acertou? +10 pontos e uma explicação da resposta\n' +
+    '• Errou? A resposta certa e a explicação aparecem na hora\n' +
+    '• Jogue sozinho ou crie/entre numa sala para comparar pontuação com outra pessoa\n' +
+    '• Sair da aba durante o jogo reinicia sua partida';
+
+  const FORCA_RULES_TEXT = 'Regras da Forca\n\n' +
+    '• Um jogador de cada vez é o "Mestre" e escolhe uma palavra secreta\n' +
+    '• O outro jogador vê a categoria da palavra (ex: "Animal", "Objeto") e tenta adivinhar, letra por letra\n' +
+    '• 6 erros permitidos antes de perder aquela rodada (boneco completo)\n' +
+    '• Depois de cada rodada, os papéis se invertem — quem adivinhava vira Mestre\n' +
+    '• A partida tem 10 rodadas no total (cada jogador é Mestre 5 vezes)\n' +
+    '• Só quem adivinha ganha pontos: quanto menos erros usar, mais pontos ganha\n' +
+    '• No final das 10 rodadas, o jogador com mais pontos vence';
 
   function setHeader(title) {
     pageTitleEl.textContent = title;
@@ -1863,6 +2203,10 @@
       const proceeded = await leaveQuizRoomWithConfirm(false);
       if (!proceeded) return;
     }
+    if (forcaRoomCode) {
+      const proceeded = await leaveForcaRoomWithConfirm(false);
+      if (!proceeded) return;
+    }
     mainMenuEl.style.display = 'block';
     setupEl.style.display = 'none';
     waitingRoomEl.style.display = 'none';
@@ -1871,6 +2215,9 @@
     adedonhaGameEl.style.display = 'none';
     quizSetupEl.style.display = 'none';
     quizGameEl.style.display = 'none';
+    forcaSetupEl.style.display = 'none';
+    forcaWaitingRoomEl.style.display = 'none';
+    forcaGameEl.style.display = 'none';
     pageTitleEl.textContent = 'Velha Infância';
     pageTitleEl.classList.add('home-title');
     homeFooterEl.style.display = 'flex';
@@ -1903,6 +2250,25 @@
     setHeader('O que é o que é');
   });
 
+  cardForca.addEventListener('click', () => {
+    mainMenuEl.style.display = 'none';
+    homeFooterEl.style.display = 'none';
+    forcaSetupEl.style.display = 'block';
+    setHeader('Forca');
+  });
+
+  adedonhaRulesLinkBtn.addEventListener('click', () => {
+    showConfirmModal(ADEDONHA_RULES_TEXT, { confirmText: 'Fechar', showCancel: false, messageClass: 'rules-text' });
+  });
+
+  quizRulesLinkBtn.addEventListener('click', () => {
+    showConfirmModal(QUIZ_RULES_TEXT, { confirmText: 'Fechar', showCancel: false, messageClass: 'rules-text' });
+  });
+
+  forcaRulesLinkBtn.addEventListener('click', () => {
+    showConfirmModal(FORCA_RULES_TEXT, { confirmText: 'Fechar', showCancel: false, messageClass: 'rules-text' });
+  });
+
   backToMenuBtn.addEventListener('click', showMainMenu);
 
   // ---------- Adedonha ---------- //
@@ -1927,6 +2293,15 @@
   const adedonhaRoomErrorEl = document.getElementById('adedonhaRoomError');
   const adedonhaRoomCodeLabelEl = document.getElementById('adedonhaRoomCodeLabel');
   const leaveAdedonhaRoomBtn = document.getElementById('leaveAdedonhaRoomBtn');
+  const adedonhaTimerToggle = document.getElementById('adedonhaTimerToggle');
+  const adedonhaTimerDurationRow = document.getElementById('adedonhaTimerDurationRow');
+  const adedonhaTimerDurationInput = document.getElementById('adedonhaTimerDuration');
+  const adedonhaTimerPillEl = document.getElementById('adedonhaTimerPill');
+  const adedonhaTimerValueEl = document.getElementById('adedonhaTimerValue');
+
+  adedonhaTimerToggle.addEventListener('change', () => {
+    adedonhaTimerDurationRow.style.display = adedonhaTimerToggle.checked ? 'block' : 'none';
+  });
 
   const roundLetterInput = document.getElementById('roundLetter');
   const randomLetterBtn = document.getElementById('randomLetterBtn');
@@ -1948,7 +2323,39 @@
   let adedonhaCurrentPhase = 'filling';
   let adedonhaDisconnectHandle = null;
   let adedonhaCelebrationShown = false;
+  let adedonhaTimerInterval = null;
+  let adedonhaTimerEnabled = false;
+  let adedonhaTimerEndAt = null;
+  let adedonhaTimerDurationMin = null;
   const adedonhaPlayerEntries = new Map(); // playerId -> { pill, nameEl, totalEl, cells: Map(key -> {wrapper,input,contestBtn,rowEl,badgeEl}) }
+
+  function stopAdedonhaTimerTicker() {
+    if (adedonhaTimerInterval) {
+      clearInterval(adedonhaTimerInterval);
+      adedonhaTimerInterval = null;
+    }
+  }
+
+  function formatAdedonhaTimer(ms) {
+    const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  function tickAdedonhaTimer() {
+    if (!adedonhaTimerEnabled || !adedonhaTimerEndAt) return;
+    const remaining = adedonhaTimerEndAt - Date.now();
+    if (remaining <= 0) {
+      adedonhaTimerValueEl.textContent = '00:00';
+      stopAdedonhaTimerTicker();
+      if (adedonhaCurrentPhase === 'filling' && adedonhaRoomCode) {
+        update(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), { phase: 'results' });
+      }
+      return;
+    }
+    adedonhaTimerValueEl.textContent = formatAdedonhaTimer(remaining);
+  }
 
   function buildAdedonhaCategorySections() {
     const sections = new Map(); // key -> { body, badgesEl }
@@ -2010,14 +2417,22 @@
       adedonhaRoomCode = code;
       adedonhaPlayerId = generatePlayerId();
 
-      await set(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), {
+      const roomData = {
         letter: '',
         phase: 'filling',
         createdAt: Date.now(),
+        timerEnabled: adedonhaTimerToggle.checked,
         players: {
           [adedonhaPlayerId]: { order: 0, words: {}, contested: {}, done: false, activeTab: true }
         }
-      });
+      };
+      if (adedonhaTimerToggle.checked) {
+        const minutes = Math.min(60, Math.max(1, parseInt(adedonhaTimerDurationInput.value, 10) || 5));
+        roomData.timerDurationMin = minutes;
+        roomData.timerEndAt = Date.now() + minutes * 60000;
+      }
+
+      await set(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), roomData);
 
       listenToAdedonhaRoom();
     } catch (err) {
@@ -2094,6 +2509,8 @@
         adedonhaPlayerEntries.clear();
         adedonhaRoomCode = null;
         adedonhaPlayerId = null;
+        stopAdedonhaTimerTicker();
+        adedonhaTimerPillEl.style.display = 'none';
         adedonhaGameEl.style.display = 'none';
         adedonhaSetupEl.style.display = 'block';
         adedonhaRoomErrorEl.textContent = 'A sala foi encerrada.';
@@ -2227,10 +2644,34 @@
     }
   }
 
+  function syncCategoryTitleHeights() {
+    const titles = Array.from(categoryListEl.querySelectorAll('.category-title'));
+    if (!titles.length) return;
+    titles.forEach(t => { t.style.minHeight = ''; });
+    let maxHeight = 0;
+    titles.forEach(t => { maxHeight = Math.max(maxHeight, t.getBoundingClientRect().height); });
+    titles.forEach(t => { t.style.minHeight = `${maxHeight}px`; });
+  }
+
   function renderAdedonhaRoom(data) {
     const phase = data.phase || 'filling';
     adedonhaCurrentPhase = phase;
     const roundLetter = (data.letter || '').trim().toUpperCase();
+
+    adedonhaTimerEnabled = !!data.timerEnabled;
+    adedonhaTimerEndAt = data.timerEndAt || null;
+    adedonhaTimerDurationMin = data.timerDurationMin || null;
+
+    if (adedonhaTimerEnabled && phase === 'filling' && adedonhaTimerEndAt) {
+      adedonhaTimerPillEl.style.display = '';
+      tickAdedonhaTimer();
+      if (!adedonhaTimerInterval) {
+        adedonhaTimerInterval = setInterval(tickAdedonhaTimer, 1000);
+      }
+    } else {
+      adedonhaTimerPillEl.style.display = 'none';
+      stopAdedonhaTimerTicker();
+    }
 
     if (document.activeElement !== roundLetterInput) {
       roundLetterInput.value = roundLetter;
@@ -2351,6 +2792,7 @@
     }
 
     updatePhaseUI(phase, playersList);
+    syncCategoryTitleHeights();
 
     if (phase === 'filling' && playersList.length > 0 && playersList.every(p => p.done)) {
       update(ref(db, `adedonhaRooms/${adedonhaRoomCode}`), { phase: 'results' });
@@ -2358,6 +2800,8 @@
   }
 
   async function leaveAdedonhaRoom(showSetupAfter) {
+    stopAdedonhaTimerTicker();
+    adedonhaTimerPillEl.style.display = 'none';
     if (unsubscribeAdedonhaRoom) {
       unsubscribeAdedonhaRoom();
       unsubscribeAdedonhaRoom = null;
@@ -2450,6 +2894,9 @@
         letter: alphabet[Math.floor(Math.random() * alphabet.length)],
         phase: 'filling'
       };
+      if (adedonhaTimerEnabled && adedonhaTimerDurationMin) {
+        updates.timerEndAt = Date.now() + adedonhaTimerDurationMin * 60000;
+      }
       Object.keys(players).forEach(pid => {
         updates[`players/${pid}/words`] = null;
         updates[`players/${pid}/contested`] = null;
@@ -2460,6 +2907,13 @@
     } catch (err) {
       console.error('Erro ao iniciar nova rodada:', err);
     }
+  });
+
+  let adedonhaResizeTimeout = null;
+  window.addEventListener('resize', () => {
+    if (adedonhaGameEl.style.display === 'none') return;
+    clearTimeout(adedonhaResizeTimeout);
+    adedonhaResizeTimeout = setTimeout(syncCategoryTitleHeights, 150);
   });
 
   function setAdedonhaActiveTab(isActive) {
@@ -2476,7 +2930,7 @@
 
   // ---------- "O que é o que é" (quiz) ---------- //
 
-  const QUIZ_LEVEL_LABELS = ['Fácil', 'Médio', 'Difícil', 'Muito Difícil'];
+  const QUIZ_LEVEL_LABELS = ['Fácil', 'Médio', 'Difícil'];
   const QUIZ_QUESTIONS = {
     facil: [
       { text: 'Tem cabeça, tem dente, mas não é gente nem bicho?', options: ['Martelo', 'Alho', 'Garfo'], correct: 1, explanation: 'Um dente de alho é literalmente chamado assim, e o bulbo inteiro é a cabeça de alho.' },
@@ -2494,8 +2948,7 @@
       { text: 'Tem dentes, mas fica fora da boca quando a pessoa dorme?', options: ['Alho', 'Dentadura', 'Garfo'], correct: 1, explanation: 'Muita gente que usa dentadura removível a retira à noite e a deixa mergulhada num copo com água enquanto dorme.' },
       { text: 'Passa na frente do Sol, mas nunca faz sombra?', options: ['Uma nuvem', 'Uma mosca', 'O vento'], correct: 2, explanation: 'O vento é invisível e não tem massa visível capaz de bloquear a luz do Sol.' },
       { text: 'Tem mais altura quando é comprado, mas vai diminuindo conforme é usado?', options: ['Cenoura', 'Vela', 'Sabonete'], correct: 1, explanation: 'A vela derrete conforme queima, perdendo altura a cada minuto de uso.' },
-      { text: 'O que vem primeiro, a galinha ou o ovo?', options: ['A galinha', 'A gema', 'O ovo'], correct: 2, explanation: 'O ovo veio primeiro. Do ponto de vista da evolução e da biologia, animais com reprodução ovípara, como dinossauros e répteis, já botavam ovos centenas de milhões de anos antes do surgimento da galinha moderna.' },
-      { text: 'Tem 4 patas mas não é um pato?', options: ['O patinho', 'Um cavalo', 'Duas patas fêmeas'], correct: 1, explanation: 'O cavalo tem 4 patas, que são as que o mantêm de pé.' }
+      { text: 'Sobe quando a chuva desce?', options: ['O guarda-sol', 'O guarda-chuva', 'A capa de chuva'], correct: 1, explanation: 'Ao começar a chuva, o guarda-chuva é aberto e erguido para cima, protegendo quem está embaixo dele.' }
     ],
     medio: [
       { text: 'Quanto mais se tira, mais aumenta?', options: ['Poço', 'Buraco', 'Dívida'], correct: 1, explanation: 'Ao cavar e retirar terra de um buraco, o espaço vazio dele só cresce.' },
@@ -2514,7 +2967,14 @@
       { text: 'É verde como o mato, mas mato não é; fala como gente, mas gente não é?', options: ['Grilo', 'Papagaio', 'Sapo'], correct: 1, explanation: 'A plumagem verde do papagaio lembra a cor da vegetação, e ele é conhecido por imitar a fala humana.' },
       { text: 'Tem pé, mas não anda; tem asa, mas não voa; tem o que comer, mas não come; tem água, mas não bebe?', options: ['Guarda-chuva', 'Coqueiro', 'Cadeira'], correct: 1, explanation: 'O tronco do coqueiro é chamado de pé, as folhas grandes lembram asas, e o coco tem água e polpa por dentro.' },
       { text: 'Vai deixando uma trilha atrás de si por onde quer que passe, sempre puxando uma linha?', options: ['Caracol', 'Agulha (de costura)', 'Rastro de tinta'], correct: 1, explanation: 'Ao costurar, a agulha arrasta a linha por onde passa, deixando um rastro de pontos no tecido.' },
-      { text: 'Não se come sozinho, mas é o que deixa qualquer prato bom de se comer?', options: ['Prato', 'Tempero', 'Guardanapo'], correct: 1, explanation: 'Ninguém come uma colher de tempero puro, mas é ele que dá sabor à comida.' }
+      { text: 'Não se come sozinho, mas é o que deixa qualquer prato bom de se comer?', options: ['Prato', 'Tempero', 'Guardanapo'], correct: 1, explanation: 'Ninguém come uma colher de tempero puro, mas é ele que dá sabor à comida.' },
+      { text: 'O que nunca fica mais novo, por mais que a gente queira?', options: ['O tempo', 'A idade', 'A juventude'], correct: 1, explanation: 'A idade só aumenta com o tempo, nunca diminui.' },
+      { text: 'Qual é o único animal que sempre "anda deitado", em qualquer direção que se mova?', options: ['A cobra', 'O peixe', 'O lagarto'], correct: 1, explanation: 'O corpo do peixe fica sempre na horizontal enquanto nada.' },
+      { text: 'Que mulheres vivem, em geral, mais tempo do que os próprios maridos?', options: ['As esposas mais jovens', 'As viúvas', 'As divorciadas'], correct: 1, explanation: 'Uma viúva é a mulher cujo marido já faleceu, então ela viveu mais tempo que ele.' },
+      { text: 'É feito especialmente para andar, mas nunca anda sozinho, por conta própria?', options: ['O relógio', 'O sapato', 'O carrinho de bebê'], correct: 1, explanation: 'O sapato ajuda a caminhar, mas só se move quando um pé o calça.' },
+      { text: 'Só serve para alguma coisa depois de ser quebrado?', options: ['Um vaso', 'Um ovo', 'Um espelho'], correct: 1, explanation: 'Um ovo só se torna útil na cozinha depois de quebrado.' },
+      { text: 'Somos muitos irmãozinhos, moramos todos numa casa só, e se coçam nossa cabeça, morremos na hora?', options: ['Os palitos de dente', 'Os fósforos', 'As velas'], correct: 1, explanation: 'Os fósforos ficam guardados juntos na caixinha, e ao serem riscados pela cabeça, se consomem instantaneamente.' },
+      { text: 'Quando você está de pé, ele fica deitado; quando você está deitado, ele fica de pé?', options: ['O braço', 'O pé', 'O joelho'], correct: 1, explanation: 'Em pé, o pé fica na horizontal apoiado no chão; deitado, ele aponta para cima, na vertical.' }
     ],
     dificil: [
       { text: 'Enche um ambiente inteiro, sem ocupar nenhum espaço físico?', options: ['O ar', 'A luz', 'O som'], correct: 1, explanation: 'A luz ilumina um ambiente inteiro sem ocupar espaço físico como um objeto sólido.' },
@@ -2535,31 +2995,30 @@
       { text: 'Ninguém nunca a viu de verdade chegando, mas todo mundo sabe que ela chegou quando alguém parte para sempre?', options: ['A despedida', 'A morte', 'A tristeza'], correct: 1, explanation: 'A morte não tem forma visível, só é percebida pela ausência definitiva de quem partiu.' },
       { text: 'Aparece só quando os olhos se fecham, mas às vezes parece mais real do que a própria vida enquanto dura?', options: ['A imaginação', 'O sonho', 'A memória'], correct: 1, explanation: 'Sonhos acontecem de olhos fechados e podem parecer extremamente reais enquanto duram.' },
       { text: 'Guarda tudo o que já vivemos, mas às vezes falha justamente na hora em que mais precisamos dela?', options: ['A fotografia', 'A memória', 'A agenda'], correct: 1, explanation: 'A memória guarda experiências passadas, mas costuma falhar nos momentos mais importantes.' },
-      { text: 'Não tem tamanho nem peso, mas é o que faz o coração bater mais forte na hora de enfrentar aquilo que se teme?', options: ['O medo', 'A coragem', 'A adrenalina'], correct: 1, explanation: 'Coragem não é ausência de medo, é a força de agir mesmo sentindo medo.' }
-    ],
-    muitoDificil: [
+      { text: 'Não tem tamanho nem peso, mas é o que faz o coração bater mais forte na hora de enfrentar aquilo que se teme?', options: ['O medo', 'A coragem', 'A adrenalina'], correct: 1, explanation: 'Coragem não é ausência de medo, é a força de agir mesmo sentindo medo.' },
       { text: 'Está no final do fim, no início do meio e no meio do começo. Que letra é essa?', options: ['A letra "F"', 'A letra "M"', 'A letra "E"'], correct: 1, explanation: 'Fim termina com M, meio começa com M, e começo tem o M no centro.' },
       { text: 'Qual é a maior palavra do dicionário, segundo o trocadilho popular?', options: ['Paralelepípedo', 'Arroz (porque vai de "A" a "Z")', 'Otorrinolaringologista'], correct: 1, explanation: 'Arroz começa com A e termina com Z, como se contivesse todo o alfabeto.' },
       { text: 'O que a areia da praia falou para o mar, num trocadilho?', options: ['"Você está molhado"', '"Deixa de onda"', '"Vamos nessa"'], correct: 1, explanation: 'Onda tem duplo sentido: a onda do mar e a expressão parar de onda.' },
       { text: 'Qual animal é apontado como "o rei das charadas", por sempre acertar na mosca?', options: ['Leão', 'Sapo', 'Coelho'], correct: 1, explanation: 'É um trocadilho com acertar na mosca, já que o sapo caça moscas com a língua.' },
       { text: 'Ocorre uma vez a cada minuto, duas vezes a cada momento, mas nunca em quinhentos anos?', options: ['A letra "A"', 'A letra "M"', 'A letra "S"'], correct: 1, explanation: 'M aparece uma vez em minuto, duas em momento, e nenhuma em quinhentos anos.' },
-      { text: 'Só serve para alguma coisa depois de ser quebrado?', options: ['Um vaso', 'Um ovo', 'Um espelho'], correct: 1, explanation: 'Um ovo só se torna útil na cozinha depois de quebrado.' },
-      { text: 'É feito especialmente para andar, mas nunca anda sozinho, por conta própria?', options: ['O relógio', 'O sapato', 'O carrinho de bebê'], correct: 1, explanation: 'O sapato ajuda a caminhar, mas só se move quando um pé o calça.' },
       { text: 'Coloca-se na mesa, é cortado e repartido entre os jogadores, mas ninguém nunca o come?', options: ['O bolo de aniversário', 'O baralho de cartas', 'O pão'], correct: 1, explanation: 'Cortar e repartir são termos do próprio jogo de cartas, nada ali é comestível.' },
       { text: 'Guarda um momento do passado para sempre, mas nunca envelhece com o tempo?', options: ['Uma carta', 'Uma fotografia', 'Uma lembrança'], correct: 1, explanation: 'A cena registrada numa foto fica congelada como era no momento do clique.' },
       { text: 'A mãe de Beatriz tem cinco filhas, cada uma com um nome seguindo as vogais em ordem: Bá, Bé, Bi, Bo e...?', options: ['Baba', 'Bu', 'Bibi'], correct: 1, explanation: 'Os nomes seguem as cinco vogais em ordem, faltava só o U.' },
       { text: 'Você está numa sala escura com um único fósforo na mão. À sua frente há uma vela, uma lamparina e uma pilha de lenha. O que você deve acender primeiro?', options: ['A vela', 'O próprio fósforo', 'A lamparina'], correct: 1, explanation: 'Antes de acender qualquer coisa, é preciso acender o próprio fósforo primeiro.' },
-      { text: 'O que nunca fica mais novo, por mais que a gente queira?', options: ['O tempo', 'A idade', 'A juventude'], correct: 1, explanation: 'A idade só aumenta com o tempo, nunca diminui.' },
       { text: 'Se você ultrapassar o segundo colocado numa corrida, em que posição você fica?', options: ['Em primeiro lugar', 'Em segundo lugar', 'Em terceiro lugar'], correct: 1, explanation: 'Ao ultrapassar quem está em segundo, você assume o lugar dele, não o primeiro.' },
       { text: 'O que pesa mais: um quilo de penas ou um quilo de chumbo?', options: ['O quilo de chumbo', 'O quilo de penas', 'Pesam exatamente igual'], correct: 2, explanation: 'Um quilo é sempre um quilo, o que muda é o volume ocupado.' },
       { text: 'É mais veloz que um carro de Fórmula 1, mais lento que uma tartaruga, não faz distinção entre ricos e pobres, não há dinheiro que o compre, não pode ser pesado — mas mesmo sendo infinito, pode ser medido?', options: ['O universo', 'O tempo', 'O pensamento'], correct: 1, explanation: 'O tempo parece voar quando estamos entretidos e se arrastar quando estamos entediados.' },
       { text: 'Um relógio quebrado (parado) mostra a hora certa quantas vezes por dia?', options: ['Nenhuma vez', 'Duas vezes', 'Uma vez'], correct: 1, explanation: 'Um relógio parado coincide com a hora certa duas vezes em 24 horas.' },
       { text: 'Quantos meses do ano têm 28 dias?', options: ['Apenas fevereiro', 'Todos os 12 meses', 'Nenhum mês'], correct: 1, explanation: 'Todo mês tem pelo menos 28 dias, mesmo os que têm 30 ou 31.' },
       { text: 'Se um avião caísse bem em cima da fronteira exata entre dois países, onde deveriam ser enterrados os sobreviventes do acidente?', options: ['No primeiro país', 'No segundo país', 'Sobreviventes não se enterram'], correct: 2, explanation: 'Sobreviventes estão vivos, então não faz sentido enterrar ninguém.' },
-      { text: 'Qual é o único animal que sempre "anda deitado", em qualquer direção que se mova?', options: ['A cobra', 'O peixe', 'O lagarto'], correct: 1, explanation: 'O corpo do peixe fica sempre na horizontal enquanto nada.' },
-      { text: 'Que mulheres vivem, em geral, mais tempo do que os próprios maridos?', options: ['As esposas mais jovens', 'As viúvas', 'As divorciadas'], correct: 1, explanation: 'Uma viúva é a mulher cujo marido já faleceu, então ela viveu mais tempo que ele.' },
       { text: 'Entre dois homens completamente carecas, qual dos dois tem mais cabelo na cabeça?', options: ['O que ficou careca primeiro', 'Nenhum dos dois — ambos têm exatamente a mesma quantidade (zero)', 'O mais velho'], correct: 1, explanation: 'Ser completamente careca significa ter zero fios de cabelo, e zero é sempre igual a zero.' },
-      { text: 'Existe uma pergunta para a qual é impossível responder sinceramente "não", não importa quem seja perguntado. Qual é ela?', options: ['"Você está com fome?"', '"Você está dormindo?"', '"Você está com sono?"'], correct: 1, explanation: 'Quem dorme não pode responder, e quem está acordado só pode dizer não.' }
+      { text: 'Existe uma pergunta para a qual é impossível responder sinceramente "não", não importa quem seja perguntado. Qual é ela?', options: ['"Você está com fome?"', '"Você está dormindo?"', '"Você está com sono?"'], correct: 1, explanation: 'Quem dorme não pode responder, e quem está acordado só pode dizer não.' },
+      { text: 'O que vem primeiro, a galinha ou o ovo?', options: ['A galinha', 'A gema', 'O ovo'], correct: 2, explanation: 'Do ponto de vista da evolução, animais que já botavam ovos existiam muito antes das galinhas modernas surgirem.' },
+      { text: 'Tem 4 patas, mas não é um pato?', options: ['O patinho', 'Um cavalo', 'Duas patas fêmeas'], correct: 1, explanation: 'Patas aqui quer dizer pernas, e é isso que mantém o cavalo em pé.' },
+      { text: 'É nosso desde que nascemos, mas quem mais usa no dia a dia são os outros, chamando a gente por ele?', options: ['O rosto', 'O nome', 'O sobrenome'], correct: 1, explanation: 'O nome pertence a você, mas é constantemente pronunciado pelas outras pessoas, não por você mesmo.' },
+      { text: 'Está pendurada no pé no pomar, e também cobre seu braço quando você veste uma camisa?', options: ['A luva', 'A manga', 'O punho'], correct: 1, explanation: 'Manga é ao mesmo tempo o nome de uma fruta e da parte da roupa que cobre o braço.' },
+      { text: 'Qual é a capital mais gritada do mundo, segundo o trocadilho popular?', options: ['Lima', 'Caracas', 'Bogotá'], correct: 1, explanation: '"Caracas" soa como um grito de espanto, brincando com o nome da capital da Venezuela.' },
+      { text: 'Qual é o papel mais engraçado que existe, segundo o trocadilho popular?', options: ['Papel alumínio', 'Papel celofane (celo-funny)', 'Papel higiênico'], correct: 1, explanation: 'O trocadilho junta "celo" com a palavra em inglês "funny" (engraçado), formando "celofane".' }
     ]
   };
 
@@ -2594,7 +3053,6 @@
   let quizQuestions = [];
   let quizCurrentIndex = 0;
   let quizScore = 0;
-  let quizAttemptsLeft = 2;
   let quizInQuestionPhase = false;
   let quizFinishedLocally = false;
   let quizCelebrationShown = false;
@@ -2612,14 +3070,13 @@
 
   function buildFullQuizSequence() {
     return []
-      .concat(shuffleArray(QUIZ_QUESTIONS.facil).slice(0, 10))
-      .concat(shuffleArray(QUIZ_QUESTIONS.medio).slice(0, 10))
-      .concat(shuffleArray(QUIZ_QUESTIONS.dificil).slice(0, 10))
-      .concat(shuffleArray(QUIZ_QUESTIONS.muitoDificil).slice(0, 10));
+      .concat(shuffleArray(QUIZ_QUESTIONS.facil).slice(0, 5))
+      .concat(shuffleArray(QUIZ_QUESTIONS.medio).slice(0, 5))
+      .concat(shuffleArray(QUIZ_QUESTIONS.dificil).slice(0, 5));
   }
 
   function getQuizLevelLabelForIndex(index) {
-    const block = Math.min(Math.floor(index / 10), QUIZ_LEVEL_LABELS.length - 1);
+    const block = Math.min(Math.floor(index / 5), QUIZ_LEVEL_LABELS.length - 1);
     return QUIZ_LEVEL_LABELS[block];
   }
 
@@ -2878,7 +3335,6 @@
     quizExplanationEl.style.display = 'none';
     quizExplanationEl.textContent = '';
     quizNextBtn.style.display = 'none';
-    quizAttemptsLeft = 2;
     renderQuizOptions(q);
   }
 
@@ -2908,19 +3364,12 @@
       return;
     }
 
-    quizAttemptsLeft -= 1;
     btnEl.classList.add('wrong-answer');
-
-    if (quizAttemptsLeft > 0) {
-      quizFeedbackEl.textContent = '❌ Não é essa... tente de novo!';
-      quizFeedbackEl.className = 'quiz-feedback wrong';
-    } else {
-      quizFeedbackEl.textContent = '❌ Essa também não!';
-      quizFeedbackEl.className = 'quiz-feedback wrong';
-      revealQuizExplanation(q);
-      disableQuizOptions();
-      quizNextBtn.style.display = 'block';
-    }
+    quizFeedbackEl.textContent = '❌ Não era essa!';
+    quizFeedbackEl.className = 'quiz-feedback wrong';
+    revealQuizExplanation(q);
+    disableQuizOptions();
+    quizNextBtn.style.display = 'block';
   }
 
   function revealQuizExplanation(q) {
@@ -3030,6 +3479,659 @@
   }
 
   leaveQuizRoomBtn.addEventListener('click', () => leaveQuizRoomWithConfirm(true));
+
+  // ---------- Forca ---------- //
+
+  const FORCA_WORDS = {
+    facil: [
+      { word: 'GATO', category: 'Animal' },
+      { word: 'CASA', category: 'Lugar' },
+      { word: 'BOLA', category: 'Objeto' },
+      { word: 'LIVRO', category: 'Objeto' },
+      { word: 'MESA', category: 'Objeto' },
+      { word: 'PATO', category: 'Animal' },
+      { word: 'RATO', category: 'Animal' },
+      { word: 'PORTA', category: 'Objeto' },
+      { word: 'JANELA', category: 'Objeto' },
+      { word: 'CAMA', category: 'Objeto' },
+      { word: 'COPO', category: 'Objeto' },
+      { word: 'PRATO', category: 'Objeto' },
+      { word: 'FLOR', category: 'Natureza' },
+      { word: 'PEIXE', category: 'Animal' },
+      { word: 'NUVEM', category: 'Natureza' }
+    ],
+    medio: [
+      { word: 'CACHORRO', category: 'Animal' },
+      { word: 'ELEFANTE', category: 'Animal' },
+      { word: 'COMPUTADOR', category: 'Objeto' },
+      { word: 'BICICLETA', category: 'Objeto' },
+      { word: 'PROFESSOR', category: 'Profissão' },
+      { word: 'HOSPITAL', category: 'Lugar' },
+      { word: 'AEROPORTO', category: 'Lugar' },
+      { word: 'BOMBEIRO', category: 'Profissão' },
+      { word: 'ADVOGADO', category: 'Profissão' },
+      { word: 'FAZENDEIRO', category: 'Profissão' },
+      { word: 'PADARIA', category: 'Lugar' },
+      { word: 'FARMÁCIA', category: 'Lugar' },
+      { word: 'BIBLIOTECA', category: 'Lugar' },
+      { word: 'GIRAFA', category: 'Animal' },
+      { word: 'XÍCARA', category: 'Objeto' }
+    ],
+    dificil: [
+      { word: 'ARQUITETURA', category: 'Profissão' },
+      { word: 'ASTRONAUTA', category: 'Profissão' },
+      { word: 'LABIRINTO', category: 'Lugar' },
+      { word: 'MARACUJÁ', category: 'Fruta' },
+      { word: 'ABACAXI', category: 'Fruta' },
+      { word: 'ORNITORRINCO', category: 'Animal' },
+      { word: 'HIPOPÓTAMO', category: 'Animal' },
+      { word: 'OXIGÊNIO', category: 'Ciência' },
+      { word: 'PSICÓLOGO', category: 'Profissão' },
+      { word: 'PARALELEPÍPEDO', category: 'Objeto' },
+      { word: 'CROCODILO', category: 'Animal' },
+      { word: 'ENCICLOPÉDIA', category: 'Objeto' },
+      { word: 'TELEFONE', category: 'Objeto' },
+      { word: 'ENGENHEIRO', category: 'Profissão' },
+      { word: 'VETERINÁRIO', category: 'Profissão' }
+    ]
+  };
+
+  const FORCA_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const FORCA_SCORE_TABLE = [60, 50, 40, 30, 20, 10];
+  const FORCA_MAX_ERRORS = 6;
+  const FORCA_TOTAL_ROUNDS = 10;
+
+  const createForcaRoomBtn = document.getElementById('createForcaRoomBtn');
+  const joinForcaRoomBtn = document.getElementById('joinForcaRoomBtn');
+  const forcaJoinCodeInput = document.getElementById('forcaJoinCodeInput');
+  const forcaRoomErrorEl = document.getElementById('forcaRoomError');
+  const forcaRoomCodeDisplayEl = document.getElementById('forcaRoomCodeDisplay');
+  const cancelForcaWaitingBtn = document.getElementById('cancelForcaWaitingBtn');
+  const forcaRoomCodeLabelEl = document.getElementById('forcaRoomCodeLabel');
+  const forcaRoundBadgeEl = document.getElementById('forcaRoundBadge');
+  const forcaScoreSummaryEl = document.getElementById('forcaScoreSummary');
+  const leaveForcaRoomBtn = document.getElementById('leaveForcaRoomBtn');
+  const forcaPenaltyWarningEl = document.getElementById('forcaPenaltyWarning');
+  const forcaHangmanBoxEl = document.getElementById('forcaHangmanBox');
+  const forcaChooseViewEl = document.getElementById('forcaChooseView');
+  const forcaWordOptionsEl = document.getElementById('forcaWordOptions');
+  const forcaWaitChooseViewEl = document.getElementById('forcaWaitChooseView');
+  const forcaRoundViewEl = document.getElementById('forcaRoundView');
+  const forcaCategoryBadgeEl = document.getElementById('forcaCategoryBadge');
+  const forcaTurnBannerEl = document.getElementById('forcaTurnBanner');
+  const forcaMasterHintEl = document.getElementById('forcaMasterHint');
+  const forcaBlanksEl = document.getElementById('forcaBlanks');
+  const forcaKeyboardEl = document.getElementById('forcaKeyboard');
+  const forcaSpectateNoteEl = document.getElementById('forcaSpectateNote');
+  const forcaRoundResultViewEl = document.getElementById('forcaRoundResultView');
+  const forcaRoundResultWordEl = document.getElementById('forcaRoundResultWord');
+  const forcaRoundResultMessageEl = document.getElementById('forcaRoundResultMessage');
+  const forcaRoundResultPointsEl = document.getElementById('forcaRoundResultPoints');
+  const forcaFinalViewEl = document.getElementById('forcaFinalView');
+  const forcaFinalListEl = document.getElementById('forcaFinalList');
+
+  let forcaRoomCode = null;
+  let forcaPlayerId = null;
+  let unsubscribeForcaRoom = null;
+  let forcaDisconnectHandle = null;
+  let forcaCelebrationShown = false;
+  let forcaAdvanceScheduled = false;
+  let forcaDrawing = false;
+  let forcaLastData = null;
+  const forcaPlayerEntries = new Map();
+
+  function getForcaLevelForRound(round) {
+    if (round <= 2) return 'facil';
+    if (round <= 7) return 'medio';
+    return 'dificil';
+  }
+
+  function getForcaMasterIdForRound(round, players) {
+    const masterOrder = (round - 1) % 2;
+    const entry = Object.entries(players || {}).find(([, p]) => (p.order || 0) === masterOrder);
+    return entry ? entry[0] : null;
+  }
+
+  function normalizeForcaChar(ch) {
+    return ch.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+  }
+
+  function normalizeForcaWord(word) {
+    return word.split('').map(normalizeForcaChar);
+  }
+
+  function renderForcaBlanks(word, guessedLetters) {
+    const chars = word.split('');
+    const normChars = normalizeForcaWord(word);
+    return chars.map((ch, i) => (guessedLetters.includes(normChars[i]) ? ch : '_')).join(' ');
+  }
+
+  function renderForcaHangman(wrongCount) {
+    for (let i = 1; i <= 6; i++) {
+      const el = document.getElementById('forcaPart' + i);
+      if (el) el.style.display = i <= wrongCount ? '' : 'none';
+    }
+  }
+
+  function renderForcaKeyboard(guessedLetters, normalizedWordSet, interactive) {
+    forcaKeyboardEl.innerHTML = '';
+    FORCA_ALPHABET.forEach(letter => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'forca-key';
+      btn.textContent = letter;
+      const guessed = guessedLetters.includes(letter);
+      if (guessed) {
+        btn.classList.add(normalizedWordSet.has(letter) ? 'correct' : 'wrong');
+        btn.disabled = true;
+      } else if (!interactive) {
+        btn.disabled = true;
+      } else {
+        btn.addEventListener('click', () => handleForcaGuess(letter));
+      }
+      forcaKeyboardEl.appendChild(btn);
+    });
+  }
+
+  function createForcaPlayerEntry() {
+    const pill = document.createElement('div');
+    pill.className = 'score-pill';
+    const nameEl = document.createElement('span');
+    const totalEl = document.createElement('span');
+    totalEl.className = 'score-pill-total';
+    totalEl.textContent = '0';
+    pill.appendChild(nameEl);
+    pill.appendChild(totalEl);
+    forcaScoreSummaryEl.appendChild(pill);
+    return { pill, nameEl, totalEl };
+  }
+
+  createForcaRoomBtn.addEventListener('click', createForcaRoom);
+  joinForcaRoomBtn.addEventListener('click', joinForcaRoom);
+
+  forcaJoinCodeInput.addEventListener('input', () => {
+    forcaJoinCodeInput.value = forcaJoinCodeInput.value.replace(/\D/g, '').slice(0, 4);
+  });
+  forcaJoinCodeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinForcaRoom();
+  });
+
+  async function createForcaRoom() {
+    forcaRoomErrorEl.textContent = '';
+    createForcaRoomBtn.disabled = true;
+    try {
+      let code = generateRoomCode();
+      let attempts = 0;
+      let exists = true;
+      while (attempts < 10) {
+        const snap = await get(ref(db, `forcaRooms/${code}`));
+        exists = snap.exists();
+        if (!exists) break;
+        code = generateRoomCode();
+        attempts++;
+      }
+      if (exists) {
+        forcaRoomErrorEl.textContent = 'Não foi possível criar a sala. Tente novamente.';
+        return;
+      }
+
+      forcaRoomCode = code;
+      forcaPlayerId = generatePlayerId();
+
+      await set(ref(db, `forcaRooms/${forcaRoomCode}`), {
+        status: 'waiting',
+        createdAt: Date.now(),
+        round: 1,
+        masterId: forcaPlayerId,
+        phase: 'choosing',
+        category: null,
+        word: null,
+        wordOptions: null,
+        guessedLetters: [],
+        wrongCount: 0,
+        roundStatus: null,
+        roundPoints: null,
+        usedWords: [],
+        players: {
+          [forcaPlayerId]: { order: 0, score: 0 }
+        }
+      });
+
+      forcaDisconnectHandle = onDisconnect(ref(db, `forcaRooms/${forcaRoomCode}/players/${forcaPlayerId}`));
+      forcaDisconnectHandle.remove();
+
+      enterForcaRoom();
+    } catch (err) {
+      console.error('Erro ao criar sala da forca:', err);
+      forcaRoomErrorEl.textContent = 'Não foi possível criar a sala: ' + (err && err.message ? err.message : 'erro desconhecido.');
+    } finally {
+      createForcaRoomBtn.disabled = false;
+    }
+  }
+
+  async function joinForcaRoom() {
+    const code = forcaJoinCodeInput.value.trim();
+    forcaRoomErrorEl.textContent = '';
+
+    if (!/^\d{4}$/.test(code)) {
+      forcaRoomErrorEl.textContent = 'Digite um código de 4 dígitos.';
+      return;
+    }
+
+    joinForcaRoomBtn.disabled = true;
+    try {
+      const roomPath = ref(db, `forcaRooms/${code}`);
+      const snap = await get(roomPath);
+      if (!snap.exists()) {
+        forcaRoomErrorEl.textContent = 'Sala não encontrada.';
+        return;
+      }
+      const data = snap.val();
+      if (data.status !== 'waiting') {
+        forcaRoomErrorEl.textContent = 'Essa sala já está em uso.';
+        return;
+      }
+
+      forcaRoomCode = code;
+      forcaPlayerId = generatePlayerId();
+
+      await update(roomPath, {
+        status: 'playing',
+        [`players/${forcaPlayerId}`]: { order: 1, score: 0 }
+      });
+
+      forcaDisconnectHandle = onDisconnect(ref(db, `forcaRooms/${forcaRoomCode}/players/${forcaPlayerId}`));
+      forcaDisconnectHandle.remove();
+
+      enterForcaRoom();
+    } catch (err) {
+      console.error('Erro ao entrar na sala da forca:', err);
+      forcaRoomErrorEl.textContent = 'Não foi possível entrar na sala: ' + (err && err.message ? err.message : 'erro desconhecido.');
+    } finally {
+      joinForcaRoomBtn.disabled = false;
+    }
+  }
+
+  function enterForcaRoom() {
+    forcaRoomCodeLabelEl.textContent = forcaRoomCode;
+    forcaSetupEl.style.display = 'none';
+    forcaCelebrationShown = false;
+    forcaAdvanceScheduled = false;
+    setHeader('Forca');
+
+    const roomPath = ref(db, `forcaRooms/${forcaRoomCode}`);
+    unsubscribeForcaRoom = onValue(roomPath, (snap) => {
+      const data = snap.val();
+      if (!data) {
+        if (unsubscribeForcaRoom) {
+          unsubscribeForcaRoom();
+          unsubscribeForcaRoom = null;
+        }
+        forcaPlayerEntries.forEach(entry => entry.pill.remove());
+        forcaPlayerEntries.clear();
+        forcaRoomCode = null;
+        forcaPlayerId = null;
+        forcaLastData = null;
+        forcaWaitingRoomEl.style.display = 'none';
+        forcaGameEl.style.display = 'none';
+        forcaSetupEl.style.display = 'block';
+        forcaRoomErrorEl.textContent = 'A sala foi encerrada.';
+        return;
+      }
+      renderForcaRoom(data);
+    });
+  }
+
+  function showForcaWaitingRoom() {
+    forcaSetupEl.style.display = 'none';
+    forcaGameEl.style.display = 'none';
+    forcaWaitingRoomEl.style.display = 'block';
+    forcaRoomCodeDisplayEl.textContent = forcaRoomCode;
+  }
+
+  function renderForcaRoom(data) {
+    forcaLastData = data;
+
+    if (data.status === 'waiting') {
+      showForcaWaitingRoom();
+      return;
+    }
+
+    forcaWaitingRoomEl.style.display = 'none';
+    forcaGameEl.style.display = 'block';
+
+    const playersEntries = Object.entries(data.players || {})
+      .sort((a, b) => (a[1].order || 0) - (b[1].order || 0));
+
+    const seenIds = new Set();
+    const playersList = [];
+
+    playersEntries.forEach(([playerId, playerData], index) => {
+      seenIds.add(playerId);
+      let entry = forcaPlayerEntries.get(playerId);
+      if (!entry) {
+        entry = createForcaPlayerEntry();
+        forcaPlayerEntries.set(playerId, entry);
+      }
+      const isMine = playerId === forcaPlayerId;
+      const label = `Jogador ${index + 1}${isMine ? ' (você)' : ''}`;
+      const colorClass = isMine ? 'player-color-you' : `player-color-${index % PLAYER_COLOR_COUNT}`;
+      playersList.push({ playerId, entry, isMine, label, colorClass, score: playerData.score || 0 });
+    });
+
+    forcaPlayerEntries.forEach((entry, playerId) => {
+      if (!seenIds.has(playerId)) {
+        entry.pill.remove();
+        forcaPlayerEntries.delete(playerId);
+      }
+    });
+
+    playersList.forEach(p => {
+      p.entry.nameEl.textContent = p.label;
+      p.entry.pill.className = `score-pill ${p.colorClass}`;
+      p.entry.totalEl.textContent = p.score;
+    });
+
+    const phase = data.phase || 'choosing';
+    const iAmMaster = data.masterId === forcaPlayerId;
+
+    if (phase === 'finished') {
+      forcaRoundBadgeEl.style.display = 'none';
+    } else {
+      forcaRoundBadgeEl.style.display = '';
+      forcaRoundBadgeEl.textContent = `Rodada ${data.round} de ${FORCA_TOTAL_ROUNDS}`;
+    }
+
+    forcaChooseViewEl.style.display = 'none';
+    forcaWaitChooseViewEl.style.display = 'none';
+    forcaRoundViewEl.style.display = 'none';
+    forcaRoundResultViewEl.style.display = 'none';
+    forcaFinalViewEl.style.display = 'none';
+    forcaHangmanBoxEl.style.display = (phase === 'guessing' || phase === 'roundResult') ? 'block' : 'none';
+
+    if (phase === 'choosing') {
+      if (iAmMaster) {
+        forcaChooseViewEl.style.display = 'block';
+        renderForcaChooseView(data);
+        if (!data.wordOptions && !forcaDrawing) {
+          drawForcaWordOptions(data);
+        }
+      } else {
+        forcaWaitChooseViewEl.style.display = 'block';
+      }
+    } else if (phase === 'guessing') {
+      forcaRoundViewEl.style.display = 'block';
+      renderForcaRoundView(data, iAmMaster);
+    } else if (phase === 'roundResult') {
+      forcaRoundResultViewEl.style.display = 'block';
+      renderForcaRoundResult(data);
+      if (!forcaAdvanceScheduled) {
+        forcaAdvanceScheduled = true;
+        setTimeout(() => {
+          forcaAdvanceScheduled = false;
+          advanceForcaRound(forcaLastData);
+        }, 3500);
+      }
+    } else if (phase === 'finished') {
+      forcaFinalViewEl.style.display = 'block';
+      renderForcaFinalView(playersList);
+    }
+  }
+
+  function renderForcaChooseView(data) {
+    forcaWordOptionsEl.innerHTML = '';
+    if (!data.wordOptions) {
+      const p = document.createElement('p');
+      p.className = 'forca-spectate-note';
+      p.textContent = 'Sorteando palavras...';
+      forcaWordOptionsEl.appendChild(p);
+      return;
+    }
+    data.wordOptions.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'quiz-option forca-word-option';
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'forca-option-word';
+      wordSpan.textContent = opt.word;
+      const catSpan = document.createElement('span');
+      catSpan.className = 'forca-option-category';
+      catSpan.textContent = `Categoria: ${opt.category}`;
+      btn.appendChild(wordSpan);
+      btn.appendChild(catSpan);
+      btn.addEventListener('click', () => chooseForcaWord(opt));
+      forcaWordOptionsEl.appendChild(btn);
+    });
+  }
+
+  function drawForcaWordOptions(data) {
+    forcaDrawing = true;
+    const level = getForcaLevelForRound(data.round || 1);
+    const used = data.usedWords || [];
+    let pool = FORCA_WORDS[level].filter(w => !used.includes(w.word));
+    if (pool.length < 3) pool = FORCA_WORDS[level];
+    const options = shuffleArray(pool).slice(0, 3);
+    update(ref(db, `forcaRooms/${forcaRoomCode}`), { wordOptions: options })
+      .catch(err => console.error('Erro ao sortear palavras da forca:', err))
+      .finally(() => { forcaDrawing = false; });
+  }
+
+  function chooseForcaWord(option) {
+    if (!forcaRoomCode || !forcaLastData) return;
+    const usedWords = (forcaLastData.usedWords || []).concat(option.word);
+    update(ref(db, `forcaRooms/${forcaRoomCode}`), {
+      phase: 'guessing',
+      category: option.category,
+      word: option.word,
+      wordOptions: null,
+      guessedLetters: [],
+      wrongCount: 0,
+      usedWords
+    });
+  }
+
+  function getForcaGuesserLabel(data) {
+    const guesserId = Object.keys(data.players || {}).find(id => id !== data.masterId);
+    const guesserEntry = guesserId ? forcaPlayerEntries.get(guesserId) : null;
+    return guesserEntry ? guesserEntry.nameEl.textContent : 'o Adivinhador';
+  }
+
+  function renderForcaRoundView(data, iAmMaster) {
+    forcaCategoryBadgeEl.textContent = `Categoria: ${data.category || ''}`;
+    const word = data.word || '';
+    const guessedLetters = data.guessedLetters || [];
+    const wrongCount = data.wrongCount || 0;
+    const normSet = new Set(normalizeForcaWord(word));
+
+    forcaTurnBannerEl.textContent = `Vez de ${getForcaGuesserLabel(data)}`;
+
+    forcaMasterHintEl.style.display = iAmMaster ? 'block' : 'none';
+    if (iAmMaster) {
+      forcaMasterHintEl.textContent = `Palavra: ${word}`;
+    }
+    forcaSpectateNoteEl.style.display = iAmMaster ? 'block' : 'none';
+
+    forcaBlanksEl.textContent = renderForcaBlanks(word, guessedLetters);
+    renderForcaHangman(wrongCount);
+    renderForcaKeyboard(guessedLetters, normSet, !iAmMaster);
+    forcaKeyboardEl.classList.toggle('forca-keyboard-readonly', iAmMaster);
+  }
+
+  function handleForcaGuess(letter) {
+    if (!forcaRoomCode || !forcaLastData) return;
+    const data = forcaLastData;
+    if (data.phase !== 'guessing') return;
+    if (data.masterId === forcaPlayerId) return;
+    const guessedLetters = data.guessedLetters || [];
+    if (guessedLetters.includes(letter)) return;
+
+    const normWord = normalizeForcaWord(data.word || '');
+    const isHit = normWord.includes(letter);
+    const newGuessed = guessedLetters.concat(letter);
+    const currentWrong = data.wrongCount || 0;
+    const newWrong = currentWrong + (isHit ? 0 : 1);
+
+    const updates = {
+      guessedLetters: newGuessed,
+      wrongCount: newWrong
+    };
+
+    const wordComplete = normWord.every(ch => newGuessed.includes(ch));
+    if (wordComplete) {
+      const points = FORCA_SCORE_TABLE[Math.min(currentWrong, FORCA_SCORE_TABLE.length - 1)];
+      const currentScore = (data.players[forcaPlayerId] && data.players[forcaPlayerId].score) || 0;
+      updates.phase = 'roundResult';
+      updates.roundStatus = 'won';
+      updates.roundPoints = points;
+      updates[`players/${forcaPlayerId}/score`] = currentScore + points;
+    } else if (newWrong >= FORCA_MAX_ERRORS) {
+      updates.phase = 'roundResult';
+      updates.roundStatus = 'lost';
+      updates.roundPoints = null;
+    }
+
+    update(ref(db, `forcaRooms/${forcaRoomCode}`), updates);
+  }
+
+  function renderForcaRoundResult(data) {
+    forcaRoundResultWordEl.textContent = data.word || '';
+    const won = data.roundStatus === 'won';
+    forcaRoundResultMessageEl.textContent = won ? '✅ Palavra descoberta!' : '❌ Não foi dessa vez!';
+    forcaRoundResultMessageEl.className = `forca-round-result-message ${won ? 'won' : 'lost'}`;
+
+    const guesserLabel = getForcaGuesserLabel(data);
+    forcaRoundResultPointsEl.textContent = won
+      ? `${guesserLabel} ganhou ${data.roundPoints} pontos!`
+      : `${guesserLabel} não ganhou pontos nessa rodada.`;
+
+    renderForcaHangman(data.wrongCount || 0);
+  }
+
+  function advanceForcaRound(data) {
+    if (!forcaRoomCode || !data) return;
+    const nextRound = (data.round || 1) + 1;
+    if (nextRound > FORCA_TOTAL_ROUNDS) {
+      update(ref(db, `forcaRooms/${forcaRoomCode}`), { phase: 'finished' });
+      return;
+    }
+    const nextMasterId = getForcaMasterIdForRound(nextRound, data.players);
+    update(ref(db, `forcaRooms/${forcaRoomCode}`), {
+      phase: 'choosing',
+      round: nextRound,
+      masterId: nextMasterId,
+      category: null,
+      word: null,
+      wordOptions: null,
+      guessedLetters: [],
+      wrongCount: 0,
+      roundStatus: null,
+      roundPoints: null
+    });
+  }
+
+  function renderForcaFinalView(playersList) {
+    forcaFinalListEl.innerHTML = '';
+    const sorted = playersList.slice().sort((a, b) => b.score - a.score);
+    sorted.forEach(p => {
+      const row = document.createElement('div');
+      row.className = `quiz-result-row ${p.colorClass}`;
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = p.label;
+      const scoreSpan = document.createElement('span');
+      scoreSpan.textContent = `${p.score} pts`;
+      row.appendChild(nameSpan);
+      row.appendChild(scoreSpan);
+      forcaFinalListEl.appendChild(row);
+    });
+
+    if (!forcaCelebrationShown && playersList.length > 0) {
+      forcaCelebrationShown = true;
+      const maxScore = Math.max(...playersList.map(p => p.score));
+      const winners = playersList.filter(p => p.score === maxScore);
+      if (winners.length > 1) {
+        showCelebration('Empate! 🤝');
+      } else {
+        showCelebration(`🎉 Fim de Jogo: ${winners[0].label} venceu!`);
+      }
+    }
+  }
+
+  function forcaHandleTabLeave() {
+    if (!forcaRoomCode || !forcaLastData) return;
+    const phase = forcaLastData.phase;
+    if (phase !== 'choosing' && phase !== 'guessing') return;
+    update(ref(db, `forcaRooms/${forcaRoomCode}`), {
+      phase: 'choosing',
+      category: null,
+      word: null,
+      wordOptions: null,
+      guessedLetters: [],
+      wrongCount: 0
+    });
+    forcaPenaltyWarningEl.textContent = '⚠️ Um jogador saiu da aba! A rodada foi reiniciada.';
+    forcaPenaltyWarningEl.style.display = 'block';
+    setTimeout(() => {
+      forcaPenaltyWarningEl.style.display = 'none';
+    }, 4000);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') forcaHandleTabLeave();
+  });
+  window.addEventListener('blur', () => forcaHandleTabLeave());
+
+  async function leaveForcaRoom(showSetupAfter) {
+    if (unsubscribeForcaRoom) {
+      unsubscribeForcaRoom();
+      unsubscribeForcaRoom = null;
+    }
+    if (forcaDisconnectHandle) {
+      try { await forcaDisconnectHandle.cancel(); } catch (err) { /* conexão já pode ter caído */ }
+      forcaDisconnectHandle = null;
+    }
+    if (forcaRoomCode && forcaPlayerId) {
+      const code = forcaRoomCode;
+      const playerId = forcaPlayerId;
+      try {
+        await remove(ref(db, `forcaRooms/${code}/players/${playerId}`));
+        const snap = await get(ref(db, `forcaRooms/${code}/players`));
+        if (!snap.exists()) {
+          await remove(ref(db, `forcaRooms/${code}`));
+        }
+      } catch (err) { /* sala já pode ter sido removida */ }
+    }
+    forcaPlayerEntries.forEach(entry => entry.pill.remove());
+    forcaPlayerEntries.clear();
+    forcaRoomCode = null;
+    forcaPlayerId = null;
+    forcaLastData = null;
+    if (showSetupAfter) {
+      forcaWaitingRoomEl.style.display = 'none';
+      forcaGameEl.style.display = 'none';
+      forcaSetupEl.style.display = 'block';
+    }
+  }
+
+  async function leaveForcaRoomWithConfirm(showSetupAfter) {
+    if (!forcaRoomCode) return true;
+    let otherPlayersExist = false;
+    try {
+      const snap = await get(ref(db, `forcaRooms/${forcaRoomCode}/players`));
+      const players = snap.val() || {};
+      otherPlayersExist = Object.keys(players).some(id => id !== forcaPlayerId);
+    } catch (err) { /* assume que está sozinho se a leitura falhar */ }
+
+    if (!otherPlayersExist) {
+      const confirmed = await showConfirmModal('Ao sair da sala o jogo será encerrado. Você tem certeza que quer sair?');
+      if (!confirmed) return false;
+    }
+
+    await leaveForcaRoom(showSetupAfter);
+    return true;
+  }
+
+  leaveForcaRoomBtn.addEventListener('click', () => leaveForcaRoomWithConfirm(true));
+  cancelForcaWaitingBtn.addEventListener('click', () => leaveForcaRoomWithConfirm(true));
 </script>
 
 </body>
